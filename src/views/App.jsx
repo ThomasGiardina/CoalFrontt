@@ -1,14 +1,14 @@
 import './App.css'
-import Form from '../components/Form'
+import Homenavbar from '../components/navbar/homepagenavbar'
+import Homehero from '../components/Hero/HomeHero'
 
 function App() {
 
   return (
-    <>
-      <div className='container'>
-        <h1>Counter</h1>
+      <div className="min-h-screen" style={{ backgroundImage: `url('./proto2.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <Homenavbar />
+        <Homehero />
       </div>
-    </>
   )
 }
 

@@ -1,0 +1,109 @@
+<html><head><base href="https://www.coalgaming.com/"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Coal - Your Gaming Adventure Awaits</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'custom-orange': '#ff784d',
+      }
+    }
+  }
+}
+</script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    .bg-custom {
+        background-image: url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2130&q=80');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .navbar-gradient {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    }
+</style>
+</head>
+<body class="bg-custom h-screen text-white">
+    <div class="container mx-auto px-4 h-full flex flex-col rounded-lg overflow-hidden">
+        <header class="py-4 navbar-gradient rounded-t-lg">
+            <nav class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="#" class="text-2xl font-bold">Coal</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="#overview" class="hover:text-custom-orange transition duration-300">Overview</a>
+                        <a href="#media" class="hover:text-custom-orange transition duration-300">Media</a>
+                        <a href="#news" class="hover:text-custom-orange transition duration-300">News</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <select class="bg-transparent border border-white rounded-md text-white appearance-none py-1 px-3 pr-8 focus:outline-none">
+                            <option value="en">EN</option>
+                            <option value="es">ES</option>
+                            <option value="fr">FR</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                    <button class="bg-custom-orange hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Log In
+                    </button>
+                </div>
+            </nav>
+        </header>
+        
+        <main class="flex-grow flex flex-col justify-center items-start bg-black bg-opacity-50 px-6 py-12 rounded-lg">
+            <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">DISCOVER<br>NEW WORLDS</h1>
+            <div class="space-x-4">
+                <button class="bg-custom-orange hover:bg-orange-600 text-white font-bold py-3 px-6 rounded transition duration-300">
+                    Explore Games
+                </button>
+                <button class="bg-transparent border-2 border-custom-orange hover:bg-custom-orange hover:text-black text-white font-bold py-3 px-6 rounded transition duration-300">
+                    Join Community
+                </button>
+            </div>
+        </main>
+        
+        <footer class="py-4 flex justify-between items-center navbar-gradient rounded-b-lg">
+            <div class="text-sm">
+                &copy; 2023 Coal Gaming. All rights reserved.
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-custom-orange"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-custom-orange"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-custom-orange"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-custom-orange"><i class="fab fa-discord"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Mobile menu toggle (you might want to implement a proper mobile menu)
+        document.querySelector('.text-2xl.font-bold').addEventListener('click', () => {
+            alert('Mobile menu would open here');
+        });
+
+        // Log In button action
+        document.querySelector('.bg-custom-orange').addEventListener('click', () => {
+            window.location.href = '/login';
+        });
+
+        // Explore Games action
+        document.querySelectorAll('.bg-custom-orange')[1].addEventListener('click', () => {
+            window.location.href = '/games';
+        });
+
+        // Join Community action
+        document.querySelector('.border-custom-orange').addEventListener('click', () => {
+            window.location.href = '/community';
+        });
+    </script>
+</body>
+</html>

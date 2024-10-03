@@ -8,7 +8,7 @@ export default {
     themes: [
       {
         mytheme: {
-          "primary": "#f97316", 
+          "primary": "#B0513D", 
           "secondary": "#1b2838", 
           "accent": "#c27c2c",  
           "neutral": "#232f3e",  
@@ -16,10 +16,19 @@ export default {
           "info": "#66c0f4",  
           "success": "#4caf50",  
           "warning": "#ffc107",  
-          "error": "#ef4444",  
+          "error": "#ef4444",
+          "extra": "#f5f2f0",
         },
       },
     ],
+  },
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+      },
+    },
   },
   plugins: [require('daisyui')],
 }
