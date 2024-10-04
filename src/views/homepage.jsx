@@ -1,15 +1,13 @@
 import './App.css'
-import Homenavbar from '../components/navbar/homepagenavbar'
-import Homehero from '../components/Hero/HomeHero'
+import ContainerLogin from '../components/Login/ContainerLogin'
 
 function App() {
 
-    return (
-        <div className="min-h-screen" style={{ backgroundImage: `url('./proto2.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-            <Homenavbar />
-            <Homehero />
-        </div>
-    )
+return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: `#676279`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <ContainerLogin />
+    </div>
+)
 }
 
 export default App

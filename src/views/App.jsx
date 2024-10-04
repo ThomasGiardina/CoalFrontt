@@ -4,6 +4,7 @@ import Storenavbar from '../components/navbar/storenavbar'
 import Carrousel from '../components/Carrousel/Carrousel'
 import GameCard from '../components/Gamecard/gamecard'
 import fifa18 from '../assets/fifa18.jpg'
+import ContainerLogin from '../components/Login/ContainerLogin'
 
 const gameData1 = {
   title: "Fifa18",
@@ -36,17 +37,9 @@ const gameData4 = {
 function App() {
 
   return (
-    <> 
-      <Storenavbar />
-      <Carrousel />
-      <div className="flex ml-28 space-x-10 items-start max-w-7xl">
-        <Gamefilter />
-        <GameCard game={gameData1} />
-        <GameCard game={gameData2} />
-        <GameCard game={gameData3} />
-        <GameCard game={gameData4} />
-      </div>   
-    </>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: `#676279`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <ContainerLogin />
+    </div>
   )
 }
 
