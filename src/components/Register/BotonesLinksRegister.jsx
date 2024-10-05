@@ -1,4 +1,4 @@
-const BotonesLinksLogin = () => {
+const BotonesLinksRegister = () => {
 
     return (
         <div className="flex ">
@@ -10,4 +10,4 @@ const BotonesLinksLogin = () => {
 
 }
 
-export default BotonesLinksLogin;
+export default BotonesLinksRegister;

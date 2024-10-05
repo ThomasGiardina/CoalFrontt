@@ -2,7 +2,7 @@ const Check = () => {
 
     return(
         <>
-            <input type="checkbox" defaultChecked className="checkbox p-3" />
+            <input type="checkbox" defaultChecked className="checkbox" />
         </>
     )
 

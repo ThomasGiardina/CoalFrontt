@@ -4,8 +4,8 @@ import Storenavbar from '../components/navbar/storenavbar'
 import Carrousel from '../components/Carrousel/Carrousel'
 import GameCard from '../components/Gamecard/gamecard'
 import fifa18 from '../assets/fifa18.jpg'
+import FooterLogin from '../components/Footer/FooterLogin'
 import ContainerLogin from '../components/Login/ContainerLogin'
-import FooterLogin from '../components/Login/FooterLogin'
 
 const gameData1 = {
   title: "Fifa18",
@@ -39,7 +39,7 @@ function App() {
 
   return (
     <>
-    <Storenavbar />
+    
     <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundImage: `url('/portada.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="absolute inset-0  opacity-70" style={{backgroundColor:'#676279'}}></div>
       <div className="relative z-10">
