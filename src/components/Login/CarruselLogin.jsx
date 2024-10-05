@@ -31,7 +31,7 @@ const CarruselLogin = () => {
       }, []);
 
     return (
-        <div className="relative w-[700px] h-[660px]">
+        <div className="relative w-[500px] h-[660px]">
         <div className="carousel rounded-box h-full">
             <div className="carousel-item h-full">
             <img src={images[currentIndex]} className="object-cover w-full h-full" />

@@ -5,6 +5,7 @@ import Carrousel from '../components/Carrousel/Carrousel'
 import GameCard from '../components/Gamecard/gamecard'
 import fifa18 from '../assets/fifa18.jpg'
 import ContainerLogin from '../components/Login/ContainerLogin'
+import FooterLogin from '../components/Login/FooterLogin'
 
 const gameData1 = {
   title: "Fifa18",
@@ -37,9 +38,16 @@ const gameData4 = {
 function App() {
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: `#676279`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <>
+    <Storenavbar />
+    <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundImage: `url('/portada.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="absolute inset-0  opacity-70" style={{backgroundColor:'#676279'}}></div>
+      <div className="relative z-10">
         <ContainerLogin />
+      </div>
     </div>
+    <FooterLogin />
+  </>
   )
 }
 
