@@ -1,5 +1,5 @@
 import './App.css'
-import Homenavbar from '../components/Navbar/homepagenavbar'
+import Homenavbar from '../components/navbar/Homenavbar';
 import Homehero from '../components/Hero/HomeHero'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login'; 
