@@ -1,6 +1,6 @@
 import './App.css'
-import Gamefilter from '../components/gamefilter/gamefilter'
-import Storenavbar from '../components/navbar/storenavbar'
+import Gamefilter from '../components/Gamefilter/gamefilter'
+import Storenavbar from '../components/Navbar/storenavbar'
 import Carrousel from '../components/Carrousel/Carrousel'
 import GameCard from '../components/Gamecard/gamecard'
 import fifa18 from '../assets/fifa18.jpg'
