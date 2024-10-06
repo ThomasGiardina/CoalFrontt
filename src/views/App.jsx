@@ -6,6 +6,7 @@ import Login from './Login';
 import Register from './Register';  
 import Store from './Store'; 
 import Footer from '../components/Footer/Footer';
+import Homepage from './Homepage';
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
         <Router>
             <Homenavbar />
             <Routes>
-                <Route path="/" element={<Homehero />} />
+                <Route path="/" element={<Homepage />} />
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Store" element={<Store />} />
