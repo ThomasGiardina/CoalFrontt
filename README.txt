@@ -30,3 +30,7 @@ Pasos a Seguir para iniciar la app:
 
 Comentarios adicionales:
     -El Home.html y el Store.html son ideas previas, luego de terminar el proyecto se eliminaran
+
+
+Font Awesome 
+npm install @fortawesome/fontawesome-free

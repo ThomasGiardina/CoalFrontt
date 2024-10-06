@@ -1,42 +1,85 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import BuscardorNavbar from './BuscadorNavbar';
+
 const Homenavbar = () => {
     return (
-        <div className="navbar bg-base-100 bg-opacity-75 max-w-screen-2xl px-4 py-2 rounded-2xl">
-            <div className="navbar-start flex items-center space-x-4">
-                <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h8m-8 6h16" />
-                        </svg>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 2</a></li>
-                        <li><a>Item z</a></li>
-                    </ul>
-                </div>       
-                <img src="./logoCoalBlanco.png" alt="Logo" className="h-10 w-auto" />
-                <a className="ml-2 text-2xl font-bold text-white" target="blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Coal</a>
-                <ul className="flex space-x-4">
-                    <li><a className="btn btn-ghost text-sm">Tienda</a></li>
-                    <li><a className="btn btn-ghost text-sm">Servicios</a></li>
-                    <li><a className="btn btn-ghost text-sm">Contacto</a></li>
-                </ul>
-            </div>
+        <div>
+            <nav class="navbar justify-between bg-base-300 h-24 top-0 left-0 w-full z-50">
+                <Link to="/" class="btn btn-ghost text-4xl">
+                    <img alt="Logo" src="./logoCoalBlanco.png" class="w-14" />
+                    Coal
+                </Link>
 
-            <div className="navbar-end">
-                <a className="btn btn-primary text-extra rounded-xl w-40">Iniciar Sesion</a>
-            </div>
+                <div class="dropdown dropdown-end sm:hidden  ">
+                    <button class="btn btn-ghost">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+
+                    <ul tabindex="0" class="dropdown-content menu z-[1] bg-base-200 p-4 rounded-box shadow w-64 gap-2">
+                        <li><a>Tienda</a></li>
+                        <li><a>Team</a></li>
+                        <li>
+                            <h2 class="menu-title">Features</h2>
+                            <ul>
+                                <li><a>Tech tools</a></li>
+                                <li><a>Podcast</a></li>
+                                <li><a>Community</a></li>
+                            </ul>
+                        </li>
+                        
+                        <a class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-rocket"></i>
+                            Access
+                        </a>
+                        <a class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-rocket"></i>
+                            Access
+                        </a>
+                    </ul>
+                </div>
+
+                <div class="hidden sm:flex gap-2 justify-center items-center flex-grow">
+                    <Link to="/Store" class="btn btn-ghost btn-sm">
+                        <i class="fa-solid fa-store"></i>
+                        Tienda
+                    </Link>
+
+                    <a class="btn btn-ghost btn-sm">
+                        <i class="fa-solid fa-users text-secondary"></i>
+                        Team
+                    </a>
+
+                    <div class="dropdown dropdown-end">
+                        <button class="btn btn-ghost btn-sm">
+                            <i class="fa-solid fa-fire text-secondary"></i>
+                            Features
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <ul tabindex="0" class="dropdown-content menu z-[1] bg-base-200 p-6 rounded-box shadow w-56 gap-2">
+                            <li><a>Tech tools</a></li>
+                            <li><a>Podcast</a></li>
+                            <li><a>Community</a></li>
+                        </ul>
+                    </div>
+
+                    <BuscardorNavbar />
+
+
+                </div>
+                <div className='flex items-center gap-2'>
+                    <Link to="/Register" class="btn btn-primary btn-md">
+                        <i class="fa-solid fa-rocket"></i>
+                        Registrarse
+                    </Link >
+
+                    <Link to="/Login" class="btn btn-primary btn-md">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Iniciar Sesión
+                    </Link >
+                </div>
+            </nav>
         </div>
     )
 }

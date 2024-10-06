@@ -4,6 +4,7 @@ import Check from "../Register/Check";
 import BotonLogin from "./BotonLogin";
 import DivLogin from "../Register/DivLogin";
 import BotonesLinksLogin from "./BotonesLinksLogin";
+import { Link } from "react-router-dom";
 
 const ContainerLogin = () =>{
 
@@ -24,7 +25,7 @@ const ContainerLogin = () =>{
                 <div className="flex justify-center  mt-5 "><a target="_blank" href="https://youtu.be/2qvAxPqy2wA" style={{color:"#1E90FF"}}>¿Olvidaste tu Contraseña?</a></div>
                 <div className=""><DivLogin /></div>
                 <BotonesLinksLogin />
-                <div className="flex justify-center mt-5 mb-5 "><a>¿No tienes cuenta? <a target="_blank" href="https://youtu.be/2qvAxPqy2wA" style={{color:"#1E90FF"}}>Registrate</a></a></div>
+                <div className="flex justify-center mt-5 mb-5 "><a>¿No tienes cuenta? <Link to="/Register" style={{color:"#1E90FF"}}>Registrate</Link></a></div>
             </div>
         </div>
         </>

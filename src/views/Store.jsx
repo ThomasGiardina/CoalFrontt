@@ -37,9 +37,9 @@ function Store() {
 
   return (
     <> 
-      <Storenavbar />
+
       <Carrousel />
-      <div className="flex ml-28 space-x-10 items-start max-w-7xl">
+      <div className="flex ml-28 space-x-10 items-start max-w-7xl mb-20">
         <Gamefilter />
         <GameCard game={gameData1} />
         <GameCard game={gameData2} />

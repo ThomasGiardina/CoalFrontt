@@ -4,7 +4,8 @@ import Check from "./Check";
 import BotonRegister from "./BotonRegister";
 import DivLogin from "./DivLogin";
 import BotonesLinksRegister from "./BotonesLinksRegister";
-import BotonRegister from "./BotonRegister";
+import { Link } from "react-router-dom";
+
 
 
 const ContainerRegister = () => {
@@ -25,7 +26,7 @@ const ContainerRegister = () => {
                 <BotonRegister className="my-5"/>
                 <div className="mt-3"><DivLogin /></div>
                 <BotonesLinksRegister />
-                <div className="flex justify-center mt-5"><a>¿Ya tienes cuenta? <a target="_blank" href="https://youtu.be/2qvAxPqy2wA" style={{color:"#1E90FF"}}>Iniciar sesión</a></a></div>
+                <div className="flex justify-center mt-5"><a>¿Ya tienes cuenta? <Link to="/Login" style={{color:"#1E90FF"}}>Iniciar sesión</Link></a></div>
             </div>
         </div>
         </>

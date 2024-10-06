@@ -25,7 +25,7 @@ const CarruselLogin = () => {
     };
 
     useEffect(() => {
-        const interval = setInterval(goToNext, 30000); 
+        const interval = setInterval(goToNext, 4000); 
     
         return () => clearInterval(interval); 
       }, []);

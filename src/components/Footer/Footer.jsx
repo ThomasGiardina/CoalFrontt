@@ -1,8 +1,8 @@
-const FooterLogin = () => {
+const Footer = () => {
     return (
 
         <>
-        <footer className="footer bg-base-200 text-base-content p-10">
+        <footer className="footer bg-base-200 text-base-content p-10 ">
             <aside>
                 <div className="flex items-center   ">
                 <img src="/logoCoalBlanco.png" alt="Logo Coal Blanco" width="50" height="50"/>
@@ -29,10 +29,19 @@ const FooterLogin = () => {
                 <a className="link link-hover">Press kit</a>
             </nav>
             <nav>
-                <h6 className="footer-title">Legal</h6>
-                <a className="link link-hover">Terms of use</a>
-                <a className="link link-hover">Privacy policy</a>
-                <a className="link link-hover">Cookie policy</a>
+                <h6 className="footer-title">Contactanos</h6>
+                <div className="flex items-center">
+                    <i class="fa-brands fa-instagram"></i> <a className="ml-2">@Luigi_Aducci</a>
+                </div>
+                <div>
+                    <i class="fa-brands fa-twitter"></i> <a className="ml-1">@Luigi_Aducci</a>
+                </div>
+                <div>
+                    <i class="fa-brands fa-linkedin"></i> <a className="ml-2">LuigiValentino</a> 
+                </div>
+                <div>
+                    <i class="fa-solid fa-envelope"></i> <a className="ml-2">luigiAdu@gmail.com</a> 
+                </div>
             </nav>
             </footer>
         
@@ -42,4 +51,4 @@ const FooterLogin = () => {
 
 }
 
-export default FooterLogin;
+export default Footer;
