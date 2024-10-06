@@ -1,5 +1,7 @@
+import BotonComprarDetails from "./BotonComprarDetails";
 import Calificacion from "./Calificacion";
 import CarruselDetails from "./CarruselDetails";
+import DividerDetails from "./DividerDetails";
 
 const ContainerDetails = () =>{
 
@@ -18,8 +20,11 @@ const ContainerDetails = () =>{
 
     return (
 
-        <div  style={{backgroundColor:"primary"}}>
-            <div className="flex justify-center mt-10 h-max  ">
+        <div >
+            <div className="flex ml-[300px] mt-20 "> 
+                    <p className="text-4xl font-sans">Dead Cells</p>
+            </div>
+            <div className="flex justify-center mt-5 h-max  ">
                 <CarruselDetails />
                 <div className="ml-10 w-[500px]">
                     <img img src="/deadcellsPortada.jpg" alt="Imagen de Juego" width="500" height="200" ></img>
@@ -54,11 +59,25 @@ const ContainerDetails = () =>{
                             ))}
                         </div>
                     </div>
-                    
-                    
+
+                    <div className="flex mt-5 justify-center">
+                        <div className="mr-3 mb-3">
+                            <BotonComprarDetails />
+                        </div>
+                    </div>    
                 </div>
             </div>
-
+            <div className="flex justify-center ">
+                <div className=" mt-10 w-[1303px] rounded-md" style={{backgroundColor:"#465870"}}>
+                    <p className=" bg-[#465870] text-left py-2 ml-5 mt-3 text-3xl">Comprar "Dead Cells"</p>
+                    <div className="flex justify-end mr-3 mb-3">
+                        <BotonComprarDetails />
+                    </div>
+                </div>
+            </div>
+            <div className="flex justify-center ">
+                <DividerDetails />
+            </div>
 
         </div>
     )

@@ -3,7 +3,7 @@ const CarruselDetails = () => {
     return (
 
         <>
-            <div className="carousel w-[40%] h-[600px] ">
+            <div className="carousel w-[40%] h-[620px] ">
                 <div id="slide1" className="carousel-item relative w-full">
                     <img
                     src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
