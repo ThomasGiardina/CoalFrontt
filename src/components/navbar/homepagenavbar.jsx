@@ -45,10 +45,10 @@ const Homenavbar = () => {
                         Tienda
                     </Link>
 
-                    <a class="btn btn-ghost btn-sm">
+                    <Link to="/Details" class="btn btn-ghost btn-sm">
                         <i class="fa-solid fa-users text-secondary"></i>
                         Team
-                    </a>
+                    </Link>
 
                     <div class="dropdown dropdown-end">
                         <button class="btn btn-ghost btn-sm">

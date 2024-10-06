@@ -2,7 +2,7 @@ const Footer = () => {
     return (
 
         <>
-        <footer className="footer bg-base-200 text-base-content p-10 ">
+        <footer className="footer bg-base-200 text-base-content p-10 mt-20 ">
             <aside>
                 <div className="flex items-center   ">
                 <img src="/logoCoalBlanco.png" alt="Logo Coal Blanco" width="50" height="50"/>
@@ -52,3 +52,5 @@ const Footer = () => {
 }
 
 export default Footer;
+
+

@@ -7,6 +7,7 @@ import Register from './Register';
 import Store from './Store'; 
 import Footer from '../components/Footer/Footer';
 import Homepage from './Homepage';
+import Details from './Details';
 
 function App() {
 
@@ -18,9 +19,9 @@ function App() {
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Store" element={<Store />} />
+                <Route path="/Details" element={<Details />} />
             </Routes>
             <Footer />
-            <a className='boton'>tuto es gay</a>
         </Router>
     )
 }
