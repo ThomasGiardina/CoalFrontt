@@ -1,7 +1,10 @@
+import AcercaDe from "./AcercaDe";
 import BotonComprarDetails from "./BotonComprarDetails";
 import Calificacion from "./Calificacion";
 import CarruselDetails from "./CarruselDetails";
 import DividerDetails from "./DividerDetails";
+import MasDe from "./MasDe";
+import MasRecomendaciones from "./MasRecomendaciones";
 
 const ContainerDetails = () =>{
 
@@ -67,17 +70,40 @@ const ContainerDetails = () =>{
                     </div>    
                 </div>
             </div>
-            <div className="flex justify-center ">
-                <div className=" mt-10 w-[1303px] rounded-md" style={{backgroundColor:"#465870"}}>
-                    <p className=" bg-[#465870] text-left py-2 ml-5 mt-3 text-3xl">Comprar "Dead Cells"</p>
-                    <div className="flex justify-end mr-3 mb-3">
-                        <BotonComprarDetails />
-                    </div>
-                </div>
-            </div>
-            <div className="flex justify-center ">
+
+            <div className="flex justify-center mt-5 ">
                 <DividerDetails />
             </div>
+
+            <div className="flex justify-center ">
+                <div className=" mt-10 w-[1303px] rounded-md" style={{backgroundColor:"#465870"}}>
+                    <AcercaDe />
+                </div>
+            </div>
+
+            <div className="flex justify-center mt-5 ">
+                <DividerDetails />
+            </div>
+
+            <div className="flex justify-center ">
+                <div className=" mt-10 w-[1303px] rounded-md" style={{backgroundColor:"#465870"}}>
+                    <MasDe />
+                </div>
+            </div>
+
+            <div className="flex justify-center ">
+                <div className=" mt-10 w-[1303px] rounded-md" style={{backgroundColor:"#465870"}}>
+                    <MasRecomendaciones />
+                </div>
+            </div>
+
+            
+            
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
 
         </div>
     )
