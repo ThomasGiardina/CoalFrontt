@@ -55,7 +55,7 @@ const Carrousel = () => {
     return () => clearInterval(interval); 
     }, [currentIndex]); 
     return (
-        <div className="relative w-full  h-[600px] mx-auto mb-10  overflow-hidden bg-gray-900 text-white">
+        <div className="relative w-full  h-[500px] mx-auto mb-10  overflow-hidden bg-gray-900 text-white">
         {slides.map((slide, index) => (
             <div
             key={index}

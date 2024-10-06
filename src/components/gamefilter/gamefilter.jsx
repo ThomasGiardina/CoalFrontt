@@ -1,6 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Gamefilter = ({ filter, setFilter }) => {
+  const categories = [
+    'ACCION',
+    'AVENTURA',
+    'RPG',
+    'SIMULACION',
+    'DEPORTES',
+    'ESTRATEGIA',
+    'PUZZLE',
+    'TERROR',
+    'VR',
+    'EDUCATIVO',
+  ];
+
+  const platforms = ['XBOX', 'PC', 'NINTENDO_SWITCH', 'PLAY_STATION'];
+
   const initialState = {
     ACCION: false,
     AVENTURA: false,
@@ -21,6 +36,13 @@ const Gamefilter = ({ filter, setFilter }) => {
 
   const [filters, setFilters] = useState(initialState);
 
+  // useEffect para filtrar automáticamente al cambiar el estado de los filtros
+  useEffect(() => {
+    if (setFilter) {
+      setFilter(filters); // Verificamos que setFilter exista
+    }
+  }, [filters, setFilter]); // Asegúrate de que setFilter esté correctamente pasado desde el componente padre
+
   const handlePriceChange = (e) => {
     setFilters({ ...filters, price: e.target.value });
   };
@@ -30,101 +52,26 @@ const Gamefilter = ({ filter, setFilter }) => {
   };
 
   return (
-    <div className="bg-secondary bg-opacity-15 p-6 rounded-xl w-5/12 space-y-4">
+    <div className="bg-secondary bg-opacity-15 p-6 rounded-xl w-72 space-y-4">
       {/* Categorías */}
       <div>
         <h2 className="text-white font-bold mb-2">Categorías</h2>
         <ul className="space-y-2">
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.ACCION}
-              onChange={() => setFilters({ ...filters, ACCION: !filters.ACCION })}
-            />
-            <span className="text-gray-300">Acción</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.AVENTURA}
-              onChange={() => setFilters({ ...filters, AVENTURA: !filters.AVENTURA })}
-            />
-            <span className="text-gray-300">Aventura</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.RPG}
-              onChange={() => setFilters({ ...filters, RPG: !filters.RPG })}
-            />
-            <span className="text-gray-300">RPG</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.SIMULACION}
-              onChange={() => setFilters({ ...filters, SIMULACION: !filters.SIMULACION })}
-            />
-            <span className="text-gray-300">Simulación</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.DEPORTES}
-              onChange={() => setFilters({ ...filters, DEPORTES: !filters.DEPORTES })}
-            />
-            <span className="text-gray-300">Deportes</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.ESTRATEGIA}
-              onChange={() => setFilters({ ...filters, ESTRATEGIA: !filters.ESTRATEGIA })}
-            />
-            <span className="text-gray-300">Estrategia</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.PUZZLE}
-              onChange={() => setFilters({ ...filters, PUZZLE: !filters.PUZZLE })}
-            />
-            <span className="text-gray-300">Puzzle</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.TERROR}
-              onChange={() => setFilters({ ...filters, TERROR: !filters.TERROR })}
-            />
-            <span className="text-gray-300">Terror</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.VR}
-              onChange={() => setFilters({ ...filters, VR: !filters.VR })}
-            />
-            <span className="text-gray-300">VR</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.EDUCATIVO}
-              onChange={() => setFilters({ ...filters, EDUCATIVO: !filters.EDUCATIVO })}
-            />
-            <span className="text-gray-300">Educativo</span>
-          </li>
+          {categories.map((category) => (
+            <li key={category} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary"
+                checked={filters[category]}
+                onChange={() =>
+                  setFilters({ ...filters, [category]: !filters[category] })
+                }
+              />
+              <span className="text-gray-300">
+                {category.charAt(0) + category.slice(1).toLowerCase()}
+              </span>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -132,42 +79,21 @@ const Gamefilter = ({ filter, setFilter }) => {
       <div>
         <h2 className="text-white font-bold mb-2">Plataformas</h2>
         <ul className="space-y-2">
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.XBOX}
-              onChange={() => setFilters({ ...filters, XBOX: !filters.XBOX })}
-            />
-            <span className="text-gray-300">Xbox</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.PC}
-              onChange={() => setFilters({ ...filters, PC: !filters.PC })}
-            />
-            <span className="text-gray-300">PC</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.NINTENDO_SWITCH}
-              onChange={() => setFilters({ ...filters, NINTENDO_SWITCH: !filters.NINTENDO_SWITCH })}
-            />
-            <span className="text-gray-300">Nintendo Switch</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              checked={filters.PLAY_STATION}
-              onChange={() => setFilters({ ...filters, PLAY_STATION: !filters.PLAY_STATION })}
-            />
-            <span className="text-gray-300">PlayStation</span>
-          </li>
+          {platforms.map((platform) => (
+            <li key={platform} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary"
+                checked={filters[platform]}
+                onChange={() =>
+                  setFilters({ ...filters, [platform]: !filters[platform] })
+                }
+              />
+              <span className="text-gray-300">
+                {platform.replace('_', ' ')}
+              </span>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -191,7 +117,7 @@ const Gamefilter = ({ filter, setFilter }) => {
           onClick={resetFilters}
           className="btn btn-outline btn-primary w-full h-12 text-lg rounded-lg"
         >
-          Resetea Filtros
+          Resetear Filtros
         </button>
       </div>
     </div>
@@ -199,4 +125,3 @@ const Gamefilter = ({ filter, setFilter }) => {
 };
 
 export default Gamefilter;
-
