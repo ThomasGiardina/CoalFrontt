@@ -5,6 +5,7 @@ import Carrousel from '../components/Carrousel/Carrousel'
 import GameCard from '../components/Gamecard/gamecard'
 import fifa18 from '../assets/dragonball.jpeg'
 import { useState } from 'react';
+import Pagination from '../components/Pagination/Pagination'
 
 // Simulación de datos de los juegos
 const gamesData = [
@@ -48,35 +49,19 @@ function Store() {
   return (
     <>
       <Carrousel />
-      <div className="flex ml-8 space-x-10 max-w-7xl mb-10">
+      <div className="flex flex-col md:flex-row ml-8 space-y-4 md:space-y-0 md:space-x-10 max-w-7xl mb-10">
         {/* Filtro a la izquierda */}
         <Gamefilter />
         
         {/* Tarjetas de los juegos */}
         <div className="flex-1">
-          <div className="grid grid-cols-4 gap-6">
+          {/* Ajuste del grid para que sea responsive y se adapte al zoom */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {selectedGames.map((game, index) => (
               <GameCard key={index} game={game} />
             ))}
           </div>
-
-          {/* Controles de paginación */}
-          <div className="flex justify-center mt-8 space-x-4">
-            <button 
-              onClick={handlePrevPage} 
-              disabled={currentPage === 1} 
-              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Anterior
-            </button>
-            <button 
-              onClick={handleNextPage} 
-              disabled={startIndex + ITEMS_PER_PAGE >= gamesData.length} 
-              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Siguiente
-            </button>
-          </div>
+            <Pagination/>
         </div>
       </div>
     </>

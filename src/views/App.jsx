@@ -8,6 +8,7 @@ import Store from './Store';
 import Footer from '../components/Footer/Footer';
 import Homepage from './Homepage';
 import Details from './Details';
+import Cart from './Cart';
 
 function App() {
 
