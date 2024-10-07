@@ -21,20 +21,18 @@ const gamesData = [
   { title: "Elden Ring", image: fifa18, likes: 185.2, downloads: 63.6 },
 ];
 
-// Parámetros de paginación
-const ITEMS_PER_PAGE = 16; // 4 filas de 4 juegos
+const ITEMS_PER_PAGE = 16; 
 
 function Store() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Cálculo de los juegos a mostrar en la página actual
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const selectedGames = gamesData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <>
       <Carrousel />
-      <div className="flex flex-col md:flex-row ml-8 space-y-4 md:space-y-0 md:space-x-10 max-w-7xl mb-10">
+      <div className="flex flex-col md:flex-row ml-8 space-y-4 md:space-y-0 md:space-x-20 max-w-[1800px] mb-10">
         <Gamefilter />
         <div className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
