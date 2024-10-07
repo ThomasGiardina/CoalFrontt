@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import homeImage from '../assets/Homepng.png'; // Asegúrate de usar la ruta correcta para la imagen
+import homeImage from '../../assets/Homepng.png'; 
 
-const Homeimg = (Homeimg) => {
+const ImageComponent = () => {
     const [isLoaded, setIsLoaded] = useState(false);
-
-    // Para activar la animación cuando la página carga
     useEffect(() => {
         setTimeout(() => {
             setIsLoaded(true);
-        }, 200); // Un ligero retraso para un efecto más suave
+        }, 200);
     }, []);
 
     return (
@@ -20,8 +18,8 @@ const Homeimg = (Homeimg) => {
                     className="h-[600px] w-[600px] object-contain brightness-[1.5] saturate-[1.2] transition-transform duration-300 ease-in-out"
                     style={{
                         filter: 'drop-shadow(0 -5px 50px rgba(255, 69, 0, 1)) drop-shadow(0 5px 10px rgba(255, 69, 0, 1))',
-                        maskImage: 'linear-gradient(to bottom, black, transparent)', // El gradiente va de arriba a abajo
-                        WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)', // Soporte para Webkit
+                        maskImage: 'linear-gradient(to bottom, black, transparent)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)' 
                     }}
                 />
                 <div className="absolute inset-0 pointer-events-none"></div>
@@ -30,4 +28,4 @@ const Homeimg = (Homeimg) => {
     );
 };
 
-export default Homeimg;
+export default ImageComponent;
