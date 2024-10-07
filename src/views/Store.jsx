@@ -1,13 +1,11 @@
 import './App.css'
 import Gamefilter from '../components/Gamefilter/gamefilter'
-import Storenavbar from '../components/Navbar/storenavbar'
 import Carrousel from '../components/Carrousel/Carrousel'
 import GameCard from '../components/Gamecard/gamecard'
 import fifa18 from '../assets/dragonball.jpeg'
 import { useState } from 'react';
 import Pagination from '../components/Pagination/Pagination'
 
-// Simulación de datos de los juegos
 const gamesData = [
   { title: "Fifa18", image: fifa18, likes: 185.2, downloads: 63.6 },
   { title: "Minecraft", image: fifa18, likes: 185.2, downloads: 63.6 },
@@ -33,29 +31,12 @@ function Store() {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const selectedGames = gamesData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  // Funciones para cambiar de página
-  const handleNextPage = () => {
-    if (startIndex + ITEMS_PER_PAGE < gamesData.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   return (
     <>
       <Carrousel />
       <div className="flex flex-col md:flex-row ml-8 space-y-4 md:space-y-0 md:space-x-10 max-w-7xl mb-10">
-        {/* Filtro a la izquierda */}
         <Gamefilter />
-        
-        {/* Tarjetas de los juegos */}
         <div className="flex-1">
-          {/* Ajuste del grid para que sea responsive y se adapte al zoom */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {selectedGames.map((game, index) => (
               <GameCard key={index} game={game} />
