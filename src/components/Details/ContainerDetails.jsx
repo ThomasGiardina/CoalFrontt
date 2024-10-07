@@ -5,6 +5,7 @@ import CarruselDetails from "./CarruselDetails";
 import DividerDetails from "./DividerDetails";
 import MasDe from "./MasDe";
 import MasRecomendaciones from "./MasRecomendaciones";
+import ModalAgregarCarrito from "./ModalAgregarCarrito";
 
 const ContainerDetails = () =>{
 
@@ -65,7 +66,7 @@ const ContainerDetails = () =>{
 
                     <div className="flex mt-5 justify-center">
                         <div className="mr-3 mb-3">
-                            <BotonComprarDetails />
+                            <ModalAgregarCarrito />
                         </div>
                     </div>    
                 </div>
