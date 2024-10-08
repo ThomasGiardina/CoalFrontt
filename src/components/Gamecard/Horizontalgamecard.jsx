@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Horizontalgamecard = () => {
     return (
         <div >
-            <div className="card bg-base-100 w-60 shadow-xl rounded mr-3">
+            <div className="card bg-base-100 w-60 shadow-xl rounded mr-4 ">
                 <figure>
                     <img
                     src="./deadcellsPortada.jpg"
