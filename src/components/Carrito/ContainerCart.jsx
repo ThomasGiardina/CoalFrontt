@@ -96,7 +96,7 @@ const Cart = () => {
                         <p className="text-2xl font-bold text-orange-500">${totalGamesPrice}</p>
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                        <p className="text-xl font-bold">Costo de Envío ({shipping === 'standard' ? 'Estándar (1-3 días)' : shipping === 'express' ? 'Express (24 horas)' : 'Gratis (3-7 días)'}):</p>
+                        <p className="text-xl font-bold">Costo de Envío {shipping === 'standard' ? 'Estándar (1-3 días)' : shipping === 'express' ? 'Express (24 horas)' : 'Gratis (3-7 días)'}:</p>
                         <p className="text-xl font-bold text-orange-500">${shippingCost}</p>
                     </div>
                     {discount > 0 && (
