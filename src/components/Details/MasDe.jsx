@@ -1,4 +1,4 @@
-import JuegosDesarrolladora from "./JuegosDesarrolladora";
+import GamercardRecomendaciones from "../Gamecard/GamecardRecomendacion";
 
 const MasDe =() =>{
     return (
@@ -12,8 +12,13 @@ const MasDe =() =>{
                 <button className="btn mr-5 w-60" style={{backgroundColor:"#1B2838"}}>Ver Toda La Lista</button>
             </div>
         </div>
-        <div className="mt-5 ml-5 mr-5 mb-5">
-            <JuegosDesarrolladora />
+        <div className="mt-5 ml-5 mr-5 mb-5 flex items-center">
+            <GamercardRecomendaciones />
+            <GamercardRecomendaciones />
+            <GamercardRecomendaciones />
+            <GamercardRecomendaciones />
+            <GamercardRecomendaciones />
+            
         </div>
         
         
