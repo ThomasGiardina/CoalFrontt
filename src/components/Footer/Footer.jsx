@@ -34,7 +34,7 @@ const Footer = () => {
             <aside class="bg-base-300 py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
                 <p class="text-xl flex items-center gap-2">
                     <img alt="Logo" src="./logoCoalBlanco.png" class="w-8" />
-                    <span>Company</span>
+                    <span>Coal</span>
                 </p>
                 <p>Copyright © 2024 - All rights reserved</p>
             </aside>

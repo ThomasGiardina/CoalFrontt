@@ -1,6 +1,5 @@
 import './App.css'
-import Homenavbar from '../components/navbar/Homenavbar';
-import Homehero from '../components/Hero/HomeHero'
+import Storenavbar from '../components/Navbar/Storenavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login'; 
 import Register from './Register';  
@@ -16,7 +15,7 @@ function App() {
     return (
         <Router>
             <ScrollToTop />
-            <Homenavbar />
+            <Storenavbar />
             <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/Login" element={<Login />} />
