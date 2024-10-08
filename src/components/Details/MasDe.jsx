@@ -1,4 +1,4 @@
-import GamercardRecomendaciones from "../Gamecard/GamecardRecomendacion";
+import Horizontalgamecard from "../Gamecard/Horizontalgamecard";
 
 const MasDe =() =>{
     return (
@@ -13,11 +13,11 @@ const MasDe =() =>{
             </div>
         </div>
         <div className="mt-5 ml-5 mr-5 mb-5 flex items-center">
-            <GamercardRecomendaciones />
-            <GamercardRecomendaciones />
-            <GamercardRecomendaciones />
-            <GamercardRecomendaciones />
-            <GamercardRecomendaciones />
+            <Horizontalgamecard />
+            <Horizontalgamecard />
+            <Horizontalgamecard />
+            <Horizontalgamecard />
+            <Horizontalgamecard />
             
         </div>
         

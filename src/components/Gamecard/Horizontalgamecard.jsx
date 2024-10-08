@@ -1,37 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-const Horizontalgamecard = ({ game }) => {
+const Horizontalgamecard = () => {
     return (
-        <div className="relative flex w-full max-w-2xl h-40 bg-gray-900 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group">
-            <div className="w-1/3 h-full">
-                <img className="w-full h-full object-cover" src={game.image} alt={game.title} />
-            </div>
-            <div className="relative w-2/3 p-4 flex flex-col justify-between">
-                <div>
-                    <h3 className="text-lg font-bold text-white">{game.title}</h3>
-                    <p className="text-gray-400 text-sm">{game.platform}</p>
-                </div>
-                <div className="flex items-center justify-between">
-                    <span className="text-white font-bold">${game.price}</span>
+        <div >
+            <div className="card bg-base-100 w-60 shadow-xl rounded mr-3">
+                <figure>
+                    <img
+                    src="./deadcellsPortada.jpg"
+                    alt="Shoes" />
                     <Link
-                        className="text-white text-sm font-bold bg-blue-600 py-2 px-4 rounded hover:bg-blue-700 transition"
+                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                         to="/Details"
                     >
-                        Ver juego
+                        <span className="text-white text-xl font-bold">Ver juego</span>
                     </Link>
+                </figure>
+                <div className=" h-10">
+                    <h2 className="mt-2 mr-2 text-end text-xl">$4.99</h2>
                 </div>
-            </div>
-            <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <Link
-                    className="text-white text-lg font-bold bg-blue-600 py-2 px-4 rounded hover:bg-blue-700 transition"
-                    to="/Details"
-                >
-                    Ver juego
-                </Link>
+            
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default Horizontalgamecard;

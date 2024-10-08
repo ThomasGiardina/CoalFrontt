@@ -2,48 +2,43 @@ const Footer = () => {
     return (
 
         <>
-        <footer className="footer bg-base-200 text-base-content p-10 ">
-            <aside>
-                <div className="flex items-center   ">
-                <img src="/logoCoalBlanco.png" alt="Logo Coal Blanco" width="50" height="50"/>
-                <a className="text-3xl ml-3 font-bold">Coal</a>
-                </div>
-                <p>
-                © 2024 Coal Corporation.
-                <br />
-                Todos los derechos reservados.
+        <footer class="text-base-content ">
+            <div class="footer footer-center p-10 bg-base-200">
+
+                <nav class="grid grid-flow-col gap-6">
+                    <a class="btn btn-ghost btn-sm btn-circle">
+                        <i class="fa-brands fa-github text-2xl"></i>
+                    </a>
+                    <a class="btn btn-ghost btn-sm btn-circle">
+                        <i class="fa-brands fa-twitter text-2xl"></i>
+                    </a>
+                    <a class="btn btn-ghost btn-sm btn-circle">
+                        <i class="fa-brands fa-facebook text-2xl"></i>
+                    </a>
+                    <a class="btn btn-ghost btn-sm btn-circle">
+                        <i class="fa-brands fa-youtube text-2xl"></i>
+                    </a>
+                </nav>
+
+                <nav>
+                    <div class="flex flex-wrap justify-center gap-y-2 gap-x-6 text-lg">
+                        <a class="link link-hover">Contactanos</a>
+                        <a class="link link-hover">Servicios</a>
+                        <a class="link link-hover">Politicas de Privacidad</a>
+                        <a class="link link-hover">Terminos y Condiciones</a>
+                        <a class="link link-hover">Acerca de Nosotros</a>
+                    </div>
+                </nav>
+            </div>
+
+            <aside class="bg-base-300 py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
+                <p class="text-xl flex items-center gap-2">
+                    <img alt="Logo" src="./logoCoalBlanco.png" class="w-8" />
+                    <span>Company</span>
                 </p>
+                <p>Copyright © 2024 - All rights reserved</p>
             </aside>
-            <nav>
-                <h6 className="footer-title">Services</h6>
-                <a className="link link-hover">Branding</a>
-                <a className="link link-hover">Design</a>
-                <a className="link link-hover">Marketing</a>
-                <a className="link link-hover">Advertisement</a>
-            </nav>
-            <nav>
-                <h6 className="footer-title">Company</h6>
-                <a className="link link-hover">About us</a>
-                <a className="link link-hover">Contact</a>
-                <a className="link link-hover">Jobs</a>
-                <a className="link link-hover">Press kit</a>
-            </nav>
-            <nav>
-                <h6 className="footer-title">Contactanos</h6>
-                <div className="flex items-center">
-                    <i class="fa-brands fa-instagram"></i> <a className="ml-2">@Luigi_Aducci</a>
-                </div>
-                <div>
-                    <i class="fa-brands fa-twitter"></i> <a className="ml-1">@Luigi_Aducci</a>
-                </div>
-                <div>
-                    <i class="fa-brands fa-linkedin"></i> <a className="ml-2">LuigiValentino</a> 
-                </div>
-                <div>
-                    <i class="fa-solid fa-envelope"></i> <a className="ml-2">luigiAdu@gmail.com</a> 
-                </div>
-            </nav>
-            </footer>
+</footer>
         
         </>
 
