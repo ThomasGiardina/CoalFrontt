@@ -1,5 +1,4 @@
 import AcercaDe from "./AcercaDe";
-import BotonComprarDetails from "./BotonComprarDetails";
 import Calificacion from "./Calificacion";
 import CarruselDetails from "./CarruselDetails";
 import DividerDetails from "./DividerDetails";
@@ -25,7 +24,7 @@ const ContainerDetails = () =>{
     return (
 
         <div className="flex flex-col  justify-center" >
-            <div className="flex mt-20 w-full justify-between">
+            <div className="flex mt-14 w-full justify-between">
             <div className="flex items-center"> 
                     <p className="text-4xl font-sans">Dead Cells</p>
             </div>

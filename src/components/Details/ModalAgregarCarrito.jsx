@@ -7,7 +7,7 @@ const ModalAgregarCarrito = () => {
             <div className=" join-item w-[120px] h-[48px] border border-black" style={{backgroundColor:"#314254"}}>
                 <p className="text-end text-lg mr-2 mt-3" style={{ color: "#85BB2F" }}>$12.49 USD</p>
             </div>
-            <button className="btn join-item w-[200px] h-[46px] text-#85BB2F" style={{backgroundColor:"#85BB2F"}} onClick={()=>document.getElementById('my_modal_1').showModal()}>Agregar al Carrito</button>
+            <button className="btn join-item w-[200px] h-[46px] text-#85BB2F flex justify-center" style={{backgroundColor:"#85BB2F", color:"#1B2838"}} onClick={()=>document.getElementById('my_modal_1').showModal()}>Agregar al Carrito</button>
         </div>
 
         <dialog id="my_modal_1" className="modal">
