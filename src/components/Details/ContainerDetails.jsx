@@ -24,11 +24,13 @@ const ContainerDetails = () =>{
 
     return (
 
-        <div >
-            <div className="flex ml-[300px] mt-20 "> 
+        <div className="flex flex-col  justify-center" >
+            <div className="flex mt-20 w-full justify-between">
+            <div className="flex items-center"> 
                     <p className="text-4xl font-sans">Dead Cells</p>
             </div>
-            <div className="flex justify-center mt-5 h-max  ">
+            </div>
+            <div className="flex justify-center mt-5 h-max  w-[1300px]" >
                 <CarruselDetails />
                 <div className="ml-10 w-[500px]">
                     <img img src="/deadcellsPortada.jpg" alt="Imagen de Juego" width="500" height="200" ></img>

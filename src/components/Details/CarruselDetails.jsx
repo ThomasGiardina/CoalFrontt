@@ -22,7 +22,7 @@ const CarruselDetails = () => {
         
 
         <>
-            <div className="carousel w-[40%] h-[620px]">
+            <div className="carousel w-[60%] h-[620px]">
                 <div className="carousel-item relative w-full">
                     <img src={slides[currentSlide]} className="w-full" alt="Slide" />
                     <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
