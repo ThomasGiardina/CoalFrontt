@@ -1,4 +1,4 @@
-import './App.css'
+import '../index.css'
 import ContainerLogin from '../components/Login/ContainerLogin'
 
 function App() {

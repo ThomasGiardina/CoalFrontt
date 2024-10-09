@@ -1,5 +1,4 @@
 import ContainerRegister from "../components/Register/ContainerRegister";
-import FooterLogin from "../components/Footer/Footer";
 
 function Register() {
 

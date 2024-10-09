@@ -1,4 +1,4 @@
-import './App.css';
+import '../index.css';
 import Gamefilter from '../components/Gamefilter/gamefilter';
 import Carrousel from '../components/Carrousel/Carrousel';
 import Storegrid from '../components/Grids/StoreGrid';
