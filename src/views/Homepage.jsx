@@ -1,4 +1,4 @@
-import "./app.css";
+import "../index.css";
 import Homehero from "../components/Hero/HomeHero";
 import Homeimg from "../components/Homeimg/Homeimg";
 
