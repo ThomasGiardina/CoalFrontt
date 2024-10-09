@@ -1,5 +1,4 @@
 import './App.css'
-import FooterLogin from '../components/Footer/Footer'
 import ContainerLogin from '../components/Login/ContainerLogin'
 
 function App() {

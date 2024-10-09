@@ -9,6 +9,7 @@ import Homepage from './Homepage';
 import Details from './Details';
 import Cart from './Cart';
 import ScrollToTop from '../components/Scroll/ScrollToTop';
+import Admin from './Admin';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/Store" element={<Store />} />
                 <Route path="/Details" element={<Details />} />
                 <Route path="/Cart" element={<Cart />} />
+                <Route path="/Admin" element={<Admin />} />
             </Routes>
             <Footer />
             
