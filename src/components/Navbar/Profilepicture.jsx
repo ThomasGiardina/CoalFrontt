@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Profilepicture = () => {
     const { logout } = useContext(AuthContext);
@@ -31,7 +31,7 @@ const Profilepicture = () => {
                         <span className="badge">New</span>
                     </a>
                 </li>
-                <li><a>Settings</a></li>
+                <li><Link to="/Settings">Settings</Link></li>
                 <li><a onClick={handleLogout}>Logout</a></li> 
             </ul>
         </div>

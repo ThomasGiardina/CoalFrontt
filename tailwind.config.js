@@ -18,6 +18,7 @@ export default {
           "warning": "#ffc107",  
           "error": "#ef4444",
           "extra": "#f5f2f0",
+          "fondo": "#1B2838",
         },
       },
     ],

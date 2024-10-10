@@ -11,6 +11,7 @@ import Details from './Details';
 import Cart from './Cart';
 import ScrollToTop from '../components/Scroll/ScrollToTop';
 import Admin from './Admin';
+import Settings from './Settings';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/Details" element={<Details />} />
                     <Route path="/Cart" element={<Cart />} />
                     <Route path="/Admin" element={<Admin />} />
+                    <Route path="/Settings" element={<Settings />} />
                 </Routes>
                 <Footer />
             </Router>
