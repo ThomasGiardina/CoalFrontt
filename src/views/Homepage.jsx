@@ -3,6 +3,7 @@ import Homehero from "../components/Hero/HomeHero";
 import Homeimg from "../components/Homeimg/Homeimg";
 import ConsolesSection from "../components/Homeimg/ConsolesSection";
 import FindUsSection from "../components/Homeimg/FindUsSection";
+import WhyCoalSection from "../components/Homeimg/WhyCoalSection";
 
 function Homepage() {
     return (
@@ -16,6 +17,7 @@ function Homepage() {
                 </div>
             </div>
             <ConsolesSection />
+            <WhyCoalSection />
             <FindUsSection />
         </div>
     );
