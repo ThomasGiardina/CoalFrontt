@@ -15,28 +15,31 @@ const BotonLogin = ({ email, password }) => {
                     password: password,
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error('Error al iniciar sesión');
             }
-
+    
             const data = await response.json();
-            console.log('Inicio de sesión exitoso:', data);
-
-            localStorage.setItem('token', data.accessToken);
-
-            const userRole = data.role; 
-
-            if (userRole === "ADMIN") {
-                navigate('/Admin');
+            console.log('Respuesta del backend:', data);
+    
+            if (data.access_token) {
+                localStorage.setItem('token', data.access_token); 
+                console.log('Token almacenado:', data.access_token);
+    
+                if (data.role === 'ADMIN') {
+                    navigate('/admin');
+                } else {
+                    navigate('/store');
+                }
             } else {
-                navigate('/Store');
+                throw new Error('Token no encontrado en la respuesta del servidor');
             }
-
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
         }
     };
+    
 
     return (
         <>
