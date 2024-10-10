@@ -1,4 +1,7 @@
 import React from 'react';
+import sponsor1Image from '../../assets/sponsor1.png';
+import sponsor2Image from '../../assets/sponsor2.png';
+import sponsor3Image from '../../assets/sponsor3.jpg';
 
 const WhyCoalSection = () => {
     const features = [
@@ -21,9 +24,9 @@ const WhyCoalSection = () => {
     ];
 
     const sponsors = [
-        { name: "Sponsor 1", logo: "/assets/sponsor1.png" },
-        { name: "Sponsor 2", logo: "/assets/sponsor2.png" },
-        { name: "Sponsor 3", logo: "/assets/sponsor3.jpg" },
+        { name: "Sponsor 1", logo: sponsor1Image },
+        { name: "Sponsor 2", logo: sponsor2Image },
+        { name: "Sponsor 3", logo: sponsor3Image },
     ];
 
     return (
@@ -41,10 +44,10 @@ const WhyCoalSection = () => {
             </div>
             <div className="w-full mt-10">
                 <h3 className="text-2xl font-bold text-white mb-4">Patrocinadores</h3>
-                <div className="flex flex-wrap justify-center">
+                <div className="w-full flex justify-around mb-20">
                     {sponsors.map((sponsor, index) => (
-                        <div key={index} className="m-4">
-                            <img src={sponsor.logo} alt={sponsor.name} className="h-16" />
+                        <div key={index} className="console-box w-40 h-40">
+                            <img src={sponsor.logo} alt={sponsor.name} className="w-full h-full object-cover rounded-lg transition-transform transform hover:scale-110" />
                         </div>
                     ))}
                 </div>
