@@ -8,20 +8,19 @@ export const AuthProvider = ({ children }) => {
     // iniciar sesión
     const login = (token) => {
         localStorage.setItem('token', token);
-        setIsAuthenticated(true); // Actualizamos el estado de autenticación
+        setIsAuthenticated(true); 
     };
 
     // cerrar sesión
     const logout = () => {
         localStorage.removeItem('token');
-        setIsAuthenticated(false); // Actualizamos el estado de autenticación
+        setIsAuthenticated(false); 
     };
 
     useEffect(() => {
-        // Comprobar si hay un token en localStorage cuando la app se carga
         const token = localStorage.getItem('token');
         if (token) {
-            setIsAuthenticated(true); // Si hay token, el usuario está autenticado
+            setIsAuthenticated(true); 
         }
     }, []);
 
