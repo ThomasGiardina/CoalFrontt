@@ -4,7 +4,7 @@ const categoryOptions = [
     'ACCION', 'AVENTURA', 'RPG', 'SIMULACION', 'DEPORTES', 'ESTRATEGIA', 'PUZZLE', 'TERROR', 'VR', 'EDUCATIVO'
 ];
 
-const AddGameForm = ({ newGame, handleGameChange, addGame, handleCategoryChange }) => {
+const AddGameForm = ({ newGame, handleGameChange, addGame, handleCategoryChange, handleFileChange }) => {
     return (
         <div className="mb-6">
             <input
@@ -58,14 +58,26 @@ const AddGameForm = ({ newGame, handleGameChange, addGame, handleCategoryChange 
                 placeholder="Stock"
                 className="input input-bordered w-full mb-2 bg-gray-700 text-white"
             />
-            <input
-                type="text"
-                name="fotoUrl"
-                value={newGame.fotoUrl}
-                onChange={handleGameChange}
-                placeholder="URL de la Foto"
-                className="input input-bordered w-full mb-2 bg-gray-700 text-white"
-            />
+            <div className="mb-4">
+                <label className="block text-white mb-2" htmlFor="coverPhoto">Foto de Portada</label>
+                <input
+                    type="file"
+                    id="coverPhoto"
+                    name="coverPhoto"
+                    onChange={handleFileChange}
+                    className="w-full p-2 rounded bg-gray-700 text-white"
+                />
+            </div>
+            <div className="mb-4">
+                <label className="block text-white mb-2" htmlFor="carouselPhoto">Foto de Carrusel</label>
+                <input
+                    type="file"
+                    id="carouselPhoto"
+                    name="carouselPhoto"
+                    onChange={handleFileChange}
+                    className="w-full p-2 rounded bg-gray-700 text-white"
+                />
+            </div>
             <button onClick={addGame} className="btn btn-success">Agregar Videojuego</button>
         </div>
     );
