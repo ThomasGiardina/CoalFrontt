@@ -20,6 +20,12 @@ const WhyCoalSection = () => {
         },
     ];
 
+    const sponsors = [
+        { name: "Sponsor 1", logo: "/assets/sponsor1.png" },
+        { name: "Sponsor 2", logo: "/assets/sponsor2.png" },
+        { name: "Sponsor 3", logo: "/assets/sponsor3.jpg" },
+    ];
+
     return (
         <div className="w-full flex flex-col items-center bg-gray-800 p-6 rounded-lg mt-20">
             <h2 className="text-3xl font-bold text-white mb-6">¿Por qué Coal?</h2>
@@ -32,6 +38,16 @@ const WhyCoalSection = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className="w-full mt-10">
+                <h3 className="text-2xl font-bold text-white mb-4">Patrocinadores</h3>
+                <div className="flex flex-wrap justify-center">
+                    {sponsors.map((sponsor, index) => (
+                        <div key={index} className="m-4">
+                            <img src={sponsor.logo} alt={sponsor.name} className="h-16" />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

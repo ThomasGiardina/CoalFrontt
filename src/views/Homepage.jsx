@@ -17,8 +17,8 @@ function Homepage() {
                 </div>
             </div>
             <ConsolesSection />
-            <WhyCoalSection />
             <FindUsSection />
+            <WhyCoalSection />
         </div>
     );
 }
