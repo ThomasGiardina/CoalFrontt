@@ -1,4 +1,5 @@
 import '../index.css'
+import { AuthProvider } from '../context/AuthContext';
 import Storenavbar from '../components/Navbar/Storenavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login'; 
@@ -14,22 +15,22 @@ import Admin from './Admin';
 function App() {
 
     return (
-        <Router>
-            <ScrollToTop />
-            <Storenavbar />
-            <Routes>
-                <Route path="/" element={<Homepage />} />
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/Store" element={<Store />} />
-                <Route path="/Details" element={<Details />} />
-                <Route path="/Cart" element={<Cart />} />
-                <Route path="/Admin" element={<Admin />} />
-            </Routes>
-            <Footer />
-            
-            
-        </Router>
+        <AuthProvider>
+            <Router>
+                <ScrollToTop />
+                <Storenavbar />
+                <Routes>
+                    <Route path="/" element={<Homepage />} />
+                    <Route path="/Login" element={<Login />} />
+                    <Route path="/Register" element={<Register />} />
+                    <Route path="/Store" element={<Store />} />
+                    <Route path="/Details" element={<Details />} />
+                    <Route path="/Cart" element={<Cart />} />
+                    <Route path="/Admin" element={<Admin />} />
+                </Routes>
+                <Footer />
+            </Router>
+        </AuthProvider>
     )
 }
 
