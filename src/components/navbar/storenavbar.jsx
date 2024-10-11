@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Profilepicture from './Profilepicture';
+import Profilepicture from './Profilepicture.jsx';
 import { AuthContext } from '../../context/AuthContext.jsx';
 
-const Homenavbar = () => {
+const StoreNavbar = () => {
     const { isAuthenticated } = useContext(AuthContext);
     const [showSearchBar, setShowSearchBar] = useState(false);
     const searchBarRef = useRef(null);
@@ -117,4 +117,4 @@ const Homenavbar = () => {
     );
 };
 
-export default Homenavbar;
+export default StoreNavbar;

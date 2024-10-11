@@ -1,6 +1,6 @@
 import '../index.css'
 import { AuthProvider } from '../context/AuthContext';
-import Storenavbar from '../components/Navbar/Storenavbar';
+import StoreNavbar from '../components/navbar/storenavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login'; 
 import Register from './Register';  
@@ -12,6 +12,7 @@ import Cart from './Cart';
 import ScrollToTop from '../components/Scroll/ScrollToTop';
 import Admin from './Admin';
 import Settings from './Settings';
+import Statistics from './Statistics';
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
         <AuthProvider>
             <Router>
                 <ScrollToTop />
-                <Storenavbar />
+                <StoreNavbar />
                 <Routes>
                     <Route path="/" element={<Homepage />} />
                     <Route path="/Login" element={<Login />} />
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/Cart" element={<Cart />} />
                     <Route path="/Admin" element={<Admin />} />
                     <Route path="/Settings" element={<Settings />} />
+                    <Route path="/Statistics" element={<Statistics />} />
                 </Routes>
                 <Footer />
             </Router>
