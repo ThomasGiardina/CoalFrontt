@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const BotonRegister = ({ formData }) => {
@@ -14,11 +15,27 @@ const BotonRegister = ({ formData }) => {
                     email: formData.email,
                     username: formData.username,
                     password: formData.password,
+                    firstname: formData.firstname,
+                    lastname: formData.lastname,
                 }),
             });
 
             if (!response.ok) {
-                throw new Error('Error al crear cuenta');
+                const errorData = await response.json();
+                if (errorData.message === 'email_already_exists' || errorData.message === 'username_already_exists') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'El correo electrónico o el nombre de usuario ya están en uso. Por favor, intenta con otros datos.',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error al crear cuenta. Por favor, intenta nuevamente.',
+                    });
+                }
+                return;  
             }
 
             const data = await response.json();
@@ -27,6 +44,11 @@ const BotonRegister = ({ formData }) => {
             navigate('/Store');
         } catch (error) {
             console.error('Error al crear cuenta:', error.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error al crear cuenta. Por favor, intenta nuevamente.',
+            });
         }
     };
 

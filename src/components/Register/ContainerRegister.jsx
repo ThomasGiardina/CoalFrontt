@@ -8,7 +8,13 @@ import BotonesLinksRegister from "./BotonesLinksRegister";
 import { Link } from "react-router-dom";
 
 const ContainerRegister = () => {
-    const [formData, setFormData] = useState({ email: '', username: '', password: '' });
+    const [formData, setFormData] = useState({ 
+        email: '', 
+        username: '', 
+        password: '', 
+        firstname: '',  
+        lastname: ''   
+    });
 
     return (
         <>
@@ -18,7 +24,7 @@ const ContainerRegister = () => {
                 </div>
                 <div className="flex flex-col my-20">
                     <a className="text-6xl mb-10">Crear Cuenta</a>
-                    <InputsRegister setFormData={setFormData} />
+                    <InputsRegister setFormData={setFormData} formData={formData} /> 
                     <div className="mt-5 flex items-center">
                         <Check />
                         <a className="ml-3">Acepto los Terminos y Condiciones</a>
