@@ -13,6 +13,7 @@ import ScrollToTop from '../components/Scroll/ScrollToTop';
 import Admin from './Admin';
 import Settings from './Settings';
 import Statistics from './Statistics';
+import GamesAdmin from './GamesAdmin';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/Admin" element={<Admin />} />
                     <Route path="/Settings" element={<Settings />} />
                     <Route path="/Statistics" element={<Statistics />} />
+                    <Route path="/GamesAdmin" element={<GamesAdmin />} />
                 </Routes>
                 <Footer />
             </Router>
