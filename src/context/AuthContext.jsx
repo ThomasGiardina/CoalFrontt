@@ -4,28 +4,33 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [role, setRole] = useState(null);
 
-    // iniciar sesión
-    const login = (token) => {
+    const login = (token, userRole) => {
         localStorage.setItem('token', token);
-        setIsAuthenticated(true); 
+        localStorage.setItem('role', userRole); 
+        setIsAuthenticated(true);
+        setRole(userRole); 
     };
 
-    // cerrar sesión
     const logout = () => {
         localStorage.removeItem('token');
-        setIsAuthenticated(false); 
+        localStorage.removeItem('role');
+        setIsAuthenticated(false);
+        setRole(null);
     };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (token) {
-            setIsAuthenticated(true); 
+        const savedRole = localStorage.getItem('role'); 
+        if (token && savedRole) {
+            setIsAuthenticated(true);
+            setRole(savedRole); 
         }
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, role, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext'; // Importa el contexto de autenticación
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redireccionar
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext'; 
 
 const BotonLogin = ({ email, password }) => {
-    const { login } = useContext(AuthContext); // Usa el método login del contexto
-    const navigate = useNavigate(); // Inicializa useNavigate para redirigir
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const handleLogin = async () => {
         try {
@@ -13,10 +13,7 @@ const BotonLogin = ({ email, password }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
+                body: JSON.stringify({ email, password }),
             });
 
             if (!response.ok) {
@@ -24,22 +21,16 @@ const BotonLogin = ({ email, password }) => {
             }
 
             const data = await response.json();
-            console.log('Inicio de sesión exitoso:', data); // <-- Agrega este console.log para verificar la respuesta
+            console.log('Inicio de sesión exitoso:', data);
 
-            // Llamar al login del AuthContext para actualizar el estado global
-            login(data.access_token);
+            login(data.accessToken, data.role);
 
-            // Verifica si el campo `role` es correcto
-            console.log('Role del usuario:', data.role); // <-- Verificar el rol recibido
-
-            // Redirigir según el rol del usuario
             if (data.role === 'ADMIN') {
-                navigate('/Admin'); // Redirigir a /Admin si el rol es ADMIN
-            } else if (data.role === 'USER') {
-                navigate('/Store'); // Redirigir a /Store si el rol es USER
+                navigate('/AdminGames');
             } else {
-                console.error('Rol no reconocido:', data.role); // <-- Mensaje de error si el rol no es correcto
+                navigate('/Store');
             }
+
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
         }
@@ -50,6 +41,6 @@ const BotonLogin = ({ email, password }) => {
             Iniciar Sesión
         </button>
     );
-}
+};
 
 export default BotonLogin;

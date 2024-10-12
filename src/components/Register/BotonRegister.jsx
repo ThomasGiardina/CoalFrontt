@@ -26,36 +26,71 @@ const BotonRegister = ({ formData }) => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'El correo electrónico o el nombre de usuario ya están en uso. Por favor, intenta con otros datos.',
+                        text: 'El username o email ya está en uso.',
+                        background: '#2B2738', 
+                        color: '#fff', 
+                        confirmButtonColor: '#FF5722', 
+                        buttonsStyling: false, 
+                        customClass: {
+                            confirmButton: 'btn btn-primary', 
+                        },
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Error al crear cuenta. Por favor, intenta nuevamente.',
+                        text: 'Error al crear la cuenta. Por favor, intenta nuevamente.',
+                        background: '#2B2738',
+                        color: '#fff',
+                        confirmButtonColor: '#FF5722',
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'btn btn-primary',
+                        },
                     });
                 }
-                return;  
+                return;
             }
 
             const data = await response.json();
             console.log('Cuenta creada exitosamente:', data);
 
-            navigate('/Store');
+            Swal.fire({
+                icon: 'success',
+                title: '¡Cuenta creada!',
+                text: 'Tu cuenta ha sido creada exitosamente. Serás redirigido al incio de sesion.',
+                background: '#2B2738',
+                color: '#fff',
+                confirmButtonColor: '#FF5722',
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                },
+            }).then(() => {
+                navigate('/Login');
+            });
+
         } catch (error) {
             console.error('Error al crear cuenta:', error.message);
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Error al crear cuenta. Por favor, intenta nuevamente.',
+                text: 'Error al crear la cuenta. Por favor, intenta nuevamente.',
+                background: '#2B2738',
+                color: '#fff',
+                confirmButtonColor: '#FF5722',
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                },
             });
         }
     };
 
     return (
-        <>
-            <button onClick={handleRegister} className="btn btn-active btn-primary mt-5">Crear Cuenta</button>
-        </>
+        <button onClick={handleRegister} className="btn btn-active btn-primary mt-5">
+            Crear Cuenta
+        </button>
     );
 };
 
