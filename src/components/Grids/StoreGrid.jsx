@@ -5,12 +5,11 @@ import Pagination from '../Pagination/Pagination';
 const ITEMS_PER_PAGE = 15;
 
 const Storegrid = () => {
-    const [games, setGames] = useState([]);  // Inicialización como array vacío
-    const [currentPage, setCurrentPage] = useState(1);  // Página actual
-    const [loading, setLoading] = useState(true);  // Estado de carga
-    const [error, setError] = useState(null);  // Estado de error para manejar posibles problemas
+    const [games, setGames] = useState([]);  
+    const [currentPage, setCurrentPage] = useState(1);  
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(null);  
 
-    // Obtener los videojuegos desde el backend
     useEffect(() => {
         setLoading(true);
         fetch("http://localhost:4002/videojuegos")
@@ -22,7 +21,7 @@ const Storegrid = () => {
             })
             .then((data) => {
                 if (Array.isArray(data)) {
-                    setGames(data);  // Asegurarse de que sea un array
+                    setGames(data);  
                 } else {
                     throw new Error("Los datos no son un array");
                 }
@@ -35,14 +34,11 @@ const Storegrid = () => {
             });
     }, []);
 
-    // Calcular el número total de páginas
     const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
 
-    // Obtener los juegos de la página actual
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const selectedGames = games.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-    // Cambiar de página
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             setCurrentPage(newPage);
@@ -52,9 +48,9 @@ const Storegrid = () => {
     return (
         <>
             {loading ? (
-                <p>Loading games...</p>  // Estado de carga
+                <p>Loading games...</p>  
             ) : error ? (
-                <p>Error: {error}</p>  // Mostrar un mensaje de error
+                <p>Error: {error}</p>  
             ) : (
                 <div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -75,7 +71,7 @@ const Storegrid = () => {
                     <Pagination 
                         currentPage={currentPage} 
                         totalPages={totalPages} 
-                        onPageChange={handlePageChange}  // Maneja el cambio de página
+                        onPageChange={handlePageChange}  
                     />
                 </div>
             )}
