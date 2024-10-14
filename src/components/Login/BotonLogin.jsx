@@ -15,22 +15,28 @@ const BotonLogin = ({ email, password }) => {
                 },
                 body: JSON.stringify({ email, password }),
             });
-
+    
             if (!response.ok) {
                 throw new Error('Error al iniciar sesión');
             }
-
+    
             const data = await response.json();
             console.log('Inicio de sesión exitoso:', data);
-
-            login(data.accessToken, data.role);
-
+    
+            // Cambia a data.access_token en lugar de data.accessToken
+            console.log('AccessToken:', data.access_token);  
+            console.log('Role:', data.role);
+    
+            // Guardar el token y rol en localStorage a través del login
+            login(data.access_token, data.role);
+    
+            // Redireccionar basado en el rol del usuario
             if (data.role === 'ADMIN') {
                 navigate('/AdminGames');
             } else {
                 navigate('/Store');
             }
-
+    
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
         }

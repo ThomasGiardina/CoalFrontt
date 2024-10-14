@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import GameCardStock from "../Gamecard/GamecardStock";
 import Pagination from "../Pagination/Pagination";
-import AddGameButton from "./AddGame"
+import AddGameButton from "./AddGame";
 
-const ITEMS_PER_PAGE = 8;  
+const ITEMS_PER_PAGE = 8;
 
 const StockContainer = () => {
     const [games, setGames] = useState([]);
@@ -12,6 +12,10 @@ const StockContainer = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        fetchGames();
+    }, []);
+
+    const fetchGames = () => {
         setLoading(true);
         fetch("http://localhost:4002/videojuegos")  
             .then((response) => {
@@ -33,7 +37,11 @@ const StockContainer = () => {
                 setError(error.message);
                 setLoading(false);
             });
-    }, []);
+    };
+
+    const addGame = (newGame) => {
+        setGames((prevGames) => [newGame, ...prevGames]);
+    };
 
     const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
 
@@ -56,7 +64,7 @@ const StockContainer = () => {
                         placeholder="Buscar juegos..."
                         className="px-4 py-2 border border-gray-300 rounded-lg"
                     />
-                    <AddGameButton/>
+                    <AddGameButton addGame={addGame} /> 
                 </div>
             </div>
             {loading ? (

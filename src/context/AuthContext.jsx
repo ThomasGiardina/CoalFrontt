@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', token);
         localStorage.setItem('role', userRole); 
         setIsAuthenticated(true);
-        setRole(userRole); 
+        setRole(userRole);
     };
 
     const logout = () => {

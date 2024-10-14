@@ -1,8 +1,11 @@
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';  // Importar useContext
+import { AuthContext } from '../../context/AuthContext';  // Importar el contexto de autenticación
 
 const BotonRegister = ({ formData }) => {
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);  // Obtener la función de login desde el contexto
 
     const handleRegister = async () => {
         try {
@@ -55,10 +58,13 @@ const BotonRegister = ({ formData }) => {
             const data = await response.json();
             console.log('Cuenta creada exitosamente:', data);
 
+            // Guardar el token en localStorage
+            login(data.access_token, data.role);  // Llamamos a la función login para guardar el token y el rol
+
             Swal.fire({
                 icon: 'success',
                 title: '¡Cuenta creada!',
-                text: 'Tu cuenta ha sido creada exitosamente. Serás redirigido al incio de sesion.',
+                text: 'Tu cuenta ha sido creada exitosamente. Serás redirigido a la página principal.',
                 background: '#2B2738',
                 color: '#fff',
                 confirmButtonColor: '#FF5722',
@@ -67,7 +73,12 @@ const BotonRegister = ({ formData }) => {
                     confirmButton: 'btn btn-primary',
                 },
             }).then(() => {
-                navigate('/Login');
+                // Navegar a la página adecuada, quizás una página principal o área protegida
+                if (data.role === 'ADMIN') {
+                    navigate('/GamesAdmin');
+                } else {
+                    navigate('/Store');
+                }
             });
 
         } catch (error) {
