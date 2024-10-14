@@ -1,4 +1,4 @@
-import '../index.css'
+import '../index.css';
 import { AuthProvider } from '../context/AuthContext';
 import StoreNavbar from '../components/navbar/storenavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -14,6 +14,7 @@ import Admin from './Admin';
 import Settings from './Settings';
 import Statistics from './Statistics';
 import GamesAdmin from './GamesAdmin';
+import About from './About'; 
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/Settings" element={<Settings />} />
                     <Route path="/Statistics" element={<Statistics />} />
                     <Route path="/GamesAdmin" element={<GamesAdmin />} />
+                    <Route path="/About" element={<About />} />
                 </Routes>
                 <Footer />
             </Router>
@@ -40,5 +42,4 @@ function App() {
     )
 }
 
-export default App
-
+export default App;
