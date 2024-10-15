@@ -20,6 +20,7 @@ const BotonRegister = ({ formData }) => {
                     password: formData.password,
                     firstname: formData.firstname,
                     lastname: formData.lastname,
+                    imagenPerfil: "defaultUser.jpg",
                 }),
             });
 
