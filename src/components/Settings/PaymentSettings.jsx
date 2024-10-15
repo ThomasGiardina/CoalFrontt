@@ -75,7 +75,7 @@ const PaymentSettings = () => {
 
     return (
         <>
-            <div className="h-[800px] w-[650px] rounded-xl flex flex-col" style={{ backgroundColor: "#2c3e50" }}>
+            <div className="h-[800px] w-[650px] rounded-xl flex flex-col bg-neutral">
                 <h1 className="flex items-start ml-5 mt-5 text-3xl text-white">Métodos de Pago</h1>
                 <p className="flex items-start ml-5 mt-5 text-white">Aquí puedes agregar y cambiar tus métodos de pago</p>
                 
@@ -96,7 +96,7 @@ const PaymentSettings = () => {
                 
                 <div className="flex justify-end mt-5  mr-5">
                     <button 
-                        className="btn w-[200px] bg-black text-white rounded-md p-2"
+                        className="btn btn-primary w-[200px] text-white rounded-md p-2"
                         onClick={() => setModalOpen(true)}
                     >
                         Agregar Método

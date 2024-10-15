@@ -43,7 +43,7 @@ const TopProducts = () => {
     const limitedProducts = products.slice(0, 5);
 
     return (
-        <div className="rounded-lg shadow-lg p-6 max-w-md" style={{ backgroundColor: '#2D3A50' }}>
+        <div className="rounded-lg shadow-lg p-6 max-w-md bg-neutral">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Top products</h2>
             </div>

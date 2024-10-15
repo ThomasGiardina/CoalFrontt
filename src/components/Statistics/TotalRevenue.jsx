@@ -51,7 +51,7 @@ const TotalRevenue = () => {
   };
 
   return (
-    <div className="rounded-lg shadow-lg p-6" style={{ backgroundColor: '#2D3A50' }}>
+    <div className="rounded-lg shadow-lg p-6 bg-neutral">
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-2xl font-bold">$17,086.92</h2>

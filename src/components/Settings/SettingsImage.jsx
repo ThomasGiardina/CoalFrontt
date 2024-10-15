@@ -67,7 +67,7 @@ const SettingsImage = () => {
     };
 
     return (
-        <div className="relative h-[200px] w-[650px] rounded-xl flex flex-col items-center justify-center" style={{ backgroundColor: "#2c3e50" }}>
+        <div className="relative h-[200px] w-[650px] rounded-xl flex flex-col items-center justify-center bg-neutral">
             <div className="relative">
                 <img
                     alt="Logo"

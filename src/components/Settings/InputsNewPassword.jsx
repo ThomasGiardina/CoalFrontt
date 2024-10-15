@@ -63,7 +63,7 @@ const InputsNewPassword = ({ onPasswordChange, resetInputs }) => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit" className="btn w-full bg-black text-white rounded-md p-2 mt-5">
+                <button type="submit" className="btn w-full btn-primary text-white rounded-md p-2 mt-5">
                     Guardar Cambios
                 </button>
             </form>

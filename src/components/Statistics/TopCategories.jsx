@@ -35,7 +35,7 @@ const TopCategories = () => {
     };
 
     return (
-        <div className="rounded-lg shadow-lg p-6 max-w-sm" style={{ backgroundColor: '#2D3A50' }}>
+        <div className="rounded-lg shadow-lg p-6 max-w-sm bg-neutral">
             <h2 className="text-xl font-bold mb-4">Top categorías</h2>
             <div className="relative mb-4 flex justify-center">
                 <Doughnut data={data} options={options} />

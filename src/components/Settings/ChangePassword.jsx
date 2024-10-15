@@ -45,7 +45,7 @@ const ChangePassword = () => {
     };
 
     return (
-        <div className="h-[550px] w-[650px] rounded-xl flex flex-col mt-14" style={{ backgroundColor: '#2c3e50' }}>
+        <div className="h-[550px] w-[650px] rounded-xl flex flex-col mt-14 bg-neutral">
             <h1 className="font-bold text-3xl ml-5 mt-5">Cambiar Contraseña</h1>
             <p className="mt-5 ml-5">Aquí puedes establecer una nueva contraseña</p>
             <InputsNewPassword onPasswordChange={handlePasswordChange} resetInputs={resetInputs} />

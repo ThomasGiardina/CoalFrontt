@@ -11,7 +11,7 @@ const LatestSales = () => {
     ];
 
     return (
-        <div className="p-6 rounded-lg shadow-md" style={{ backgroundColor: '#2D3A50' }}>
+        <div className="p-6 rounded-lg shadow-md bg-neutral">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-white mb-5">Últimas Ventas</h2>
                 <button className="btn">Ver Historial Ventas</button>
