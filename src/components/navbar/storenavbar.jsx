@@ -100,9 +100,11 @@ const StoreNavbar = () => {
                                     >
                                         <div className="card-body">
                                             <span className="text-lg font-bold">8 Items</span> 
-                                            <span className="text-info">Subtotal: $999</span> 
+                                            <span className="text-slate-200">Subtotal: $999</span> 
                                             <div className="card-actions">
-                                                <button className="btn btn-primary btn-block">Ver carrito</button>
+                                                <Link to="/Cart" className="btn btn-primary btn-block text-white">
+                                                    <i>Ver carrito</i>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>

@@ -5,7 +5,7 @@ import Pagination from '../Pagination/Pagination';
 const ITEMS_PER_PAGE = 15;
 
 const Storegrid = () => {
-    const [games, setGames] = useState([]);  
+    const [games, setGames] = useState([]);  // Por defecto un array vacío
     const [currentPage, setCurrentPage] = useState(1);  
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null);  
@@ -34,6 +34,11 @@ const Storegrid = () => {
             });
     }, []);
 
+    // Verifica si los juegos son válidos y que sea un array antes de seguir
+    if (!Array.isArray(games)) {
+        return <p>Error: Los datos obtenidos no son válidos.</p>;
+    }
+
     const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -54,22 +59,28 @@ const Storegrid = () => {
             ) : (
                 <div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                        {selectedGames.map((game) => (
-                            <GameCard 
-                                key={game.id} 
-                                title={game.titulo} 
-                                imageUrl={game.fotoUrl} 
-                                price={game.precio}
-                                platform={game.plataforma}
-                                id={game.id}
-                            />
-                        ))}
+                        {selectedGames.length > 0 ? (
+                            selectedGames.map((game) => (
+                                <GameCard 
+                                    key={game.id} 
+                                    title={game.titulo} 
+                                    imageUrl={game.fotoUrl} 
+                                    price={game.precio}
+                                    platform={game.plataforma}
+                                    id={game.id}
+                                />
+                            ))
+                        ) : (
+                            <p>No hay juegos disponibles.</p>
+                        )}
                     </div>
-                    <Pagination 
-                        currentPage={currentPage} 
-                        totalPages={totalPages} 
-                        onPageChange={handlePageChange}  
-                    />
+                    {selectedGames.length > 0 && (
+                        <Pagination 
+                            currentPage={currentPage} 
+                            totalPages={totalPages} 
+                            onPageChange={handlePageChange}  
+                        />
+                    )}
                 </div>
             )}
         </>
