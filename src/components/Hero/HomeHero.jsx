@@ -1,3 +1,5 @@
+import { Link, useNavigate } from 'react-router-dom';
+
 const Homehero = (Homehero) => {
     return (
         <div className="hero min-h-screen ml-5 max-w-3xl">
@@ -8,8 +10,7 @@ const Homehero = (Homehero) => {
                     Los mejores videojuegos, al mejor precio. Encuentra tus favoritos y descubre nuevas aventuras hoy mismo.
                     </p>
                     <div className="flex flex-row items-center">
-                        <button className="btn btn-primary text-extra h-16 w-48 text-xl">Explorar Tienda</button>
-                        <button className="btn btn-outline btn-primary ml-3 h-16 w-48 text-xl">Default</button>
+                        <Link to="/Store" className="btn btn-primary text-extra h-16 w-48 text-xl">Explorar Tienda</Link>
                     </div>
                 </div>
             </div>
