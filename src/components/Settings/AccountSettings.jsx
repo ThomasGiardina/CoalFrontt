@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Swal from 'sweetalert2';  
 import ButtonSaveChanges from "./ButtonSaveChanges";
 import InputsAccount from "./InputsAccount";
 
@@ -71,12 +72,28 @@ const AccountSettings = () => {
             });
 
             if (response.ok) {
-                alert("Cambios guardados exitosamente");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cambios guardados',
+                    text: 'Los cambios se han guardado exitosamente.',
+                    confirmButtonText: 'Aceptar'
+                });
             } else {
-                alert("Error al guardar los cambios");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al guardar los cambios.',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         } catch (error) {
             console.error("Error al hacer la solicitud:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al hacer la solicitud.',
+                confirmButtonText: 'Aceptar'
+            });
         }
     };
 
