@@ -5,36 +5,34 @@ import InputsAccount from "./InputsAccount";
 const AccountSettings = () => {
     const [formData, setFormData] = useState({
         id: "",
-        username: "",  // Aquí es para el verdadero username
+        username: "",  
         telefono: "",
-        firstName: "",  // Usamos firstName en lugar de nombre
-        lastName: "",  // Usamos lastName en lugar de apellido
-        email: ""  // Aquí es para el email
+        firstName: "",  
+        lastName: "",  
+        email: ""  
     });
 
-    // Cargar los datos del usuario desde el backend al montar el componente
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem("token"); // Obtener el token de localStorage
-                console.log("Token:", token); // Verifica si el token está almacenado
+                const token = localStorage.getItem("token");
+                console.log("Token:", token); 
                 
                 const response = await fetch("http://localhost:4002/api/usuario/actual", {
                     method: "GET",
                     headers: {
-                        "Authorization": `Bearer ${token}`,  // Asegúrate de enviar el token
+                        "Authorization": `Bearer ${token}`,  
                         "Content-Type": "application/json",
                     },
                 });
 
                 if (!response.ok) {
-                    console.error("Error de respuesta:", response.status); // Agregar código de error
+                    console.error("Error de respuesta:", response.status); 
                     throw new Error("Error en la respuesta del servidor");
                 }
 
                 const userData = await response.json();
                 
-                // Asegurarnos de asignar los valores correctos a cada campo
                 setFormData({
                     id: userData.id,              
                     username: userData.username,  
@@ -57,19 +55,19 @@ const AccountSettings = () => {
     };
 
     const handleSubmit = async () => {
-        const token = localStorage.getItem('token');  // Obtener el token de localStorage
+        const token = localStorage.getItem('token'); 
 
         console.log("Token obtenido:", token);
-        console.log("Datos enviados:", formData);  // Verificar el formData que se está enviando
+        console.log("Datos enviados:", formData);  
 
         try {
             const response = await fetch("http://localhost:4002/api/usuario/actualizar", {
                 method: "PUT",
                 headers: {
-                    "Authorization": `Bearer ${token}`,  // Asegúrate de enviar el token
+                    "Authorization": `Bearer ${token}`,  
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(formData)  // Envías los datos del formulario, incluyendo el ID
+                body: JSON.stringify(formData)  
             });
 
             if (response.ok) {

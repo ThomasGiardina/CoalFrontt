@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import ModalPayment from './ModalPayment';
-import Swal from 'sweetalert2';  // Importar SweetAlert2
-import 'sweetalert2/dist/sweetalert2.min.css';  // Asegúrate de importar los estilos de SweetAlert
+import Swal from 'sweetalert2';  
+import 'sweetalert2/dist/sweetalert2.min.css';  
 
 const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
     const { id, nombrePropietario, numeroTarjeta, tipoPago } = metodo;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Enmascarar el número de tarjeta
     const maskCardNumber = (number) => {
         return number ? number.slice(0, -4).replace(/\d/g, "*") + number.slice(-4) : "**** **** **** ****";
     };
 
-    // Guardar cambios del método de pago
     const handleSaveEdits = async (updatedMetodo) => {
         await onUpdateMetodoPago(updatedMetodo);
         setIsModalOpen(false);
@@ -55,11 +53,11 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
                     <div className="flex items-center space-x-4 mb-5">
                         <i
                             className="fa-solid fa-pen text-white cursor-pointer"
-                            onClick={() => setIsModalOpen(true)}  // Abrir el modal para editar
+                            onClick={() => setIsModalOpen(true)}  
                         ></i>
                         <i
                             className="fa-solid fa-trash text-red-500 cursor-pointer"
-                            onClick={handleDelete}  // Eliminar el método de pago
+                            onClick={handleDelete}  
                         ></i>
                     </div>
                 </div>
@@ -70,7 +68,7 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
                     isOpen={isModalOpen}
                     onRequestClose={() => setIsModalOpen(false)}
                     onSave={handleSaveEdits}
-                    initialFormData={metodo}  // Pasar los datos actuales al modal para edición
+                    initialFormData={metodo}  
                 />
             )}
         </div>

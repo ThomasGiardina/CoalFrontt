@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 
 const SettingsImage = () => {
-    const [imageSrc, setImageSrc] = useState("");  // Inicializar sin imagen por defecto
+    const [imageSrc, setImageSrc] = useState("");  
     const [username, setUsername] = useState("");
 
-    // Cargar datos del usuario desde el backend, incluyendo la imagen de perfil
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -22,7 +21,6 @@ const SettingsImage = () => {
                     const data = await response.json();
                     setUsername(data.username);
     
-                    // Aquí es donde tienes que ajustar la imagen
                     if (data.imagenPerfil) {
                         setImageSrc(`http://localhost:4002/api/usuario/imagen/${data.imagenPerfil}`);
                     }
@@ -41,21 +39,20 @@ const SettingsImage = () => {
         const file = event.target.files[0];
         if (file) {
             const formData = new FormData();
-            formData.append('imagen', file);  // Enviamos el archivo en un FormData
+            formData.append('imagen', file); 
     
             try {
-                const token = localStorage.getItem("token");  // Obtener el token de localStorage
+                const token = localStorage.getItem("token");  
                 const response = await fetch("http://localhost:4002/api/usuario/actualizar-imagen", {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${token}`,  // Aseguramos de enviar el token
+                        "Authorization": `Bearer ${token}`,  
                     },
                     body: formData
                 });
-    
-                // Manejo de la respuesta como texto, no como JSON
+
                 const responseText = await response.text();
-                console.log(responseText); // Para ver el mensaje
+                console.log(responseText);
     
                 if (response.ok) {
                     alert("Imagen actualizada correctamente");
@@ -74,7 +71,7 @@ const SettingsImage = () => {
             <div className="relative">
                 <img
                     alt="Logo"
-                    src={imageSrc}  // Mostrar la imagen cargada
+                    src={imageSrc}  
                     className="w-24 h-24 mb-3 rounded-full cursor-pointer"
                     onClick={() => document.getElementById("imageInput").click()}
                 />
@@ -83,7 +80,7 @@ const SettingsImage = () => {
                     onClick={() => document.getElementById("imageInput").click()}
                 ></i>
             </div>
-            <p className="font-bold text-white mt-3">{username}</p>  {/* Mostrar el username */}
+            <p className="font-bold text-white mt-3">{username}</p> 
             <input
                 type="file"
                 id="imageInput"

@@ -19,7 +19,6 @@ const customStyles = {
     },
 };
 
-// Valores iniciales por defecto
 const defaultFormData = {
     nombrePropietario: '',
     numeroTarjeta: '',
@@ -32,33 +31,30 @@ const defaultFormData = {
 const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaultFormData }) => {
     const [formData, setFormData] = useState(defaultFormData);
     const [nameError, setNameError] = useState('');
-    const [addressError, setAddressError] = useState('');  // Para manejar errores de dirección
+    const [addressError, setAddressError] = useState('');  
     const [isEditing, setIsEditing] = useState(false);
     const [dateError, setDateError] = useState('');
 
-    // Función para validar el nombre (máx. 100 caracteres, solo letras)
     const validateName = (name) => {
-        const regex = /^[a-zA-Z\s]{1,100}$/;  // Solo letras y espacios, máx. 100 caracteres
+        const regex = /^[a-zA-Z\s]{1,100}$/;  
         if (!regex.test(name)) {
             return 'El nombre solo debe contener letras y un máximo de 100 caracteres.';
         }
         return '';
     };
 
-    // Función para validar la dirección (máx. 100 caracteres, solo letras y números)
     const validateAddress = (address) => {
-        const regex = /^[a-zA-Z0-9\s]{1,100}$/;  // Solo letras, números y espacios, máx. 100 caracteres
+        const regex = /^[a-zA-Z0-9\s]{1,100}$/;  
         if (!regex.test(address)) {
             return 'La dirección solo debe contener letras, números y un máximo de 100 caracteres.';
         }
         return '';
     };
 
-    // Si estás editando, carga los datos y asegúrate de que el campo CVV esté vacío
     useEffect(() => {
         setFormData({
             ...initialFormData,
-            codigoSeguridad: '',  // El CVV debe estar vacío al editar
+            codigoSeguridad: '', 
         });
         setIsEditing(!!initialFormData.id);
     }, [initialFormData]);
@@ -67,7 +63,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
 
-        // Validar nombre y dirección en tiempo real
         if (name === 'nombrePropietario') {
             setNameError(validateName(value));
         } else if (name === 'direccion') {
@@ -77,10 +72,9 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
         }
     };
 
-    // Validar que la fecha ingresada sea mayor a la actual
     const validateDate = (fecha) => {
-        const today = new Date();  // Fecha actual
-        const selectedDate = new Date(fecha);  // Fecha ingresada
+        const today = new Date();  
+        const selectedDate = new Date(fecha);  
 
         if (selectedDate <= today) {
             setDateError('La fecha de vencimiento debe ser mayor a la fecha actual.');
@@ -89,25 +83,22 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
         }
     };
 
-    // Validar y enviar datos al backend
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validar que el CVV sea requerido solo si es nuevo o se está cambiando
         if (!isEditing && formData.codigoSeguridad.length !== 3) {
             alert('El código de seguridad debe tener exactamente 3 dígitos.');
             return;
         }
 
-        // Si hay un error en la fecha, nombre o dirección, no permitir guardar
         if (dateError || nameError || addressError) {
             alert('Por favor corrige los errores antes de continuar.');
             return;
         }
 
         try {
-            await onSave(formData); // Guardar datos
-            onRequestClose();       // Cerrar modal
+            await onSave(formData); 
+            onRequestClose();       
         } catch (error) {
             console.error('Error al guardar el método de pago:', error);
         }
@@ -130,7 +121,7 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             value={formData.nombrePropietario}
                             onChange={handleInputChange}
                             required
-                            maxLength="100"  // Limitar a 100 caracteres
+                            maxLength="100" 
                             className={`input input-bordered w-full bg-gray-700 text-white ${nameError ? 'border-red-500' : ''}`}
                         />
                         {nameError && <span className="text-red-500 text-sm">{nameError}</span>}
@@ -184,7 +175,7 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             value={formData.direccion}
                             onChange={handleInputChange}
                             required
-                            maxLength="100"  // Limitar a 100 caracteres
+                            maxLength="100"  
                             className={`input input-bordered w-full bg-gray-700 text-white ${addressError ? 'border-red-500' : ''}`}
                         />
                         {addressError && <span className="text-red-500 text-sm">{addressError}</span>}

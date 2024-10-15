@@ -3,10 +3,9 @@ import PaymentCard from "./PaymentCard";
 import ModalPayment from "./ModalPayment";
 
 const PaymentSettings = () => {
-    const [metodosPago, setMetodosPago] = useState([]);  // Almacenar los métodos de pago
-    const [modalOpen, setModalOpen] = useState(false);   // Controlar la apertura del modal
+    const [metodosPago, setMetodosPago] = useState([]);  
+    const [modalOpen, setModalOpen] = useState(false);   
 
-    // Obtener los métodos de pago desde el backend
     const fetchMetodosPago = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -27,7 +26,6 @@ const PaymentSettings = () => {
         }
     };
 
-    // Guardar un nuevo método de pago
     const handleSaveMetodoPago = async (nuevoMetodo) => {
         try {
             const token = localStorage.getItem('token');
@@ -41,7 +39,7 @@ const PaymentSettings = () => {
             });
 
             if (response.ok) {
-                fetchMetodosPago(); // Actualizar lista de métodos de pago
+                fetchMetodosPago(); 
             } else {
                 console.error('Error al guardar el método de pago');
             }
@@ -50,7 +48,6 @@ const PaymentSettings = () => {
         }
     };
 
-    // Eliminar un método de pago
     const handleDeleteMetodoPago = async (id) => {
         try {
             const token = localStorage.getItem('token');
@@ -63,7 +60,7 @@ const PaymentSettings = () => {
             });
 
             if (response.ok) {
-                setMetodosPago(metodosPago.filter((metodo) => metodo.id !== id)); // Actualizar la lista sin el método eliminado
+                setMetodosPago(metodosPago.filter((metodo) => metodo.id !== id)); 
             } else {
                 console.error('Error al eliminar el método de pago');
             }
@@ -72,7 +69,6 @@ const PaymentSettings = () => {
         }
     };
 
-    // Cargar los métodos de pago al montar el componente
     useEffect(() => {
         fetchMetodosPago();
     }, []);
@@ -90,7 +86,7 @@ const PaymentSettings = () => {
                                 key={index}
                                 metodo={metodo}
                                 onUpdateMetodoPago={handleSaveMetodoPago}
-                                onDeleteMetodoPago={handleDeleteMetodoPago}  // Pasar la función para eliminar
+                                onDeleteMetodoPago={handleDeleteMetodoPago}  
                             />
                         ))
                     ) : (

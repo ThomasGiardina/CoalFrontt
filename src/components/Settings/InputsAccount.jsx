@@ -30,7 +30,7 @@ const InputsAccount = ({ formData, handleInputChange }) => {
                     <label className="font-bold mb-2">Nombre</label>
                     <input
                         type="text"
-                        name="firstName"  // Usamos firstName en lugar de nombre
+                        name="firstName"  
                         value={formData.firstName}
                         onChange={handleInputChange}
                         placeholder="Nombre"
@@ -41,7 +41,7 @@ const InputsAccount = ({ formData, handleInputChange }) => {
                     <label className="font-bold mb-2">Apellido</label>
                     <input
                         type="text"
-                        name="lastName"  // Usamos lastName en lugar de apellido
+                        name="lastName"  
                         value={formData.lastName}
                         onChange={handleInputChange}
                         placeholder="Apellido"
@@ -53,7 +53,7 @@ const InputsAccount = ({ formData, handleInputChange }) => {
                     <input
                         type="email"
                         name="email"
-                        value={formData.email}  // Asegurarnos de que esté asignado a formData.email
+                        value={formData.email} 
                         onChange={handleInputChange}
                         placeholder="email@example.com"
                         className="p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
