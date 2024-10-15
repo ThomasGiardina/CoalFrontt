@@ -1,19 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 
 const GameCard = ({ id, title, imageUrl, price, platform }) => {
     const getPlatformIcon = (platform) => {
-        switch (platform.toLowerCase()) {
-            case 'xbox':
+        switch (platform) {
+            case 'XBOX':
                 return <i className="fab fa-xbox text-green-500 text-2xl"></i>;
-            case 'playstation':
+            case 'PLAY_STATION':
                 return <i className="fab fa-playstation text-blue-500 text-2xl"></i>;
-            case 'nintendo switch':
-                return <i className="fas fa-gamepad text-red-500 text-2xl"></i>;
-            case 'pc':
-                return <i className="fas fa-laptop text-gray-500 text-2xl"></i>;
+            case 'NINTENDO_SWITCH':
+                return <div className='text-red-700 text-2xl p-1'><BsNintendoSwitch/></div>;
+            case 'PC':
+                return <div className='text-gray-500 text-2xl p-1'><BsPcDisplay/></div>;
             default:
-                return <i className="fas fa-question-circle text-gray-500 text-2xl"></i>;
+                return null; 
         }
     };
 
