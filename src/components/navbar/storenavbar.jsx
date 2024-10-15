@@ -32,7 +32,7 @@ const StoreNavbar = () => {
 
     return (
         <div>
-            <nav className="bg-base-300 h-auto top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center">
+            <nav className="bg-background h-auto top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center text-4xl">
                     <Link to="/" className="flex items-center">
                         <img alt="Logo" src="./logoCoalBlanco.png" className="w-14" />
@@ -51,10 +51,6 @@ const StoreNavbar = () => {
                             <Link to="/Store" className="btn btn-ghost btn-sm">
                                 <i className="fa-solid fa-store text-primary"></i>
                                 Tienda
-                            </Link>
-                            <Link to="/Admin" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-user text-primary"></i>
-                                Admin panel
                             </Link>
                         </>
                     ) : (

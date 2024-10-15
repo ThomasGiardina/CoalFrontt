@@ -23,16 +23,13 @@ const BotonLogin = ({ email, password }) => {
             const data = await response.json();
             console.log('Inicio de sesión exitoso:', data);
     
-            // Cambia a data.access_token en lugar de data.accessToken
             console.log('AccessToken:', data.access_token);  
             console.log('Role:', data.role);
-    
-            // Guardar el token y rol en localStorage a través del login
+
             login(data.access_token, data.role);
-    
-            // Redireccionar basado en el rol del usuario
+
             if (data.role === 'ADMIN') {
-                navigate('/AdminGames');
+                navigate('/GamesAdmin');
             } else {
                 navigate('/Store');
             }

@@ -28,7 +28,7 @@ const CarruselLogin = () => {
         const interval = setInterval(goToNext, 4000); 
     
         return () => clearInterval(interval); 
-      }, []);
+    }, []);
 
     return (
         <div className="relative w-[500px] h-[660px]">

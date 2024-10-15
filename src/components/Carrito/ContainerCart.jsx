@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'daisyui';
+import CardSelector from '../Carrito/CardSelector'; // Corregir la ruta de importación
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([
@@ -11,6 +12,25 @@ const Cart = () => {
     const [payment, setPayment] = useState('credit');
     const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvc: '' });
     const [address, setAddress] = useState({ street: '', city: '', state: '', zip: '' });
+    const [cards, setCards] = useState([]);
+    const [selectedCard, setSelectedCard] = useState('');
+
+    useEffect(() => {
+        // Simulación de la carga de tarjetas desde una API
+        const fetchCards = async () => {
+            const cardData = [
+                { id: '1', type: 'Visa', last4: '1234' },
+                { id: '2', type: 'MasterCard', last4: '5678' },
+            ];
+            setCards(cardData);
+        };
+
+        fetchCards();
+    }, []);
+
+    const handleCardChange = (e) => {
+        setSelectedCard(e.target.value);
+    };
 
     const increaseQuantity = (id) => {
         setCartItems(cartItems.map(item =>
@@ -129,31 +149,38 @@ const Cart = () => {
                         </select>
                     </div>
 
+                    {/* Card Selector */}
+                    {payment !== 'cash' && (
+                        <CardSelector cards={cards} selectedCard={selectedCard} handleCardChange={handleCardChange} />
+                    )}
+
                     {/* Credit/Debit Card Details */}
-                    <div className="mb-6">
-                        <label className="block mb-2 text-lg">Detalles de Tarjeta</label>
-                        <input
-                            className="input input-bordered w-full mb-4 bg-gray-700 text-white"
-                            placeholder="Número de Tarjeta"
-                            value={cardDetails.number}
-                            onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
-                            disabled={payment === 'cash'}
-                        />
-                        <input
-                            className="input input-bordered w-full mb-4 bg-gray-700 text-white"
-                            placeholder="Fecha de Expiración"
-                            value={cardDetails.expiry}
-                            onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
-                            disabled={payment === 'cash'}
-                        />
-                        <input
-                            className="input input-bordered w-full mb-4 bg-gray-700 text-white"
-                            placeholder="CVC"
-                            value={cardDetails.cvc}
-                            onChange={(e) => setCardDetails({ ...cardDetails, cvc: e.target.value })}
-                            disabled={payment === 'cash'}
-                        />
-                    </div>
+                    {payment !== 'cash' && (
+                        <div className="mb-6">
+                            <label className="block mb-2 text-lg">Detalles de Tarjeta</label>
+                            <input
+                                className="input input-bordered w-full mb-4 bg-gray-700 text-white"
+                                placeholder="Número de Tarjeta"
+                                value={cardDetails.number}
+                                onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
+                                disabled={selectedCard !== ''}
+                            />
+                            <input
+                                className="input input-bordered w-full mb-4 bg-gray-700 text-white"
+                                placeholder="Fecha de Expiración"
+                                value={cardDetails.expiry}
+                                onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
+                                disabled={selectedCard !== ''}
+                            />
+                            <input
+                                className="input input-bordered w-full mb-4 bg-gray-700 text-white"
+                                placeholder="CVC"
+                                value={cardDetails.cvc}
+                                onChange={(e) => setCardDetails({ ...cardDetails, cvc: e.target.value })}
+                                disabled={selectedCard !== ''}
+                            />
+                        </div>
+                    )}
 
                     {/* Shipping Method */}
                     <div className="mb-6">

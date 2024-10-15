@@ -2,7 +2,7 @@ import React from 'react';
 
 const AboutContent = () => {
     return (
-        <div className="w-full flex flex-col items-center bg-gray-800 p-6 rounded-lg mt-20">
+        <div className="w-full flex flex-col items-center bg-background p-6 rounded-lg mt-20">
             <h2 className="text-4xl font-bold text-white mb-6">Bienvenido a Coal</h2>
             <p className="text-white mb-4 text-lg">
                 En nuestra tienda online encontrarás una amplia selección de videojuegos físicos para todas las plataformas. Ya seas amante de las ediciones de coleccionista o prefieras tener tus juegos en formato físico, tenemos lo que necesitas. Contamos con títulos de los mejores desarrolladores, ediciones especiales y envío rápido a cualquier parte del país. ¡Explora nuestro catálogo y recibe tus juegos favoritos directamente en la puerta de tu casa!
