@@ -3,7 +3,7 @@ const Footer = () => {
 
         <>
         <footer class="text-base-content ">
-            <div class="footer footer-center p-10 bg-base-200">
+            <div class="footer footer-center p-10 bg-background">
 
                 <nav class="grid grid-flow-col gap-6">
                     <a class="btn btn-ghost btn-sm btn-circle">
@@ -31,7 +31,7 @@ const Footer = () => {
                 </nav>
             </div>
 
-            <aside class="bg-base-300 py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
+            <aside class="bg-background py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
                 <p class="text-xl flex items-center gap-2">
                     <img alt="Logo" src="./logoCoalBlanco.png" class="w-8" />
                     <span>Coal</span>
