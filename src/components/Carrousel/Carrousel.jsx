@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import provisional1 from "../../assets/provisional1.jpg";
 import provisional2 from "../../assets/provisional2.jpg";
@@ -7,27 +6,23 @@ import provisional4 from "../../assets/provisional4.jpg";
 
 const slides = [
     {
-        title: "Desata tu Potencial Gamer",
-        subtitle: "Entra en un mundo de diversión y desafíos ilimitados",
-        buttonText: "Jugar Ahora",
+        title: "Explora el Mundo Gamer sin Límites",
+        subtitle: "Sumérgete en aventuras inolvidables y descubre nuevos horizontes",
         image: provisional1,
     },
     {
-        title: "Tu Próxima Aventura Te Espera",
-        subtitle: "Sube de nivel y explora los mejores títulos de videojuegos",
-        buttonText: "Explorar Juegos",
+        title: "Tu Próximo Desafío Te Espera",
+        subtitle: "Conquista los mejores títulos y supera cada nivel",
         image: provisional2,
     },
     {
-        title: "¿Listo para un Nuevo Desafío?",
-        subtitle: "Descubre juegos épicos y vive experiencias emocionantes",
-        buttonText: "Comenzar Aventura",
+        title: "Desafía tus Límites",
+        subtitle: "Lucha, explora y gana en los juegos más intensos",
         image: provisional3,
     },
     {
-        title: "Únete a la Experiencia Definitiva en Videojuegos",
-        subtitle: "Juega a tu manera con los títulos más emocionantes",
-        buttonText: "Registrarse",
+        title: "Disfruta la Mejor Colección de Videojuegos",
+        subtitle: "Juega sin parar con una selección épica de títulos",
         image: provisional4,
     },
 ];
@@ -52,10 +47,11 @@ const Carrousel = () => {
         nextSlide();
         }, 6000); 
 
-    return () => clearInterval(interval); 
+        return () => clearInterval(interval); 
     }, [currentIndex]); 
+
     return (
-        <div className="relative w-full  h-[600px] mx-auto mb-10  overflow-hidden bg-gray-900 text-white">
+        <div className="relative w-full h-[600px] mx-auto mb-10 overflow-hidden bg-gray-900 text-white">
         {slides.map((slide, index) => (
             <div
             key={index}
@@ -71,29 +67,29 @@ const Carrousel = () => {
             <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-center p-4">
                 <h2 className="text-4xl font-bold mb-2">{slide.title}</h2>
                 <p className="text-xl mb-6">{slide.subtitle}</p>
-                <button className="px-6 py-2 bg-primary text-white rounded-full hover:bg-orange-600 transition-colors">
-                {slide.buttonText}
-                </button>
             </div>
             </div>
         ))}
 
+        {/* Flecha para la diapositiva anterior, con tamaño más grande */}
         <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-5xl"
             aria-label="Previous slide"
         >
             ❮
         </button>
 
+        {/* Flecha para la siguiente diapositiva, con tamaño más grande */}
         <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-5xl"
             aria-label="Next slide"
         >
             ❯
         </button>
 
+        {/* Indicadores de las diapositivas */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {slides.map((_, index) => (
             <button

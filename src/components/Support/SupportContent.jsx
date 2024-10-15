@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const SupportContent = () => {
     return (
-        <div className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-20 space-y-12">
+        <div className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-2 space-y-12">
             <div className="absolute top-0 left-0 w-1/4 h-48 bg-accent rounded-br-full opacity-30 z-0"></div>
             <div className="absolute top-0 right-0 w-1/4 h-32 bg-primary rounded-bl-full opacity-40 z-0"></div>
             <motion.h2 
