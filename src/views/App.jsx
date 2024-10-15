@@ -16,9 +16,7 @@ import GamesAdmin from './GamesAdmin';
 import About from './About'; 
 import Support from './Support';
 
-
 function App() {
-
     return (
         <AuthProvider>
             <Router>
@@ -29,7 +27,7 @@ function App() {
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Register" element={<Register />} />
                     <Route path="/Store" element={<Store />} />
-                    <Route path="/Details" element={<Details />} />
+                    <Route path="/Details/:id" element={<Details />} />
                     <Route path="/Cart" element={<Cart />} />
                     <Route path="/Settings" element={<Settings />} />
                     <Route path="/Statistics" element={<Statistics />} />

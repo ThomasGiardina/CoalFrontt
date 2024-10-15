@@ -18,7 +18,7 @@ const ContainerRegister = () => {
 
     return (
         <>
-            <div className='h-[700px] w-[1275px] rounded-lg flex' style={{ backgroundColor: '#2B2738' }}>
+            <div className='h-[700px] w-[1275px] rounded-lg flex bg-neutral'>
                 <div className="my-5 ml-5 mr-28">
                     <CarruselLogin />
                 </div>
