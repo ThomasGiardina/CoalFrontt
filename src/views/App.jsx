@@ -1,6 +1,6 @@
 import '../index.css';
 import { AuthProvider } from '../context/AuthContext';
-import StoreNavbar from '../components/navbar/storenavbar';
+import StoreNavbar from '../components/Navbar/Storenavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login'; 
 import Register from './Register';  
@@ -10,7 +10,6 @@ import Homepage from './Homepage';
 import Details from './Details';
 import Cart from './Cart';
 import ScrollToTop from '../components/Scroll/ScrollToTop';
-import Admin from './Admin';
 import Settings from './Settings';
 import Statistics from './Statistics';
 import GamesAdmin from './GamesAdmin';
@@ -32,7 +31,6 @@ function App() {
                     <Route path="/Store" element={<Store />} />
                     <Route path="/Details" element={<Details />} />
                     <Route path="/Cart" element={<Cart />} />
-                    <Route path="/Admin" element={<Admin />} />
                     <Route path="/Settings" element={<Settings />} />
                     <Route path="/Statistics" element={<Statistics />} />
                     <Route path="/GamesAdmin" element={<GamesAdmin />} />

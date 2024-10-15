@@ -52,10 +52,6 @@ const StoreNavbar = () => {
                                 <i className="fa-solid fa-store text-primary"></i>
                                 Tienda
                             </Link>
-                            <Link to="/Admin" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-user text-primary"></i>
-                                Admin panel
-                            </Link>
                         </>
                     ) : (
                         <>
