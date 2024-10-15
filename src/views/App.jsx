@@ -15,6 +15,8 @@ import Settings from './Settings';
 import Statistics from './Statistics';
 import GamesAdmin from './GamesAdmin';
 import About from './About'; 
+import Support from './Support';
+
 
 function App() {
 
@@ -35,6 +37,7 @@ function App() {
                     <Route path="/Statistics" element={<Statistics />} />
                     <Route path="/GamesAdmin" element={<GamesAdmin />} />
                     <Route path="/About" element={<About />} />
+                    <Route path="/Support" element={<Support />} />
                 </Routes>
                 <Footer />
             </Router>
