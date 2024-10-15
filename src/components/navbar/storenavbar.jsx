@@ -67,10 +67,6 @@ const StoreNavbar = () => {
                                 <i className="fa-solid fa-headset text-primary"></i>
                                 Soporte
                             </Link>
-                            <Link to="/Details" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-users text-primary"></i>
-                                Detalles
-                            </Link>
                         </>
                     )}
                 </div>

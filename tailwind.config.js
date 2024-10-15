@@ -17,7 +17,8 @@ export default {
           "info": "#3A4E57",            // Azul oscuro, casi gris, para información o detalles menores.
           "success": "#2F6A32",         // Verde muy oscuro para notificaciones de éxito.
           "warning": "#B3741F",         // Amarillo oscuro, tirando a marrón, para advertencias o alertas.
-          "error": "#C13838"            // Rojo oscuro y profundo para mensajes de error o alertas críticas.
+          "error": "#C13838",            // Rojo oscuro y profundo para mensajes de error o alertas críticas.
+          "text": "#ffffff"
         }
         
         
