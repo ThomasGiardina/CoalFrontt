@@ -1,4 +1,4 @@
-import ContainerCart from "../components/Carrito/ContainerCart";
+import NewContainerCart from "../components/Carrito/NewContainerCart";
 
 const Cart = () => {
     return(
@@ -6,7 +6,7 @@ const Cart = () => {
             <div className="relative min-h-screen flex items-center justify-center bg-backgorund">
                 <div className="absolute inset-0  opacity-95"/>
                 <div className="relative z-10">
-                    <ContainerCart />
+                    <NewContainerCart />
                 </div>
             
             </div>
