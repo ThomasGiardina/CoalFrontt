@@ -11,6 +11,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
         postalCode: "",
         phone: ""
     });
+    const token = localStorage.getItem('token');  // Asumimos que el token JWT se guarda en localStorage
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -41,11 +42,41 @@ const SelectPayment = ({ onBack, onConfirm }) => {
         return true; 
     };
 
-    const handleConfirm = () => {
-        if (isFormValid()) {
-            onConfirm(paymentMethod);
-        } else {
+    // Función para manejar la confirmación del pago usando fetch
+    const handleConfirm = async () => {
+        if (!isFormValid()) {
             alert("Por favor completa todos los campos requeridos y acepta los términos para continuar.");
+            return;
+        }
+
+        const metodoPagoData = {
+            nombrePropietario: formValues.name,
+            direccion: formValues.address,
+            tipoPago: paymentMethod === "Efectivo" ? "EFECTIVO" : "CREDITO",
+            codigoSeguridad: paymentMethod === "Efectivo" ? null : formValues.securityCode,
+            numeroTarjeta: paymentMethod === "Efectivo" ? null : formValues.cardNumber,
+            fechaVencimiento: paymentMethod === "Efectivo" ? null : formValues.expirationDate
+        };
+
+        try {
+            const response = await fetch("http://localhost:4002/metodosPago", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(metodoPagoData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                onConfirm(paymentMethod);  // Pasamos el método de pago seleccionado al siguiente paso
+            } else {
+                console.error("Error al procesar el método de pago");
+                alert("Hubo un error al procesar el método de pago.");
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
         }
     };
 
@@ -96,57 +127,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                 />
             </div>
 
-            <div className="mb-6">
-                <label className="block mb-2">Dirección de Envío</label>
-                <input
-                    type="text"
-                    name="address"
-                    placeholder="Ingresa tu dirección"
-                    value={formValues.address}
-                    onChange={handleInputChange}
-                    className={`bg-gray-700 p-3 w-full rounded-md mb-4 ${isDisabled ? "bg-opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={isDisabled} 
-                />
-            </div>
-
-            <div className="mb-6">
-                <label className="block mb-2">Ciudad</label>
-                <input
-                    type="text"
-                    name="city"
-                    placeholder="Ingresa tu ciudad"
-                    value={formValues.city}
-                    onChange={handleInputChange}
-                    className={`bg-gray-700 p-3 w-full rounded-md ${isDisabled ? "bg-opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={isDisabled} 
-                />
-            </div>
-
-            <div className="mb-6">
-                <label className="block mb-2">Código Postal</label>
-                <input
-                    type="text"
-                    name="postalCode"
-                    placeholder="Ingresa tu código postal"
-                    value={formValues.postalCode}
-                    onChange={handleInputChange}
-                    className={`bg-gray-700 p-3 w-full rounded-md ${isDisabled ? "bg-opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={isDisabled} 
-                />
-            </div>
-
-            <div className="mb-6">
-                <label className="block mb-2">Teléfono de Contacto</label>
-                <input
-                    type="text"
-                    name="phone"
-                    placeholder="Ingresa tu número de teléfono"
-                    value={formValues.phone}
-                    onChange={handleInputChange}
-                    className={`bg-gray-700 p-3 w-full rounded-md ${isDisabled ? "bg-opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={isDisabled} 
-                />
-            </div>
+            {/* Otros campos de envío, como Dirección, Ciudad, Código Postal, Teléfono... */}
 
             <div className="mt-6">
                 <label className="inline-flex items-center">

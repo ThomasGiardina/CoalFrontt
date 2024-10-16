@@ -12,6 +12,8 @@ const AddGameButton = ({ addGame }) => {
     const [stock, setStock] = useState('');
     const [mainImage, setMainImage] = useState(null);
     const [secondaryImage, setSecondaryImage] = useState(null);
+    const [fechaLanzamiento, setFechaLanzamiento] = useState('');
+    const [desarrolladora, setDesarrolladora] = useState('');
     const { isAuthenticated, role } = useContext(AuthContext); 
 
     const allCategories = [
@@ -33,9 +35,12 @@ const AddGameButton = ({ addGame }) => {
         setMainImage(null);
         setSecondaryImage(null);
         setSelectedCategories([]);
+        setFechaLanzamiento('');
+        setDesarrolladora('');
         setShowModal(false);
     };
 
+    // Definir la función handleCategorySelect
     const handleCategorySelect = (category) => {
         if (!selectedCategories.includes(category)) {
             setSelectedCategories([...selectedCategories, category]);
@@ -50,20 +55,26 @@ const AddGameButton = ({ addGame }) => {
         e.preventDefault();
     
         const formData = new FormData();
-        formData.append('titulo', title);  
-        formData.append('descripcion', description);
-        formData.append('precio', price);
-        formData.append('plataforma', platform);
-        formData.append('stock', stock);
     
-        selectedCategories.forEach(category => formData.append('categoria', category));
+        // Convertir el objeto videojuego a JSON y agregarlo como una parte llamada "videojuego"
+        const videojuego = {
+            titulo: title,
+            descripcion: description,
+            precio: price,
+            plataforma: platform,
+            stock: stock,
+            categorias: selectedCategories,
+            fechaLanzamiento: fechaLanzamiento,
+            desarrolladora: desarrolladora,
+        };
+        formData.append('videojuego', new Blob([JSON.stringify(videojuego)], { type: 'application/json' }));
     
         if (mainImage) {
-            formData.append('foto', mainImage);
+            formData.append('foto', mainImage); // Agregar la imagen principal
         }
     
         if (secondaryImage) {
-            formData.append('foto2', secondaryImage);
+            formData.append('foto2', secondaryImage); // Agregar la imagen secundaria
         }
     
         const token = localStorage.getItem('token');
@@ -73,9 +84,9 @@ const AddGameButton = ({ addGame }) => {
             const response = await fetch('http://localhost:4002/videojuegos', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,  
+                    'Authorization': `Bearer ${token}`,
                 },
-                body: formData,
+                body: formData, // FormData maneja los archivos y los datos
             });
     
             if (!response.ok) {
@@ -87,13 +98,14 @@ const AddGameButton = ({ addGame }) => {
             const data = await response.json();
             console.log('Videojuego creado: ', data);
             
-            addGame(data);  
-
-            handleCloseModal();  
+            addGame(data); // Lógica para añadir el videojuego al estado
+    
         } catch (error) {
             console.error('Error:', error);
         }
     };
+    
+    
 
     return (
         <>
@@ -187,7 +199,7 @@ const AddGameButton = ({ addGame }) => {
                                                     {allCategories.map((category) => (
                                                         <li
                                                             key={category}
-                                                            onClick={() => handleCategorySelect(category)}
+                                                            onClick={() => handleCategorySelect(category)}  
                                                             className={`cursor-pointer hover:bg-primary hover:text-white p-2 rounded-lg 
                                                                 ${selectedCategories.includes(category) ? 'bg-primary text-white' : ''}`}
                                                         >
@@ -224,6 +236,33 @@ const AddGameButton = ({ addGame }) => {
                                             value={stock}
                                             onChange={(e) => setStock(e.target.value)}
                                             min="0"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Fecha de lanzamiento</span>
+                                        </label>
+                                        <input
+                                            type="date"
+                                            className="input input-bordered w-full"
+                                            value={fechaLanzamiento}
+                                            onChange={(e) => setFechaLanzamiento(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Desarrolladora</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ingresa la desarrolladora"
+                                            className="input input-bordered w-full"
+                                            value={desarrolladora}
+                                            onChange={(e) => setDesarrolladora(e.target.value)}
                                             required
                                         />
                                     </div>
