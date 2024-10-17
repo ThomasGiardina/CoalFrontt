@@ -1,48 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 import Pagination from '../Pagination/Pagination';
+import Gamefilter from '../Gamefilter/Gamefilter'; 
 
 const ITEMS_PER_PAGE = 15;
 
-const Storegrid = () => {
-    const [games, setGames] = useState([]);  // Por defecto un array vacío
-    const [currentPage, setCurrentPage] = useState(1);  
-    const [loading, setLoading] = useState(true); 
-    const [error, setError] = useState(null);  
+const Storegrid = ({ games }) => {
+    const [filteredGames, setFilteredGames] = useState(games);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        setLoading(true);
-        fetch("http://localhost:4002/videojuegos")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Error al obtener los datos");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (Array.isArray(data)) {
-                    setGames(data);  
-                } else {
-                    throw new Error("Los datos no son un array");
-                }
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                setError(error.message);
-                setLoading(false);
-            });
-    }, []);
-
-    // Verifica si los juegos son válidos y que sea un array antes de seguir
-    if (!Array.isArray(games)) {
-        return <p>Error: Los datos obtenidos no son válidos.</p>;
-    }
-
-    const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
-
+    const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const selectedGames = games.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    const selectedGames = filteredGames.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -50,40 +19,43 @@ const Storegrid = () => {
         }
     };
 
+    useEffect(() => {
+        setFilteredGames(games); 
+    }, [games]);
+
     return (
-        <>
-            {loading ? (
-                <p>Loading games...</p>  
-            ) : error ? (
-                <p>Error: {error}</p>  
-            ) : (
-                <div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                        {selectedGames.length > 0 ? (
-                            selectedGames.map((game) => (
-                                <GameCard 
-                                    key={game.id} 
-                                    title={game.titulo} 
-                                    imageUrl={game.fotoUrl} 
-                                    price={game.precio}
-                                    platform={game.plataforma}
-                                    id={game.id}
-                                />
-                            ))
-                        ) : (
-                            <p>No hay juegos disponibles.</p>
-                        )}
-                    </div>
-                    {selectedGames.length > 0 && (
-                        <Pagination 
-                            currentPage={currentPage} 
-                            totalPages={totalPages} 
-                            onPageChange={handlePageChange}  
-                        />
+        <div className="flex">
+            <div className="w-[300px] mr-6">
+                <Gamefilter games={games} setFilter={setFilteredGames} />
+            </div>
+
+            <div className="flex-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {selectedGames.length > 0 ? (
+                        selectedGames.map((game) => (
+                            <GameCard 
+                                key={game.id} 
+                                title={game.titulo} 
+                                imageUrl={game.fotoUrl}  
+                                price={game.precio}
+                                platform={game.plataforma}
+                                id={game.id}
+                            />
+                        ))
+                    ) : (
+                        <p>No hay juegos disponibles.</p>
                     )}
                 </div>
-            )}
-        </>
+
+                {selectedGames.length > 0 && (
+                    <Pagination 
+                        currentPage={currentPage} 
+                        totalPages={totalPages} 
+                        onPageChange={handlePageChange}  
+                    />
+                )}
+            </div>
+        </div>
     );
 };
 
