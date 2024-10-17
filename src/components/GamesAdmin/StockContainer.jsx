@@ -43,6 +43,12 @@ const StockContainer = () => {
         setGames((prevGames) => [newGame, ...prevGames]);
     };
 
+    const updateGameInList = (updatedGame) => {
+        setGames((prevGames) =>
+            prevGames.map((game) => (game.id === updatedGame.id ? updatedGame : game))
+        );
+    };
+
     const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -81,7 +87,8 @@ const StockContainer = () => {
                                 {selectedGames.map((game) => (
                                     <GameCardStock 
                                         key={game.id} 
-                                        game={game}  
+                                        game={game}
+                                        updateGame={updateGameInList}
                                     />
                                 ))}
                             </div>
