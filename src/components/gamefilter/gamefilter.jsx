@@ -55,7 +55,7 @@ const Gamefilter = ({ games, setFilter }) => {
     };
 
     return (
-        <div className="bg-neutral p-6 rounded-xl w-[300px] h-[1010px] flex flex-col space-y-6">
+        <div className="bg-neutral p-6 rounded-xl w-[400px] h-[1010px] flex flex-col space-y-6">
             <div className="w-full flex-grow">
                 <h2 className="text-white font-bold mb-4 text-xl">Categorías</h2>
                 <ul className="space-y-3 w-full">

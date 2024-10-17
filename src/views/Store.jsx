@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Storegrid from '../components/Grids/StoreGrid';
+import Carrousel from '../components/Carrousel/Carrousel';
 
 const Store = () => {
     const [games, setGames] = useState([]); 
@@ -18,6 +19,7 @@ const Store = () => {
 
     return (
         <div>
+            <Carrousel/>
             <Storegrid games={games} />
         </div>
     );

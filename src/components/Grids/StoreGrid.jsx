@@ -25,11 +25,11 @@ const Storegrid = ({ games }) => {
 
     return (
         <div className="flex">
-            <div className="w-[300px] mr-6">
+            <div className="w-[400px] mr-6 ml-10">
                 <Gamefilter games={games} setFilter={setFilteredGames} />
             </div>
 
-            <div className="flex-1">
+            <div className="flex-1 mr-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     {selectedGames.length > 0 ? (
                         selectedGames.map((game) => (
