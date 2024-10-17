@@ -9,14 +9,18 @@ const VerCarrito = ({ onContinue }) => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const response = await fetch("http://localhost:4002/carritos/{userId}", {
+                const response = await fetch("http://localhost:4002/carritos/usuarios/carrito", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log("ID del carrito del usuario:", data.id);
+                    console.log("Items del carrito:", data.items);
+
                     setCartItems(data.items);
-                    setTotal(data.total);  // Suponiendo que el backend devuelve el total del carrito
+                    const calculatedTotal = data.items.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+                    setTotal(calculatedTotal);  
                 } else {
                     console.error("Error al cargar el carrito");
                 }
@@ -25,13 +29,26 @@ const VerCarrito = ({ onContinue }) => {
             }
         };
         fetchCart();
-    }, []);
+    }, [token]);
+
+    const handleUpdateQuantity = (itemId, nuevaCantidad) => {
+        const updatedItems = cartItems.map(item =>
+            item.id === itemId ? { ...item, cantidad: nuevaCantidad } : item
+        );
+        setCartItems(updatedItems);
+        const newTotal = updatedItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+        setTotal(newTotal);
+    };
 
     return (
         <div className="flex justify-between h-screen">
             <div className="w-[800px]">
-                {cartItems.map((item) => (
-                    <GamecardCart key={item.id} item={item} />
+                {cartItems.length > 0 && cartItems.map((item) => (
+                    <GamecardCart
+                        key={item.id}
+                        item={item}
+                        onUpdateQuantity={handleUpdateQuantity}  
+                    />
                 ))}
             </div>
             <div className="bg-neutral w-[500px] h-[300px] p-6 rounded-lg shadow-lg">

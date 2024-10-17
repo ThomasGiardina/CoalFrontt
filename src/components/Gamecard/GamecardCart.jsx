@@ -4,40 +4,46 @@ import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2'; 
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-const GamecardCart = () => {
-    const game = {
-        titulo: 'Dead Cells',
-        precio: 4.99,
-        fotoUrl: './deadcellsPortada.png',  
-        plataformas: ['XBOX', 'NINTENDO_SWITCH'],
+const GamecardCart = ({ item, onUpdateQuantity }) => {
+    const { id, titulo, precio, fotoUrl, plataformas, cantidad: initialCantidad, carrito_id } = item; 
+    const [cantidad, setCantidad] = useState(initialCantidad || 1);
+
+    const token = localStorage.getItem('token');
+
+    const actualizarCantidadEnBackend = async (nuevaCantidad) => {
+        try {
+            const response = await fetch(`http://localhost:4002/carritos/${carrito_id}/items/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ cantidad: nuevaCantidad }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al actualizar la cantidad en la base de datos');
+            }
+
+            console.log(`Cantidad de ${titulo} actualizada a ${nuevaCantidad} en la base de datos`);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const [cantidad, setCantidad] = useState(1);
-
     const aumentarCantidad = () => {
-        setCantidad(cantidad + 1);
+        const nuevaCantidad = cantidad + 1;
+        setCantidad(nuevaCantidad);
+        onUpdateQuantity(id, nuevaCantidad);  
+        actualizarCantidadEnBackend(nuevaCantidad);  
     };
 
     const disminuirCantidad = () => {
         if (cantidad > 1) {
-            setCantidad(cantidad - 1);
-        }
-    };
-
-    const defaultImage = '/ruta/a/imagen_por_defecto.png';  
-
-    const getPlatformIcon = (platform) => {
-        switch (platform) {
-            case 'XBOX':
-                return <i className="fab fa-xbox text-green-500 text-xl"></i>;
-            case 'PLAY_STATION':
-                return <i className="fab fa-playstation text-blue-500 text-xl"></i>;
-            case 'NINTENDO_SWITCH':
-                return <div className='text-red-700 text-xl p-1'><BsNintendoSwitch /></div>;
-            case 'PC':
-                return <div className='text-gray-500 text-xl p-1'><BsPcDisplay /></div>;
-            default:
-                return null;
+            const nuevaCantidad = cantidad - 1;
+            setCantidad(nuevaCantidad);
+            onUpdateQuantity(id, nuevaCantidad);  
+            actualizarCantidadEnBackend(nuevaCantidad);  
         }
     };
 
@@ -50,7 +56,7 @@ const GamecardCart = () => {
             confirmButtonColor: 'primary',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminarlo',
-            cancelButtonText: 'Cancelar'
+            cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
@@ -58,24 +64,41 @@ const GamecardCart = () => {
                     'El producto ha sido eliminado del carrito.',
                     'success'
                 );
-                console.log(`Producto ${game.titulo} eliminado del carrito.`);
+                console.log(`Producto ${titulo} eliminado del carrito.`);
             }
         });
     };
+
+    const getPlatformIcon = (platform) => {
+        switch (platform) {
+            case 'XBOX':
+                return <i className="fab fa-xbox text-green-500 text-xl"></i>;
+            case 'PLAY_STATION':
+                return <i className="fab fa-playstation text-blue-500 text-xl"></i>;
+            case 'NINTENDO_SWITCH':
+                return <div className="text-red-700 text-xl p-1"><BsNintendoSwitch /></div>;
+            case 'PC':
+                return <div className="text-gray-500 text-xl p-1"><BsPcDisplay /></div>;
+            default:
+                return null;
+        }
+    };
+
+    const defaultImage = '/ruta/a/imagen_por_defecto.png';
 
     return (
         <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[175px] p-4 relative">
             <div className="flex items-center space-x-4">
                 <img
                     className="w-32 h-16 rounded-lg object-cover"
-                    src={game.fotoUrl || defaultImage}
-                    alt={game.titulo}
+                    src={fotoUrl || defaultImage}
+                    alt={titulo}
                 />
             </div>
 
             <div className="flex-grow flex flex-col justify-between ml-4">
                 <div className="flex justify-between items-start w-full">
-                    <h2 className="text-lg font-semibold">{game.titulo}</h2>
+                    <h2 className="text-lg font-semibold">{titulo}</h2>
                     <button 
                         className="text-gray-400 hover:text-red-500 transition"
                         onClick={eliminarProducto}
@@ -84,12 +107,12 @@ const GamecardCart = () => {
                     </button>
                 </div>
                 <div className="flex items-center space-x-2 text-gray-400 mt-1">
-                    {game.plataformas.map((plataforma, index) => (
+                    {plataformas && plataformas.map((plataforma, index) => (
                         <span key={index}>{getPlatformIcon(plataforma)}</span>
                     ))}
                 </div>
                 <div className="flex items-start mt-12">
-                    <p className="text-xl font-bold text-green-400">${game.precio}</p>
+                    <p className="text-xl font-bold text-green-400">${precio}</p>
                 </div>
             </div>
 
