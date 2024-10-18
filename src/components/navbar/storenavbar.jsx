@@ -48,6 +48,10 @@ const StoreNavbar = () => {
                                 <i className="fa-solid fa-chart-bar text-primary"></i>
                                 Estadísticas
                             </Link>
+                            <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fas fa-file-signature text-primary"></i>
+                                Pedidos
+                            </Link>
                             <Link to="/Store" className="btn btn-ghost btn-sm">
                                 <i className="fa-solid fa-store text-primary"></i>
                                 Tienda
@@ -58,6 +62,10 @@ const StoreNavbar = () => {
                             <Link to="/Store" className="btn btn-ghost btn-sm ml-8">
                                 <i className="fa-solid fa-store text-primary"></i>
                                 Tienda
+                            </Link>
+                            <Link to="/UserOrderHistory" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fas fa-file-contract text-primary"></i>
+                                Pedidos
                             </Link>
                             <Link to="/About" className="btn btn-ghost btn-sm">
                                 <i className="fa-solid fa-info-circle text-primary"></i>
