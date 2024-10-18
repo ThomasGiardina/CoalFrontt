@@ -31,7 +31,16 @@ const ModalAgregarCarrito = ({ onAddToCarrito = () => console.log('Acción por d
                             >
                                 Seguir Comprando
                             </button>
-                            <Link to="/Cart" className="btn">Ir al carrito</Link>
+                            <button
+                                className="btn mr-5" 
+                                onClick={() => {
+                                    console.log('Ir al carrito presionado');
+                                    onAddToCarrito();
+                                }}
+                            >
+                                <Link to="/Cart" className="btn">Ir al carrito</Link>
+                            </button>
+                            
                         </form>
                     </div>
                 </div>
