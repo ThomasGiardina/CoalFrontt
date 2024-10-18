@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import GameCardStock from "../Gamecard/GamecardStock";
 import Pagination from "../Pagination/Pagination";
 import AddGameButton from "./AddGame";
+import { TbBackground } from 'react-icons/tb';
+import { color } from 'chart.js/helpers';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -65,8 +67,8 @@ const StockContainer = () => {
     };
 
     return (
-        <div className="mt-20 min-h-screen w-[1700px]">
-            <div className="flex justify-between items-center">
+        <div className="mt-10 min-h-screen">
+            <div className="sticky top-0 h-36 w-full flex justify-between items-center px-10 z-10" style={{backgroundColor:"#0F1012"}}> 
                 <p className="font-bold text-4xl">Stock de Juegos</p>
                 <div className="flex space-x-4">
                     <input
@@ -77,6 +79,7 @@ const StockContainer = () => {
                     <AddGameButton addGame={addGame} /> 
                 </div>
             </div>
+    
             {loading ? (
                 <p>Cargando juegos...</p>  
             ) : error ? (
@@ -87,7 +90,8 @@ const StockContainer = () => {
                         <p className="text-center text-xl mt-10">No hay juegos cargados, Agrega para ver contenido.</p>
                     ) : (
                         <>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+                            {/* Scroll vertical para las tarjetas */}
+                            <div className="w-full space-y-4 px-20  mt-6 ">
                                 {selectedGames.map((game) => (
                                     <GameCardStock 
                                         key={game.id} 
@@ -97,7 +101,7 @@ const StockContainer = () => {
                                     />
                                 ))}
                             </div>
-
+    
                             {totalPages > 1 && (
                                 <Pagination 
                                     currentPage={currentPage} 
@@ -111,6 +115,7 @@ const StockContainer = () => {
             )}
         </div>
     );
+    
 };
 
 export default StockContainer;

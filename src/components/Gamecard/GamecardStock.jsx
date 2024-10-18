@@ -52,25 +52,38 @@ const GameCardStock = ({ game, updateGame, removeGame }) => {
 
     return (
         <>
-            <div className="bg-neutral text-white rounded-lg overflow-hidden flex p-4 items-center shadow-lg transition-transform transform hover:scale-105">
-                <img className="w-32 h-32 rounded-lg object-contain" src={`data:image/jpeg;base64,${game.foto}`} alt={game.titulo} />
-                <div className="flex-grow ml-4">
-                    <h2 className="text-2xl font-semibold">{game.titulo}</h2>
-                    <p className="text-lg font-bold text-orange-400">${game.precio}</p>
+            <div className="bg-neutral text-white rounded-lg overflow-hidden flex p-4 shadow-lg w-full max-w-none">
+                <div className="w-40 h-40 flex-shrink-0">
+                    <img 
+                        className="w-full h-full object-cover rounded-md" 
+                        src={`data:image/jpeg;base64,${game.foto}`} 
+                        alt={game.titulo} 
+                    />
                 </div>
-                <div className="mr-6">
-                    {getPlatformIcon(game.plataforma)}
-                </div>
-                <div className="flex flex-col space-y-2">
-                    <button className="p-2 hover:bg-gray-700 rounded-md transition" onClick={openModal}>
-                        <i className="fa-solid fa-pen text-white"></i>
-                    </button>
-                    <button className="p-2 hover:bg-gray-700 rounded-md transition" onClick={handleDelete}>
-                        <FaTrash className="text-red-500" />
-                    </button>
+    
+                <div className="flex-grow ml-4 flex flex-col justify-between">
+                    <div className="flex-grow flex flex-col justify-between">
+                        <div className="flex items-start justify-between">
+                            <div className="flex-grow">
+                                <h2 className="text-2xl font-semibold">{game.titulo}</h2>
+                                <p className="text-lg font-bold text-orange-400">${game.precio}</p>
+                            </div>
+                            <div className="mr-2">
+                                {getPlatformIcon(game.plataforma)}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-end space-y-2">
+                        <button className="p-2 hover:bg-gray-700 rounded-md transition" onClick={openModal}>
+                            <i className="fa-solid fa-pen text-white"></i>
+                        </button>
+                        <button className="p-2 hover:bg-gray-700 rounded-md transition" onClick={handleDelete}>
+                            <FaTrash className="text-red-500" />
+                        </button>
+                    </div>
                 </div>
             </div>
-
+    
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/2 lg:w-1/3">
@@ -84,7 +97,7 @@ const GameCardStock = ({ game, updateGame, removeGame }) => {
                 </div>
             )}
         </>
-    );
+    );  
 };
 
 export default GameCardStock;

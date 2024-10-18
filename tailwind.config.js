@@ -20,10 +20,6 @@ export default {
           "error": "#C13838",            // Rojo oscuro y profundo para mensajes de error o alertas críticas.
           "text": "#ffffff"
         }
-        
-        
-        
-        
       },
     ],
   },
