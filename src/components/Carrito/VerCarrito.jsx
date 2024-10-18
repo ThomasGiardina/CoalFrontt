@@ -4,6 +4,7 @@ import GamecardCart from "../Gamecard/GamecardCart";
 const VerCarrito = ({ onContinue }) => {
     const [cartItems, setCartItems] = useState([]);
     const [total, setTotal] = useState(0);
+    const [totalItemsCount, setTotalItemsCount] = useState(0); 
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -27,6 +28,9 @@ const VerCarrito = ({ onContinue }) => {
     
                         const calculatedTotal = itemsConCarritoId.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
                         setTotal(calculatedTotal);
+
+                        const calculatedTotalItemsCount = itemsConCarritoId.reduce((acc, item) => acc + item.cantidad, 0);
+                        setTotalItemsCount(calculatedTotalItemsCount);
                     } else {
                         console.error("El carrito está vacío o no se encontraron items.");
                     }
@@ -47,7 +51,9 @@ const VerCarrito = ({ onContinue }) => {
         setCartItems(updatedItems);
     
         const newTotal = updatedItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
-        setTotal(newTotal);
+
+        const newTotalItemsCount = updatedItems.reduce((acc, item) => acc + item.cantidad, 0);
+        setTotalItemsCount(newTotalItemsCount);
     };
 
     const handleDeleteItem = (itemId) => {
@@ -56,6 +62,9 @@ const VerCarrito = ({ onContinue }) => {
 
         const newTotal = updatedItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
         setTotal(newTotal);
+
+        const newTotalItemsCount = updatedItems.reduce((acc, item) => acc + item.cantidad, 0);
+        setTotalItemsCount(newTotalItemsCount);
     };
 
     return (
@@ -83,8 +92,8 @@ const VerCarrito = ({ onContinue }) => {
                         <p className="text-xl">${total}</p>
                     </div>
                     <div className="flex justify-between">
-                        <h2 className="text-xl font-medium">Cantidad de Productos:</h2>
-                        <p className="text-xl">{cartItems.length}</p>
+                        <h2 className="text-xl font-medium">Cantidad Total de Productos:</h2>
+                        <p className="text-xl">{totalItemsCount}</p> 
                     </div>
                 </div>
     
