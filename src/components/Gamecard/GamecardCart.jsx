@@ -109,7 +109,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
     };
 
     return (
-        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[175px] p-4 relative">
+        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[175px] p-4 relative mb-6"> 
             <div className="flex items-center space-x-4">
                 <img
                     className="w-32 h-16 rounded-lg object-cover"
@@ -117,7 +117,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     alt={titulo}
                 />
             </div>
-
+    
             <div className="flex-grow flex flex-col justify-between ml-4">
                 <div className="flex justify-between items-start w-full">
                     <h2 className="text-lg font-semibold">{titulo}</h2>
@@ -135,7 +135,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     <p className="text-xl font-bold text-green-400">${precio}</p>
                 </div>
             </div>
-
+    
             <div className="absolute bottom-4 right-4 flex items-center space-x-2">
                 <button
                     className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
@@ -149,6 +149,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             </div>
         </div>
     );
+    
 };
 
 export default GamecardCart;
