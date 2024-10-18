@@ -1,15 +1,7 @@
 import React from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 
-const GamecardPurchase = () => {
-    const game = {
-        titulo: 'Dead Cells',
-        precio: 4.99,
-        fotoUrl: '/path/to/game-image.jpg',  
-        plataformas: ['XBOX'],  
-    };
-
-    
+const GamecardPurchase = ({ game }) => {
     const getPlatformIcon = (platform) => {
         switch (platform) {
             case 'XBOX':
@@ -25,6 +17,15 @@ const GamecardPurchase = () => {
         }
     };
 
+    const platforms = Array.isArray(game.plataforma) ? game.plataforma : [game.plataforma];
+
+    const formatPrice = (price) => {
+        return price.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+        });
+    };
+
     return (
         <div className="bg-gray-800 p-4 rounded-lg flex justify-between items-center mb-4">
             <div className="flex items-center">
@@ -36,14 +37,15 @@ const GamecardPurchase = () => {
                 <div>
                     <h3 className="text-xl font-semibold text-white">{game.titulo}</h3>
                     <div className="flex items-center space-x-2 mt-2">
-                        {game.plataformas.map((plataforma, index) => (
+                        {platforms.map((plataforma, index) => (
                             <span key={index}>{getPlatformIcon(plataforma)}</span>
                         ))}
                     </div>
                 </div>
             </div>
             <div>
-                <p className="text-xl font-semibold text-white">${game.precio} USD</p>
+                <p className="text-xl font-semibold text-white">{formatPrice(game.precio)} ARS</p>
+                <p className="text-gray-400">Cantidad: {game.cantidad}</p>
             </div>
         </div>
     );

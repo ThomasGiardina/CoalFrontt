@@ -1,17 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ConfirmPurchase from './ConfirmPurchase';
 
-const SelectPayment = ({ onBack, onConfirm }) => {
-    const [paymentMethod, setPaymentMethod] = useState(""); 
-    const [shippingOption, setShippingOption] = useState("envio");
-    const [termsAccepted, setTermsAccepted] = useState(false); 
-    const [formValues, setFormValues] = useState({ 
+const SelectPayment = ({ onBack }) => {
+    const [paymentMethod, setPaymentMethod] = useState("");
+    const [cards, setCards] = useState([]);
+    const [selectedCard, setSelectedCard] = useState("");
+    const [shippingOption, setShippingOption] = useState("");
+    const [isConfirmed, setIsConfirmed] = useState(false); 
+    const [cartItems, setCartItems] = useState([]); 
+    const [isNewCard, setIsNewCard] = useState(false); 
+    const [formValues, setFormValues] = useState({
         name: "",
+        cardNumber: "",
+        expirationDate: "",
+        securityCode: "",
         address: "",
         city: "",
         postalCode: "",
         phone: ""
     });
-    const token = localStorage.getItem('token');  // Asumimos que el token JWT se guarda en localStorage
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        if (paymentMethod === "Tarjeta de Crédito/Débito") {
+            fetch("http://localhost:4002/metodosPago/usuario", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setCards(data);
+                })
+                .catch(error => console.error("Error al obtener las tarjetas:", error));
+        }
+
+        fetch("http://localhost:4002/carritos/usuarios/carrito", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then(response => response.json())
+            .then(data => setCartItems(data))
+            .catch(error => console.error("Error al obtener los items del carrito:", error));
+    }, [paymentMethod, token]);
+
+    const handlePaymentMethodChange = (e) => {
+        setPaymentMethod(e.target.value);
+        if (e.target.value === "Efectivo") {
+            setSelectedCard("");
+            setIsNewCard(false);
+        }
+    };
+
+    const handleCardSelection = (e) => {
+        const selectedCardId = e.target.value;
+        if (selectedCardId === "new") {
+            setIsNewCard(true);
+            setSelectedCard("");
+        } else {
+            setIsNewCard(false);
+            setSelectedCard(selectedCardId);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -21,69 +72,38 @@ const SelectPayment = ({ onBack, onConfirm }) => {
         });
     };
 
-    const handlePaymentMethodChange = (e) => {
-        setPaymentMethod(e.target.value);
-    };
-
     const handleShippingOptionChange = (e) => {
         setShippingOption(e.target.value);
     };
 
     const isFormValid = () => {
-        if (!paymentMethod || !termsAccepted) {
-            return false;
-        }
-
-        if (shippingOption === "envio") {
-            const { name, address, city, postalCode, phone } = formValues;
-            return name && address && city && postalCode && phone; 
-        }
-
-        return true; 
+        const { address, city, postalCode, phone } = formValues;
+        const isShippingValid = shippingOption === "retiro" || (address && city && postalCode && phone);
+        return paymentMethod && (paymentMethod === "Efectivo" || selectedCard || (isNewCard && formValues.name && formValues.cardNumber && formValues.expirationDate && formValues.securityCode)) && isShippingValid;
     };
 
-    // Función para manejar la confirmación del pago usando fetch
-    const handleConfirm = async () => {
+    const formatCardNumber = (cardNumber) => {
+        return "**** **** **** " + cardNumber.slice(-4);
+    };
+
+    const formatCardType = (tipoPago) => {
+        return tipoPago === "CREDITO" ? "Crédito" : "Débito";
+    };
+
+    const handleConfirm = () => {
         if (!isFormValid()) {
-            alert("Por favor completa todos los campos requeridos y acepta los términos para continuar.");
+            alert("Por favor completa todos los campos requeridos para continuar.");
             return;
         }
-
-        const metodoPagoData = {
-            nombrePropietario: formValues.name,
-            direccion: formValues.address,
-            tipoPago: paymentMethod === "Efectivo" ? "EFECTIVO" : "CREDITO",
-            codigoSeguridad: paymentMethod === "Efectivo" ? null : formValues.securityCode,
-            numeroTarjeta: paymentMethod === "Efectivo" ? null : formValues.cardNumber,
-            fechaVencimiento: paymentMethod === "Efectivo" ? null : formValues.expirationDate
-        };
-
-        try {
-            const response = await fetch("http://localhost:4002/metodosPago", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify(metodoPagoData),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                onConfirm(paymentMethod);  // Pasamos el método de pago seleccionado al siguiente paso
-            } else {
-                console.error("Error al procesar el método de pago");
-                alert("Hubo un error al procesar el método de pago.");
-            }
-        } catch (error) {
-            console.error("Error en la solicitud:", error);
-        }
+        setIsConfirmed(true);
     };
 
-    const isDisabled = shippingOption === "retiro"; 
+    if (isConfirmed) {
+        return <ConfirmPurchase paymentMethod={paymentMethod === "Efectivo" ? "Efectivo" : `Tarjeta ${selectedCard}`} cartItems={cartItems} />;
+    }
 
     return (
-        <div className=" text-white p-6 rounded-lg ">
+        <div className="text-white p-6 rounded-lg bg-gray-800">
             <h2 className="text-2xl font-semibold mb-4">Seleccionar Método de Pago</h2>
 
             <div className="mb-6">
@@ -93,13 +113,77 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                     onChange={handlePaymentMethodChange}
                     className="bg-gray-700 p-3 w-full rounded-md"
                 >
-                    <option value="" disabled>Selecciona un método</option> 
+                    <option value="" disabled>Selecciona un método</option>
                     <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
                     <option value="Efectivo">Efectivo</option>
                 </select>
             </div>
 
+            {paymentMethod === "Tarjeta de Crédito/Débito" && (
+                <div className="mb-6">
+                    <label className="block mb-2">Selecciona tu tarjeta</label>
+                    <select
+                        value={selectedCard}
+                        onChange={handleCardSelection}
+                        className="bg-gray-700 p-3 w-full rounded-md"
+                    >
+                        <option value="" disabled>Selecciona una tarjeta</option>
+                        {cards.map(card => (
+                            <option key={card.id} value={card.id}>
+                                {formatCardNumber(card.numeroTarjeta)} - {formatCardType(card.tipoPago)} - {card.nombrePropietario}
+                            </option>
+                        ))}
+                        <option value="new">Agregar nueva tarjeta</option>
+                    </select>
+
+                    {isNewCard && (
+                        <div className="mt-6">
+                            <label className="block mb-2">Nombre en la tarjeta</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formValues.name}
+                                onChange={handleInputChange}
+                                className="bg-gray-700 p-3 w-full rounded-md"
+                                placeholder="Nombre en la tarjeta"
+                            />
+
+                            <label className="block mb-2 mt-4">Número de tarjeta</label>
+                            <input
+                                type="text"
+                                name="cardNumber"
+                                value={formValues.cardNumber}
+                                onChange={handleInputChange}
+                                className="bg-gray-700 p-3 w-full rounded-md"
+                                placeholder="Número de tarjeta"
+                            />
+
+                            <label className="block mb-2 mt-4">Fecha de vencimiento</label>
+                            <input
+                                type="text"
+                                name="expirationDate"
+                                value={formValues.expirationDate}
+                                onChange={handleInputChange}
+                                className="bg-gray-700 p-3 w-full rounded-md"
+                                placeholder="MM/AA"
+                            />
+
+                            <label className="block mb-2 mt-4">Código de seguridad</label>
+                            <input
+                                type="text"
+                                name="securityCode"
+                                value={formValues.securityCode}
+                                onChange={handleInputChange}
+                                className="bg-gray-700 p-3 w-full rounded-md"
+                                placeholder="CVV"
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+
             <h2 className="text-2xl font-semibold mb-4">Método de Entrega</h2>
+
             <div className="mb-6">
                 <label className="block mb-2">Selecciona una opción de entrega</label>
                 <select
@@ -107,46 +191,70 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                     onChange={handleShippingOptionChange}
                     className="bg-gray-700 p-3 w-full rounded-md"
                 >
+                    <option value="" disabled>Selecciona tipo de entrega</option>
                     <option value="envio">Envío a Domicilio</option>
                     <option value="retiro">Retiro en el Local</option>
                 </select>
             </div>
 
-            <h2 className="text-2xl font-semibold mb-4">Información de Envío</h2>
+            {shippingOption === "envio" && (
+                <div>
+                    <h2 className="text-2xl font-semibold mb-4">Información de Envío</h2>
 
-            <div className="mb-6">
-                <label className="block mb-2">Nombre Completo</label>
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Ingresa tu nombre completo"
-                    value={formValues.name}
-                    onChange={handleInputChange}
-                    className={`bg-gray-700 p-3 w-full rounded-md ${isDisabled ? "bg-opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={isDisabled} 
-                />
-            </div>
+                    <div className="mb-6">
+                        <label className="block mb-2">Dirección</label>
+                        <input
+                            type="text"
+                            name="address"
+                            placeholder="Ingresa tu dirección"
+                            value={formValues.address}
+                            onChange={handleInputChange}
+                            className="bg-gray-700 p-3 w-full rounded-md"
+                        />
+                    </div>
 
-            {/* Otros campos de envío, como Dirección, Ciudad, Código Postal, Teléfono... */}
+                    <div className="mb-6">
+                        <label className="block mb-2">Ciudad</label>
+                        <input
+                            type="text"
+                            name="city"
+                            placeholder="Ingresa tu ciudad"
+                            value={formValues.city}
+                            onChange={handleInputChange}
+                            className="bg-gray-700 p-3 w-full rounded-md"
+                        />
+                    </div>
 
-            <div className="mt-6">
-                <label className="inline-flex items-center">
-                    <input 
-                        type="checkbox" 
-                        className="form-checkbox bg-gray-700 text-green-500" 
-                        checked={termsAccepted} 
-                        onChange={() => setTermsAccepted(!termsAccepted)} 
-                    />
-                    <span className="ml-2 text-gray-400">
-                        Acepto las condiciones del <a href="#" className="text-blue-400">Acuerdo de Suscriptor</a>
-                    </span>
-                </label>
-            </div>
+                    <div className="mb-6">
+                        <label className="block mb-2">Código Postal</label>
+                        <input
+                            type="text"
+                            name="postalCode"
+                            placeholder="Ingresa tu código postal"
+                            value={formValues.postalCode}
+                            onChange={handleInputChange}
+                            className="bg-gray-700 p-3 w-full rounded-md"
+                        />
+                    </div>
+
+                    <div className="mb-6">
+                        <label className="block mb-2">Teléfono</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            placeholder="Ingresa tu teléfono"
+                            value={formValues.phone}
+                            onChange={handleInputChange}
+                            className="bg-gray-700 p-3 w-full rounded-md"
+                        />
+                    </div>
+                </div>
+            )}
 
             <div className="flex justify-between mt-6">
                 <button 
                     className="btn text-white py-2 px-4 rounded-md" 
-                    onClick={onBack}  
+                    onClick={onBack}
                 >
                     Atrás
                 </button>
