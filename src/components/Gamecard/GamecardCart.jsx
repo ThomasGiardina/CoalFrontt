@@ -6,10 +6,11 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 const GamecardCart = ({ item, onUpdateQuantity }) => {
 
-    const { id, titulo, precio, cantidad, videojuego, carrito_id } = item; 
-    const plataforma = videojuego ? videojuego.plataforma : "Desconocido";  
+    const { id, titulo, precio, cantidad, videojuego, carrito_id, plataforma } = item; 
     const fotoUrl = videojuego ? videojuego.fotoUrl : '/ruta/a/imagen_por_defecto.png';  
     const token = localStorage.getItem('token');
+
+    console.log("Plataforma del juego:", plataforma);
 
     const actualizarCantidadEnBackend = async (itemId, carritoId, nuevaCantidad) => {
         try {
@@ -31,7 +32,6 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             console.error("Error al hacer la solicitud PUT:", error);
         }
     };
-    
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
@@ -70,7 +70,9 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
     };
 
     const getPlatformIcon = (platform) => {
-        switch (platform) {
+        if (!platform) return null;
+
+        switch (platform.toUpperCase()) {  
             case 'XBOX':
                 return (
                     <span className="flex items-center space-x-2">
@@ -79,6 +81,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     </span>
                 );
             case 'PLAY_STATION':
+            case 'PLAYSTATION':  
                 return (
                     <span className="flex items-center space-x-2">
                         <i className="fab fa-playstation text-blue-500 text-xl"></i>
@@ -104,7 +107,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     </span>
                 );
             default:
-                return null;
+                return <span>Plataforma desconocida</span>;
         }
     };
 
@@ -117,7 +120,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     alt={titulo}
                 />
             </div>
-    
+
             <div className="flex-grow flex flex-col justify-between ml-4">
                 <div className="flex justify-between items-start w-full">
                     <h2 className="text-lg font-semibold">{titulo}</h2>
@@ -128,14 +131,16 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                         <FaTimes size={20} />
                     </button>
                 </div>
+
                 <div className="flex items-center space-x-2 text-gray-400 mt-1">
                     {getPlatformIcon(plataforma)}
                 </div>
+
                 <div className="flex items-start mt-12">
                     <p className="text-xl font-bold text-green-400">${precio}</p>
                 </div>
             </div>
-    
+
             <div className="absolute bottom-4 right-4 flex items-center space-x-2">
                 <button
                     className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
@@ -149,7 +154,6 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             </div>
         </div>
     );
-    
 };
 
 export default GamecardCart;
