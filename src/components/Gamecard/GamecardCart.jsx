@@ -4,7 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-const GamecardCart = ({ item, onUpdateQuantity }) => {
+const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => { 
 
     const { id, titulo, precio, cantidad, videojuego, carrito_id, plataforma } = item; 
     const fotoUrl = videojuego ? videojuego.fotoUrl : '/ruta/a/imagen_por_defecto.png';  
@@ -57,14 +57,44 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Eliminado!',
-                    'El producto ha sido eliminado del carrito.',
-                    'success'
-                );
-                console.log(`Producto ${titulo} eliminado del carrito.`);
+                try {
+                    console.log(`Intentando eliminar el producto con id: ${id}`);
+
+                    const response = await fetch(`http://localhost:4002/carritos/items/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+    
+                    if (response.ok) {
+                        console.log(`Producto ${titulo} eliminado del carrito.`);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eliminado!',
+                            text: 'El producto ha sido eliminado del carrito.',
+                        });
+
+                        onDeleteItem(id); 
+                    } else {
+                        console.error("Error al eliminar el producto.");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se pudo eliminar el producto.',
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error al hacer la solicitud DELETE:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al eliminar el producto.',
+                    });
+                }
             }
         });
     };
