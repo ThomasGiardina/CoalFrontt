@@ -1,49 +1,49 @@
 import React, { useState } from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
-import { FaTimes } from 'react-icons/fa'; 
-import Swal from 'sweetalert2'; 
+import { FaTimes } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 const GamecardCart = ({ item, onUpdateQuantity }) => {
-    const { id, titulo, precio, fotoUrl, plataformas, cantidad: initialCantidad, carrito_id } = item; 
-    const [cantidad, setCantidad] = useState(initialCantidad || 1);
 
+    const { id, titulo, precio, cantidad, videojuego, carrito_id } = item; 
+    const plataforma = videojuego ? videojuego.plataforma : "Desconocido";  
+    const fotoUrl = videojuego ? videojuego.fotoUrl : '/ruta/a/imagen_por_defecto.png';  
     const token = localStorage.getItem('token');
 
-    const actualizarCantidadEnBackend = async (nuevaCantidad) => {
+    const actualizarCantidadEnBackend = async (itemId, carritoId, nuevaCantidad) => {
         try {
-            const response = await fetch(`http://localhost:4002/carritos/${carrito_id}/items/${id}`, {
-                method: 'PUT',
+            const response = await fetch(`http://localhost:4002/carritos/${carritoId}/items/${itemId}`, {
+                method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ cantidad: nuevaCantidad }),
             });
 
-            if (!response.ok) {
-                throw new Error('Error al actualizar la cantidad en la base de datos');
+            if (response.ok) {
+                console.log(`Cantidad del item con id: ${itemId} actualizada a: ${nuevaCantidad}`);
+            } else {
+                console.error("Error al actualizar la cantidad en la base de datos");
             }
-
-            console.log(`Cantidad de ${titulo} actualizada a ${nuevaCantidad} en la base de datos`);
         } catch (error) {
-            console.error(error);
+            console.error("Error al hacer la solicitud PUT:", error);
         }
     };
+    
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
-        setCantidad(nuevaCantidad);
-        onUpdateQuantity(id, nuevaCantidad);  
-        actualizarCantidadEnBackend(nuevaCantidad);  
+        onUpdateQuantity(id, nuevaCantidad);
+        actualizarCantidadEnBackend(id, carrito_id, nuevaCantidad);  
     };
 
     const disminuirCantidad = () => {
         if (cantidad > 1) {
             const nuevaCantidad = cantidad - 1;
-            setCantidad(nuevaCantidad);
-            onUpdateQuantity(id, nuevaCantidad);  
-            actualizarCantidadEnBackend(nuevaCantidad);  
+            onUpdateQuantity(id, nuevaCantidad);
+            actualizarCantidadEnBackend(id, carrito_id, nuevaCantidad);  
         }
     };
 
@@ -72,26 +72,48 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
     const getPlatformIcon = (platform) => {
         switch (platform) {
             case 'XBOX':
-                return <i className="fab fa-xbox text-green-500 text-xl"></i>;
+                return (
+                    <span className="flex items-center space-x-2">
+                        <i className="fab fa-xbox text-green-500 text-xl"></i>
+                        <span className="text-sm">Xbox</span>
+                    </span>
+                );
             case 'PLAY_STATION':
-                return <i className="fab fa-playstation text-blue-500 text-xl"></i>;
+                return (
+                    <span className="flex items-center space-x-2">
+                        <i className="fab fa-playstation text-blue-500 text-xl"></i>
+                        <span className="text-sm">PlayStation</span>
+                    </span>
+                );
             case 'NINTENDO_SWITCH':
-                return <div className="text-red-700 text-xl p-1"><BsNintendoSwitch /></div>;
+                return (
+                    <span className="flex items-center space-x-2">
+                        <div className="text-red-700 text-xl p-1">
+                            <BsNintendoSwitch />
+                        </div>
+                        <span className="text-sm">Nintendo Switch</span>
+                    </span>
+                );
             case 'PC':
-                return <div className="text-gray-500 text-xl p-1"><BsPcDisplay /></div>;
+                return (
+                    <span className="flex items-center space-x-2">
+                        <div className="text-gray-500 text-xl p-1">
+                            <BsPcDisplay />
+                        </div>
+                        <span className="text-sm">PC</span>
+                    </span>
+                );
             default:
                 return null;
         }
     };
-
-    const defaultImage = '/ruta/a/imagen_por_defecto.png';
 
     return (
         <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[175px] p-4 relative">
             <div className="flex items-center space-x-4">
                 <img
                     className="w-32 h-16 rounded-lg object-cover"
-                    src={fotoUrl || defaultImage}
+                    src={fotoUrl}  
                     alt={titulo}
                 />
             </div>
@@ -107,9 +129,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     </button>
                 </div>
                 <div className="flex items-center space-x-2 text-gray-400 mt-1">
-                    {plataformas && plataformas.map((plataforma, index) => (
-                        <span key={index}>{getPlatformIcon(plataforma)}</span>
-                    ))}
+                    {getPlatformIcon(plataforma)}
                 </div>
                 <div className="flex items-start mt-12">
                     <p className="text-xl font-bold text-green-400">${precio}</p>
