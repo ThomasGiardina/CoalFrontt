@@ -26,7 +26,6 @@ const AddGameButton = ({ addGame }) => {
     };
 
     const handleCloseModal = () => {
-        // Limpiar los campos y cerrar el modal
         setTitle('');
         setDescription('');
         setPrice('');
@@ -40,7 +39,6 @@ const AddGameButton = ({ addGame }) => {
         setShowModal(false);
     };
 
-    // Definir la función handleCategorySelect
     const handleCategorySelect = (category) => {
         if (!selectedCategories.includes(category)) {
             setSelectedCategories([...selectedCategories, category]);
@@ -56,7 +54,6 @@ const AddGameButton = ({ addGame }) => {
     
         const formData = new FormData();
     
-        // Convertir el objeto videojuego a JSON y agregarlo como una parte llamada "videojuego"
         const videojuego = {
             titulo: title,
             descripcion: description,
@@ -67,26 +64,25 @@ const AddGameButton = ({ addGame }) => {
             fechaLanzamiento: fechaLanzamiento,
             desarrolladora: desarrolladora,
         };
-        formData.append('videojuego', new Blob([JSON.stringify(videojuego)], { type: 'application/json' }));
+        formData.append('videojuego', JSON.stringify(videojuego));
     
         if (mainImage) {
-            formData.append('foto', mainImage); // Agregar la imagen principal
+            formData.append('foto', mainImage);
         }
     
         if (secondaryImage) {
-            formData.append('foto2', secondaryImage); // Agregar la imagen secundaria
+            formData.append('foto2', secondaryImage);
         }
     
         const token = localStorage.getItem('token');
-        console.log('Token enviado en la solicitud:', token);
     
         try {
             const response = await fetch('http://localhost:4002/videojuegos', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`, 
                 },
-                body: formData, // FormData maneja los archivos y los datos
+                body: formData,  
             });
     
             if (!response.ok) {
@@ -98,12 +94,16 @@ const AddGameButton = ({ addGame }) => {
             const data = await response.json();
             console.log('Videojuego creado: ', data);
             
-            addGame(data); // Lógica para añadir el videojuego al estado
+            addGame(data);
+    
+            handleCloseModal();
     
         } catch (error) {
             console.error('Error:', error);
         }
     };
+    
+    
     
     
 

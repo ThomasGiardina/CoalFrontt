@@ -3,7 +3,7 @@ import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { FaXbox, FaPlaystation, FaTrash } from "react-icons/fa";
 import EditGameForm from '../GamesAdmin/EditGameForm';
 
-const GameCardStock = ({ game, updateGame }) => {
+const GameCardStock = ({ game, updateGame, removeGame }) => { 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const getPlatformIcon = (platform) => {
@@ -29,14 +29,31 @@ const GameCardStock = ({ game, updateGame }) => {
         setIsModalOpen(false);
     };
 
-    const handleDelete = () => {
-        console.log(`Eliminar el juego con ID: ${game.id}`);
+    const handleDelete = async () => {
+        const token = localStorage.getItem('token'); 
+        try {
+            const response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar el juego');
+            }
+
+            removeGame(game.id);
+            console.log('Juego eliminado correctamente');
+        } catch (error) {
+            console.error('Error al eliminar el juego:', error);
+        }
     };
 
     return (
         <>
             <div className="bg-neutral text-white rounded-lg overflow-hidden flex p-4 items-center shadow-lg transition-transform transform hover:scale-105">
-                <img className="w-32 h-32 rounded-lg object-contain" src={game.fotoUrl} alt={game.titulo} />
+                <img className="w-32 h-32 rounded-lg object-contain" src={`data:image/jpeg;base64,${game.foto}`} alt={game.titulo} />
                 <div className="flex-grow ml-4">
                     <h2 className="text-2xl font-semibold">{game.titulo}</h2>
                     <p className="text-lg font-bold text-orange-400">${game.precio}</p>

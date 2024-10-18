@@ -20,7 +20,7 @@ const GameCard = ({ id, title, imageUrl, price, platform }) => {
 
     return (
         <Link to={`/Details/${id}`} className="relative block w-full max-w-xs sm:max-w-sm lg:max-w-md h-80 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group">
-            <img className="absolute inset-0 w-full h-full object-cover" src={imageUrl} alt={title} />
+            <img className="absolute inset-0 w-full h-full object-cover" src={`data:image/jpeg;base64,${imageUrl}`} alt={title} />
             <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="absolute top-2 right-4">
                 {getPlatformIcon(platform)}

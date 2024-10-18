@@ -49,6 +49,10 @@ const StockContainer = () => {
         );
     };
 
+    const removeGameFromList = (gameId) => {
+        setGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
+    };
+
     const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -89,6 +93,7 @@ const StockContainer = () => {
                                         key={game.id} 
                                         game={game}
                                         updateGame={updateGameInList}
+                                        removeGame={removeGameFromList}  
                                     />
                                 ))}
                             </div>

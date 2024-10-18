@@ -36,7 +36,7 @@ const Storegrid = ({ games }) => {
                             <GameCard 
                                 key={game.id} 
                                 title={game.titulo} 
-                                imageUrl={game.fotoUrl}  
+                                imageUrl={game.foto}  
                                 price={game.precio}
                                 platform={game.plataforma}
                                 id={game.id}
