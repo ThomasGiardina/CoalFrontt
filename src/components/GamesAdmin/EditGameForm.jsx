@@ -46,25 +46,26 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
         };
     
         const formData = new FormData();
-        formData.append('videojuego', new Blob([JSON.stringify(updatedGame)], { type: 'application/json' }));
+        
+        formData.append('videojuego', JSON.stringify(updatedGame));
     
         if (mainImage) {
-            formData.append('foto', mainImage);
+            formData.append('foto', mainImage); 
         }
     
         if (secondaryImage) {
-            formData.append('foto2', secondaryImage);
+            formData.append('foto2', secondaryImage);  
         }
     
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token'); 
     
         try {
             const response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': `Bearer ${token}`,  
                 },
-                body: formData,
+                body: formData,  
             });
     
             if (!response.ok) {
@@ -76,12 +77,14 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
             const data = await response.json();
             console.log('Videojuego actualizado: ', data);
     
-            updateGame(data); 
-            closeModal();
+            updateGame(data);  
+            closeModal(); 
         } catch (error) {
             console.error('Error:', error);
         }
     };
+    
+    
     
     
 
