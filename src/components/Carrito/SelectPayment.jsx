@@ -99,7 +99,8 @@ const SelectPayment = ({ onBack }) => {
     };
 
     if (isConfirmed) {
-        return <ConfirmPurchase paymentMethod={paymentMethod === "Efectivo" ? "Efectivo" : `Tarjeta ${selectedCard}`} cartItems={cartItems} />;
+        return <ConfirmPurchase paymentMethod={paymentMethod === "Efectivo" ? "Efectivo" : `Tarjeta ${selectedCard}`} cartItems={cartItems} shippingMethod={shippingOption} />;
+
     }
 
     return (
