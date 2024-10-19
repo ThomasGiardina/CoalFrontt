@@ -163,8 +163,6 @@ const OrderTable = () => {
                     </tbody>
                 </table>
             </div>
-
-            {/* Paginación */}
             {orders.length > ordersPerPage && (
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             )}

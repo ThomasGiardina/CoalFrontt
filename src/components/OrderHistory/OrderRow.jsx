@@ -1,11 +1,10 @@
 import React from 'react';
 import Badges from './Badges';
-import MenuDropdown from './MenuDropdown';
 
-const OrderRow = ({ order, isSelecting, isRowSelected, handleSelectRow, toggleMenu, menuOpen }) => {
+const OrderRow = ({ order, isSelecting, isRowSelected = () => false, handleSelectRow = () => {}, toggleMenu = null, menuOpen = false }) => {
     return (
         <tr
-            className={`hover:bg-neutral-focus ${isRowSelected(order.id) ? 'bg-neutral-focus' : ''}`}
+            className={`hover:bg-neutral-focus ${isSelecting && isRowSelected(order.id) ? 'bg-neutral-focus' : ''}`}
             onClick={() => isSelecting && handleSelectRow(order.id)}
             style={isSelecting ? { cursor: 'pointer' } : { cursor: 'default' }}
         >
@@ -16,22 +15,24 @@ const OrderRow = ({ order, isSelecting, isRowSelected, handleSelectRow, toggleMe
                         className="checkbox checkbox-primary"
                         checked={isRowSelected(order.id)}
                         onChange={() => handleSelectRow(order.id)}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()} 
                     />
                 </td>
             )}
             <td className="text-center">{order.id}</td>
             <td className="text-center">{order.date}</td>
-            <td className="text-center">
-                <div className="flex items-center justify-center space-x-3">
-                    <div className="avatar">
-                        <div className="w-10 rounded-full">
-                            <img src="https://daisyui.com/tailwind-css-component-profile-3@56w.png" alt="Avatar" />
+            {order.customer && (
+                <td className="text-center">
+                    <div className="flex items-center justify-center space-x-3">
+                        <div className="avatar">
+                            <div className="w-10 rounded-full">
+                                <img src="https://daisyui.com/tailwind-css-component-profile-3@56w.png" alt="Avatar" />
+                            </div>
                         </div>
+                        <div>{order.customer}</div>
                     </div>
-                    <div>{order.customer}</div>
-                </div>
-            </td>
+                </td>
+            )}
             <td className="text-center">
                 <Badges type="payment" value={order.payment} />
             </td>
@@ -43,19 +44,21 @@ const OrderRow = ({ order, isSelecting, isRowSelected, handleSelectRow, toggleMe
             <td className="text-center">
                 <Badges type="status" value={order.status} />
             </td>
-            <td className="relative text-center">
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMenu();
-                    }}
-                    className="btn btn-ghost btn-circle text-primary"
-                >
-                    <i className="fas fa-ellipsis-v"></i>
-                </button>
+            {toggleMenu && (
+                <td className="relative text-center">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleMenu();
+                        }}
+                        className="btn btn-ghost btn-circle text-primary"
+                    >
+                        <i className="fas fa-ellipsis-v"></i>
+                    </button>
 
-                {menuOpen && <MenuDropdown />}
-            </td>
+                    {menuOpen && <MenuDropdown />}
+                </td>
+            )}
         </tr>
     );
 };

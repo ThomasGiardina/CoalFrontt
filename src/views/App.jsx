@@ -16,6 +16,7 @@ import GamesAdmin from './GamesAdmin';
 import About from './About'; 
 import Support from './Support';
 import AdminOrderHistory from './AdminOrderHistory';
+import UserOrderHistory from './UserOrderHistory';
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/About" element={<About />} />
                     <Route path="/Support" element={<Support />} />
                     <Route path="/AdminOrderHistory" element={<AdminOrderHistory/>} />
+                    <Route path="/UserOrderHistory" element={<UserOrderHistory/>} />
                 </Routes>
                 <Footer />
             </Router>
