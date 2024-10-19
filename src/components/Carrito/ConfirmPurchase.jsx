@@ -6,14 +6,17 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems }
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
-    const shippingCost = shippingMethod === "envio" ? 199 : 0; 
+    const shippingCost = (shippingMethod === "envio" || shippingMethod === "Envío a Domicilio") ? 2000 : 0;
 
     const discountPercentage = paymentMethod === "Efectivo" 
         ? 0.20 
         : paymentMethod === "Débito" 
         ? 0.10 
         : 0;  
+
     useEffect(() => {
+        console.log("Método de entrega:", shippingMethod); 
+        
         const calculatedSubtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
         setSubtotal(calculatedSubtotal);
 
@@ -21,7 +24,7 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems }
 
         const calculatedTotal = calculatedSubtotal + shippingCost - discount;
         setTotal(calculatedTotal);
-    }, [cartItems, discountPercentage, shippingCost]);
+    }, [cartItems, discountPercentage, shippingCost, shippingMethod]);
 
     const handleTermsChange = (e) => {
         setTermsAccepted(e.target.checked);
@@ -132,7 +135,7 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems }
                         </div>
                         <div className="flex justify-between mt-4">
                             <span className="text-gray-400">Método de entrega:</span>
-                            <span className="text-green-400">{shippingMethod === "envio" ? "Envío a Domicilio" : "Retiro en el Local"}</span>
+                            <span className="text-green-400">{shippingMethod === "envio" || shippingMethod === "Envío a Domicilio" ? "Envío a Domicilio" : "Retiro en el Local"}</span>
                         </div>
                     </div>
                     <div className="mt-6">
