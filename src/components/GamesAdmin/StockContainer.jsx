@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import GameCardStock from "../Gamecard/GamecardStock";
 import Pagination from "../Pagination/Pagination";
 import AddGameButton from "./AddGame";
-import { TbBackground } from 'react-icons/tb';
-import { color } from 'chart.js/helpers';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -90,7 +88,6 @@ const StockContainer = () => {
                         <p className="text-center text-xl mt-10">No hay juegos cargados, Agrega para ver contenido.</p>
                     ) : (
                         <>
-                            {/* Scroll vertical para las tarjetas */}
                             <div className="w-full space-y-4 px-20  mt-6 ">
                                 {selectedGames.map((game) => (
                                     <GameCardStock 

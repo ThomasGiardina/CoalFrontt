@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 import Pagination from '../Pagination/Pagination';
-import Gamefilter from '../Gamefilter/Gamefilter'; 
+import Gamefilter from './gamefilter';
 
 const ITEMS_PER_PAGE = 15;
 

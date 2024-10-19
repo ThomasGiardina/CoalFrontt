@@ -71,7 +71,6 @@ const Carrousel = () => {
             </div>
         ))}
 
-        {/* Flecha para la diapositiva anterior, con tamaño más grande */}
         <button
             onClick={prevSlide}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-5xl"
@@ -80,7 +79,6 @@ const Carrousel = () => {
             ❮
         </button>
 
-        {/* Flecha para la siguiente diapositiva, con tamaño más grande */}
         <button
             onClick={nextSlide}
             className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-5xl"
@@ -89,7 +87,6 @@ const Carrousel = () => {
             ❯
         </button>
 
-        {/* Indicadores de las diapositivas */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {slides.map((_, index) => (
             <button

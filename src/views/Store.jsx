@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Storegrid from '../components/Grids/StoreGrid';
-import Carrousel from '../components/Carrousel/Carrousel';
+import Storegrid from '../components/Store/StoreGrid';
+import Carrousel from '../components/Store/Carrousel';
 
 const Store = () => {
     const [games, setGames] = useState([]); 

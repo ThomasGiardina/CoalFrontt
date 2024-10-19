@@ -1,9 +1,9 @@
 import React from 'react';
-import Homehero from "../components/Hero/HomeHero";
-import Homeimg from "../components/Homeimg/Homeimg";
-import ConsolesSection from "../components/Homeimg/ConsolesSection";
-import FindUsSection from "../components/Homeimg/FindUsSection";
-import WhyCoalSection from "../components/Homeimg/WhyCoalSection";
+import Homehero from "../components/HomePage/HomeHero";
+import Homeimg from "../components/HomePage/Homeimg";    
+import ConsolesSection from "../components/HomePage/ConsolesSection";
+import FindUsSection from "../components/HomePage/FindUsSection";
+import WhyCoalSection from '../components/HomePage/WhyCoalSection';
 
 function Homepage() {
     return (

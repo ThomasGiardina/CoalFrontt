@@ -1,6 +1,6 @@
 import '../index.css';
 import { AuthProvider } from '../context/AuthContext';
-import StoreNavbar from '../components/Navbar/Storenavbar';
+import StoreNavbar from '../components/Navbar/storenavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login'; 
 import Register from './Register';  
@@ -15,6 +15,7 @@ import Statistics from './Statistics';
 import GamesAdmin from './GamesAdmin';
 import About from './About'; 
 import Support from './Support';
+import AdminOrderHistory from './AdminOrderHistory';
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/GamesAdmin" element={<GamesAdmin />} />
                     <Route path="/About" element={<About />} />
                     <Route path="/Support" element={<Support />} />
+                    <Route path="/AdminOrderHistory" element={<AdminOrderHistory/>} />
                 </Routes>
                 <Footer />
             </Router>
