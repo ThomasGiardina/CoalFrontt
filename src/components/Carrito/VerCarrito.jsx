@@ -21,16 +21,16 @@ const VerCarrito = ({ onContinue }) => {
                     if (Array.isArray(data) && data.length > 0) {
                         const itemsConCarritoId = data.map(item => ({
                             ...item,
-                            carrito_id: item.carritoId
+                            carrito_id: item.carritoId 
                         }));
     
                         setCartItems(itemsConCarritoId);
     
+                        const carritoId = itemsConCarritoId[0].carrito_id; 
+                        saveCarritoId(carritoId);  
+    
                         const calculatedTotal = itemsConCarritoId.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
                         setTotal(calculatedTotal);
-
-                        const calculatedTotalItemsCount = itemsConCarritoId.reduce((acc, item) => acc + item.cantidad, 0);
-                        setTotalItemsCount(calculatedTotalItemsCount);
                     } else {
                         console.error("El carrito está vacío o no se encontraron items.");
                     }
@@ -43,6 +43,7 @@ const VerCarrito = ({ onContinue }) => {
         };
         fetchCart();
     }, [token]);
+    
 
     const handleUpdateQuantity = (itemId, nuevaCantidad) => {
         const updatedItems = cartItems.map(item =>

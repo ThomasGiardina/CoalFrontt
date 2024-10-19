@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import GamecardPurchase from "../Gamecard/GamecardPurchase";  
 
-const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems }) => {
+const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
@@ -28,6 +28,14 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems }) => {
     };
 
     const handlePurchase = () => {
+        const carritoId = localStorage.getItem('carritoId');
+    
+        if (!carritoId) {
+            console.error("carritoId no está definido");
+            Swal.fire('Error', 'No se pudo confirmar el carrito. ID de carrito no válido.', 'error');
+            return;
+        }
+    
         if (termsAccepted) {
             Swal.fire({
                 title: '¿Estás seguro?',
@@ -40,11 +48,34 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems }) => {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(
-                        'Compra realizada!',
-                        'Tu compra ha sido completada con éxito.',
-                        'success'
-                    );
+                    fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error("Error al confirmar el carrito");
+                    })
+                    .then(data => {
+                        Swal.fire(
+                            'Compra realizada!',
+                            'Tu compra ha sido completada con éxito.',
+                            'success'
+                        );
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Error',
+                            'Hubo un problema al confirmar el carrito.',
+                            'error'
+                        );
+                        console.error(error);
+                    });
                 }
             });
         } else {
@@ -55,6 +86,8 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems }) => {
             );
         }
     };
+    
+    
 
     const formatPrice = (price) => {
         return price.toLocaleString('es-AR', {

@@ -33,7 +33,9 @@ const NewContainerCart = () => {
 
         {currentStep === 1 && <VerCarrito onContinue={handleNextStep} />}
         {currentStep === 2 && <SelectPayment onBack={handleBackStep} onConfirm={handleSelectPayment} />}
-        {currentStep === 3 && <ConfirmPurchase paymentMethod={paymentMethod} />}  
+        {currentStep === 3 && <ConfirmPurchase paymentMethod={paymentMethod} carritoId={carritoId} />}  
+        
+ 
         </div>
     );
 };
