@@ -30,23 +30,23 @@ const WhyCoalSection = () => {
     ];
 
     return (
-        <div className="w-full flex flex-col items-center bg-gray-800 p-6 rounded-lg mt-20">
-            <h2 className="text-3xl font-bold text-white mb-6">¿Por qué Coal?</h2>
+        <div className="w-full flex flex-col items-center p-6 rounded-lg mt-20 border border-gray-300">
+            <h2 className="text-3xl font-bold text-black mb-6">¿Por qué Coal?</h2>
             <div className="w-full flex flex-wrap justify-center">
                 {features.map((feature, index) => (
                     <div key={index} className="w-full md:w-1/2 lg:w-1/4 p-4">
-                        <div className="bg-gray-700 p-6 rounded-lg text-center">    
-                            <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-                            <p className="text-white">{feature.description}</p>
+                        <div className="bg-orange-500 p-6 rounded-lg text-center">    
+                            <h3 className="text-xl font-bold text-black mb-2">{feature.title}</h3>
+                            <p className="text-black">{feature.description}</p>
                         </div>
                     </div>
                 ))}
             </div>
             <div className="w-full mt-10 text-center">
-                <h3 className="text-2xl font-bold text-white mb-4">Confían en nosotros</h3>
+                <h3 className="text-2xl font-bold text-black mb-4">Confían en nosotros</h3>
                 <div className="w-full flex justify-center mb-20">
                     {sponsors.map((sponsor, index) => (
-                        <div key={index} className="console-box w-40 h-40 mx-12"> {/* Aumentar el margen horizontal */}
+                        <div key={index} className="console-box w-40 h-40 mx-12">
                             <img src={sponsor.logo} alt={sponsor.name} className="w-full h-full object-cover rounded-lg transition-transform transform hover:scale-110" />
                         </div>
                     ))}
