@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
 import GamecardCart from "../Gamecard/GamecardCart";
 
-const VerCarrito = ({ onContinue }) => {
-    const [cartItems, setCartItems] = useState([]);
+const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
     const [total, setTotal] = useState(0);
     const [totalItemsCount, setTotalItemsCount] = useState(0); 
     const token = localStorage.getItem('token');
-
-    const saveCarritoId = (id) => {
-        localStorage.setItem('carritoId', id);
-    };
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -23,15 +18,7 @@ const VerCarrito = ({ onContinue }) => {
                     console.log("Datos completos del carrito:", data); 
 
                     if (Array.isArray(data) && data.length > 0) {
-                        const itemsConCarritoId = data.map(item => ({
-                            ...item,
-                            carrito_id: item.carritoId 
-                        }));
-
-                        setCartItems(itemsConCarritoId);
-
-                        const carritoId = itemsConCarritoId[0].carrito_id; 
-                        saveCarritoId(carritoId);
+                        setCartItems(data);  
                     } else {
                         console.error("El carrito está vacío o no se encontraron items.");
                     }
@@ -43,7 +30,7 @@ const VerCarrito = ({ onContinue }) => {
             }
         };
         fetchCart();
-    }, [token]);
+    }, [token, setCartItems]);
 
     useEffect(() => {
         const calculatedTotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -53,18 +40,6 @@ const VerCarrito = ({ onContinue }) => {
         setTotalItemsCount(calculatedTotalItemsCount);
     }, [cartItems]); 
 
-    const handleUpdateQuantity = (itemId, nuevaCantidad) => {
-        const updatedItems = cartItems.map(item =>
-            item.id === itemId ? { ...item, cantidad: nuevaCantidad } : item
-        );
-        setCartItems(updatedItems);
-    };
-
-    const handleDeleteItem = (itemId) => {
-        const updatedItems = cartItems.filter(item => item.id !== itemId);
-        setCartItems(updatedItems);
-    };
-
     return (
         <div className="flex justify-between h-screen">
             <div className="w-[800px] mb-7">
@@ -73,8 +48,6 @@ const VerCarrito = ({ onContinue }) => {
                         <GamecardCart
                             key={item.id}
                             item={item}
-                            onUpdateQuantity={handleUpdateQuantity}
-                            onDeleteItem={handleDeleteItem}  
                         />
                     ))
                 ) : (

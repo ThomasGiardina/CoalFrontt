@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ConfirmPurchase from './ConfirmPurchase';
 
-const SelectPayment = ({ onBack }) => {
+const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
     const [paymentMethod, setPaymentMethod] = useState("");
     const [cards, setCards] = useState([]);
     const [selectedCard, setSelectedCard] = useState("");
     const [shippingOption, setShippingOption] = useState("");
-    const [isConfirmed, setIsConfirmed] = useState(false); 
-    const [cartItems, setCartItems] = useState([]); 
-    const [isNewCard, setIsNewCard] = useState(false); 
+    const [isConfirmed, setIsConfirmed] = useState(false);
+    const [isNewCard, setIsNewCard] = useState(false);
     const [formValues, setFormValues] = useState({
         name: "",
         cardNumber: "",
@@ -34,15 +33,6 @@ const SelectPayment = ({ onBack }) => {
                 })
                 .catch(error => console.error("Error al obtener las tarjetas:", error));
         }
-
-        fetch("http://localhost:4002/carritos/usuarios/carrito", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then(response => response.json())
-            .then(data => setCartItems(data))
-            .catch(error => console.error("Error al obtener los items del carrito:", error));
     }, [paymentMethod, token]);
 
     const handlePaymentMethodChange = (e) => {
@@ -82,25 +72,29 @@ const SelectPayment = ({ onBack }) => {
         return paymentMethod && (paymentMethod === "Efectivo" || selectedCard || (isNewCard && formValues.name && formValues.cardNumber && formValues.expirationDate && formValues.securityCode)) && isShippingValid;
     };
 
-    const formatCardNumber = (cardNumber) => {
-        return "**** **** **** " + cardNumber.slice(-4);
-    };
-
-    const formatCardType = (tipoPago) => {
-        return tipoPago === "CREDITO" ? "Crédito" : "Débito";
-    };
-
     const handleConfirm = () => {
         if (!isFormValid()) {
             alert("Por favor completa todos los campos requeridos para continuar.");
             return;
         }
-        setIsConfirmed(true);
+        setIsConfirmed(true);  
     };
 
-    if (isConfirmed) {
-        return <ConfirmPurchase paymentMethod={paymentMethod === "Efectivo" ? "Efectivo" : `Tarjeta ${selectedCard}`} cartItems={cartItems} shippingMethod={shippingOption} />;
+    useEffect(() => {
+        if (isConfirmed) {
+            handleNextStep();
+        }
+    }, [isConfirmed, handleNextStep]);
 
+    if (isConfirmed) {
+        return (
+            <ConfirmPurchase 
+                paymentMethod={paymentMethod === "Efectivo" ? "Efectivo" : `Tarjeta ${selectedCard}`} 
+                cartItems={cartItems}  
+                shippingMethod={shippingOption}
+                handleNextStep={handleNextStep}
+            />
+        );
     }
 
     return (
@@ -131,7 +125,7 @@ const SelectPayment = ({ onBack }) => {
                         <option value="" disabled>Selecciona una tarjeta</option>
                         {cards.map(card => (
                             <option key={card.id} value={card.id}>
-                                {formatCardNumber(card.numeroTarjeta)} - {formatCardType(card.tipoPago)} - {card.nombrePropietario}
+                                **** **** **** {card.numeroTarjeta.slice(-4)} - {card.tipoPago === "CREDITO" ? "Crédito" : "Débito"} - {card.nombrePropietario}
                             </option>
                         ))}
                         <option value="new">Agregar nueva tarjeta</option>
@@ -184,7 +178,6 @@ const SelectPayment = ({ onBack }) => {
             )}
 
             <h2 className="text-2xl font-semibold mb-4">Método de Entrega</h2>
-
             <div className="mb-6">
                 <label className="block mb-2">Selecciona una opción de entrega</label>
                 <select
@@ -198,60 +191,6 @@ const SelectPayment = ({ onBack }) => {
                 </select>
             </div>
 
-            {shippingOption === "envio" && (
-                <div>
-                    <h2 className="text-2xl font-semibold mb-4">Información de Envío</h2>
-
-                    <div className="mb-6">
-                        <label className="block mb-2">Dirección</label>
-                        <input
-                            type="text"
-                            name="address"
-                            placeholder="Ingresa tu dirección"
-                            value={formValues.address}
-                            onChange={handleInputChange}
-                            className="bg-gray-700 p-3 w-full rounded-md"
-                        />
-                    </div>
-
-                    <div className="mb-6">
-                        <label className="block mb-2">Ciudad</label>
-                        <input
-                            type="text"
-                            name="city"
-                            placeholder="Ingresa tu ciudad"
-                            value={formValues.city}
-                            onChange={handleInputChange}
-                            className="bg-gray-700 p-3 w-full rounded-md"
-                        />
-                    </div>
-
-                    <div className="mb-6">
-                        <label className="block mb-2">Código Postal</label>
-                        <input
-                            type="text"
-                            name="postalCode"
-                            placeholder="Ingresa tu código postal"
-                            value={formValues.postalCode}
-                            onChange={handleInputChange}
-                            className="bg-gray-700 p-3 w-full rounded-md"
-                        />
-                    </div>
-
-                    <div className="mb-6">
-                        <label className="block mb-2">Teléfono</label>
-                        <input
-                            type="text"
-                            name="phone"
-                            placeholder="Ingresa tu teléfono"
-                            value={formValues.phone}
-                            onChange={handleInputChange}
-                            className="bg-gray-700 p-3 w-full rounded-md"
-                        />
-                    </div>
-                </div>
-            )}
-
             <div className="flex justify-between mt-6">
                 <button 
                     className="btn text-white py-2 px-4 rounded-md" 
@@ -261,8 +200,8 @@ const SelectPayment = ({ onBack }) => {
                 </button>
                 <button 
                     className={`btn bg-primary text-white py-2 px-4 rounded-md ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`} 
-                    onClick={handleConfirm}  
-                    disabled={!isFormValid()}  
+                    onClick={handleConfirm}
+                    disabled={!isFormValid()}
                 >
                     Confirmar Pedido
                 </button>
