@@ -17,8 +17,8 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                     const data = await response.json();
                     console.log("Datos completos del carrito:", data); 
 
-                    if (Array.isArray(data) && data.length > 0) {
-                        setCartItems(data);  
+                    if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+                        setCartItems(data.items);  
                     } else {
                         console.error("El carrito está vacío o no se encontraron items.");
                     }
