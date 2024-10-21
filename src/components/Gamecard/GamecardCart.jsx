@@ -7,7 +7,10 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => { 
 
     const { id, titulo, precio, cantidad, videojuego, carrito_id, plataforma } = item; 
-    const fotoUrl = videojuego ? videojuego.fotoUrl : '/ruta/a/imagen_por_defecto.png';  
+    const fotoUrl = videojuego && videojuego.foto
+        ? `data:image/jpeg;base64,${videojuego.foto}` 
+        : '/ruta/a/imagen_por_defecto.png'; 
+    
     const token = localStorage.getItem('token');
 
     console.log("Plataforma del juego:", plataforma);
@@ -142,10 +145,10 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     };
 
     return (
-        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[175px] p-4 relative mb-6"> 
-            <div className="flex items-center space-x-4">
+        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[200px] p-4 relative mb-6"> {/* Aumenta la altura aquí */}
+            <div className="flex items-center space-x-4 h-full"> 
                 <img
-                    className="w-32 h-16 rounded-lg object-cover"
+                    className="w-32 h-full rounded-lg object-cover"  
                     src={fotoUrl}  
                     alt={titulo}
                 />

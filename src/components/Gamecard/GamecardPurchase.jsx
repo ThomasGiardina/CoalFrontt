@@ -3,7 +3,7 @@ import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 
 const GamecardPurchase = ({ game }) => {
     const getPlatformIcon = (platform) => {
-        switch (platform) {
+        switch (platform.toUpperCase()) {  
             case 'XBOX':
                 return <i className="fab fa-xbox text-green-500 text-2xl"></i>;
             case 'PLAY_STATION':
@@ -26,11 +26,15 @@ const GamecardPurchase = ({ game }) => {
         });
     };
 
+    const fotoUrl = game.videojuego && game.videojuego.foto
+        ? `data:image/jpeg;base64,${game.videojuego.foto}` 
+        : '/ruta/a/imagen_por_defecto.png';
+
     return (
-        <div className="bg-gray-800 p-4 rounded-lg flex justify-between items-center mb-4">
+        <div className="bg-neutral p-4 rounded-lg flex justify-between items-center mb-4">
             <div className="flex items-center">
                 <img 
-                    src={game.fotoUrl} 
+                    src={fotoUrl}  
                     alt={game.titulo} 
                     className="w-20 h-20 object-cover rounded-lg mr-4"
                 />
@@ -43,7 +47,7 @@ const GamecardPurchase = ({ game }) => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className="text-right"> 
                 <p className="text-xl font-semibold text-white">{formatPrice(game.precio)} ARS</p>
                 <p className="text-gray-400">Cantidad: {game.cantidad}</p>
             </div>
