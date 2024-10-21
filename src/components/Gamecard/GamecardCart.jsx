@@ -14,8 +14,14 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     const token = localStorage.getItem('token');
 
     console.log("Plataforma del juego:", plataforma);
+    console.log("Carrito ID:", carrito_id); // Asegúrate de que el carrito_id está definido correctamente
 
     const actualizarCantidadEnBackend = async (itemId, carritoId, nuevaCantidad) => {
+        if (!carritoId) {
+            console.error("El carrito_id no está definido.");
+            return;
+        }
+
         try {
             const response = await fetch(`http://localhost:4002/carritos/${carritoId}/items/${itemId}`, {
                 method: "PUT",

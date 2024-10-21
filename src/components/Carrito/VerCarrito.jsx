@@ -3,7 +3,7 @@ import GamecardCart from "../Gamecard/GamecardCart";
 
 const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
     const [total, setTotal] = useState(0);
-    const [totalItemsCount, setTotalItemsCount] = useState(0); 
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -15,10 +15,10 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Datos completos del carrito:", data); 
+                    console.log("Datos completos del carrito:", data);
 
                     if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-                        setCartItems(data.items);  
+                        setCartItems(data.items);
                     } else {
                         console.error("El carrito está vacío o no se encontraron items.");
                     }
@@ -38,7 +38,19 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
 
         const calculatedTotalItemsCount = cartItems.reduce((acc, item) => acc + item.cantidad, 0);
         setTotalItemsCount(calculatedTotalItemsCount);
-    }, [cartItems]); 
+    }, [cartItems]);
+
+    const handleUpdateQuantity = (itemId, nuevaCantidad) => {
+        const updatedCartItems = cartItems.map(item =>
+            item.id === itemId ? { ...item, cantidad: nuevaCantidad } : item
+        );
+        setCartItems(updatedCartItems);
+    };
+
+    const handleDeleteItem = (itemId) => {
+        const updatedCartItems = cartItems.filter(item => item.id !== itemId);
+        setCartItems(updatedCartItems);
+    };
 
     return (
         <div className="flex justify-between h-screen">
@@ -48,10 +60,12 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                         <GamecardCart
                             key={item.id}
                             item={item}
+                            onUpdateQuantity={handleUpdateQuantity} 
+                            onDeleteItem={handleDeleteItem} 
                         />
                     ))
                 ) : (
-                    <p className="text-white">El carrito está vacío.</p>  
+                    <p className="text-white">El carrito está vacío.</p>
                 )}
             </div>
             <div className="bg-neutral w-[500px] h-[300px] p-6 rounded-lg shadow-lg">
@@ -64,7 +78,7 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                     </div>
                     <div className="flex justify-between">
                         <h2 className="text-xl font-medium">Cantidad Total de Productos:</h2>
-                        <p className="text-xl">{totalItemsCount}</p> 
+                        <p className="text-xl">{totalItemsCount}</p>
                     </div>
                 </div>
 
@@ -72,8 +86,8 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                     <button
                         className={`text-white font-semibold py-3 px-6 w-full rounded-md shadow-lg transition duration-200 
                         ${cartItems.length === 0 ? "bg-gray-500 opacity-50 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"}`}
-                        onClick={onContinue} 
-                        disabled={cartItems.length === 0} 
+                        onClick={onContinue}
+                        disabled={cartItems.length === 0}
                     >
                         Continuar al Pago
                     </button>
