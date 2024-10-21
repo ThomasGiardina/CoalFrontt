@@ -15,7 +15,7 @@ export default {
           "base-100": "#0A0B0D",        // Negro absoluto, usado para las secciones más importantes, como pie de página o encabezados.
           "background": "#0F1012",      // Fondo extremadamente oscuro, prácticamente negro, para resaltar los elementos naranjas.
           "info": "#3A4E57",            // Azul oscuro, casi gris, para información o detalles menores.
-          "success": "#2F6A32",         // Verde muy oscuro para notificaciones de éxito.
+          "success": "#6cc070",         // Verde muy oscuro para notificaciones de éxito.
           "warning": "#B3741F",         // Amarillo oscuro, tirando a marrón, para advertencias o alertas.
           "error": "#C13838",            // Rojo oscuro y profundo para mensajes de error o alertas críticas.
           "text": "#ffffff"

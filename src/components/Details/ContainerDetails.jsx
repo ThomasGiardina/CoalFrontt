@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import AcercaDe from './AcercaDe';
 import Calificacion from './Calificacion';
-import CarruselDetails from './CarruselDetails';
 import DividerDetails from './DividerDetails';
-import MasRecomendaciones from './MasRecomendaciones';
 import ModalAgregarCarrito from './ModalAgregarCarrito';
 import { AuthContext } from '../../context/AuthContext';
+import CarrouselDetails from './CarruselDetails';
+import ReactMarkdown from 'react-markdown'; 
+import GameCarrousel from './GameCarrousel';
 
 const ContainerDetails = () => {
     const { id } = useParams(); 
@@ -15,6 +16,8 @@ const ContainerDetails = () => {
     const [error, setError] = useState(null); 
     const [carritoId, setCarritoId] = useState(null); 
     const { isAuthenticated } = useContext(AuthContext);
+    
+    const rightContentRef = useRef(null); 
 
     useEffect(() => {
         const storedCarritoId = localStorage.getItem('carritoId');
@@ -25,7 +28,6 @@ const ContainerDetails = () => {
             fetchUserCarrito();
         }
 
-        // Obtener los detalles del videojuego
         fetch(`http://localhost:4002/videojuegos/${id}`)
             .then((response) => {
                 if (!response.ok) {
@@ -35,7 +37,6 @@ const ContainerDetails = () => {
             })
             .then((data) => {
                 setGameDetails(data);
-                console.log("Detalles del juego obtenidos:", data); // Imprime los detalles del juego
                 setLoading(false);
             })
             .catch((error) => {
@@ -56,9 +57,8 @@ const ContainerDetails = () => {
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    setCarritoId(data.id); // Guarda el carritoId en el estado
-                    localStorage.setItem('carritoId', data.id); // Guarda en localStorage
-                    console.log("Carrito obtenido del servidor:", data);
+                    setCarritoId(data.id);
+                    localStorage.setItem('carritoId', data.id);
                 } else {
                     console.error('No se encontró el carrito para este usuario.');
                 }
@@ -69,13 +69,11 @@ const ContainerDetails = () => {
     };
 
     const handleAddToCart = () => {
-        console.log('Agregando al carrito:', carritoId, gameDetails);
-    
         if (!carritoId) {
             console.error("No se ha encontrado el carrito del usuario.");
             return;
         }
-    
+
         const token = localStorage.getItem('token');
         fetch(`http://localhost:4002/carritos/${carritoId}/items`, {
             method: 'POST',
@@ -96,79 +94,87 @@ const ContainerDetails = () => {
             console.error("Error al agregar el item al carrito:", error);
         });
     };
-    
 
     if (loading) return <p>Cargando detalles...</p>;
     if (error) return <p>Error: {error}</p>;
 
     const categories = gameDetails?.categorias || [];
 
-    return (
-        <div className="flex flex-col justify-center">
-            <div className="flex mt-14 w-full justify-between">
-                <div className="flex items-center">
-                    <p className="text-4xl font-sans">{gameDetails.titulo}</p>
-                </div>
-            </div>
+    const containerHeight = rightContentRef.current ? rightContentRef.current.offsetHeight : "auto";
 
-            <div className="flex justify-center mt-5 h-max w-[1300px]">
-                <CarruselDetails />
-                <div className="ml-10 w-[500px]">
-                    <img src={gameDetails.fotoUrl} alt={gameDetails.titulo} width="500" height="200" />
-                    <p className="mt-4 text-white">
-                        {gameDetails.descripcion}
+    return (
+        <div className="min-h-screen w-10/12 flex flex-col items-center bg-background">
+            <div className="w-full max-w-[92%] flex flex-col lg:flex-row justify-between mt-10 gap-10">
+                <div className="lg:w-[75%] w-full h-auto">
+                    <CarrouselDetails containerHeight={containerHeight} />
+                </div>
+                <div className="w-[330px] mt-10 lg:mt-0 px-4" ref={rightContentRef}> 
+                    <img
+                        src={`data:image/jpeg;base64,${gameDetails.foto}`}
+                        alt={gameDetails.titulo}
+                        className="w-[300px] h-[400px] object-cover shadow-lg"
+                    />
+                    <p className="mt-4 text-white text-xl break-words">
+                        <ReactMarkdown>{`**${gameDetails.titulo}**`}</ReactMarkdown>
                     </p>
-                    <div className="flex items-center mt-3">
-                        <p className="mr-3 text-xs">Reseña General:</p>
+
+                    <div className="flex items-center mt-3 flex-wrap">
+                        <p className="mr-3 text-sm text-gray-300">Reseña General:</p>
                         <Calificacion />
                     </div>
-                    <div className="flex items-center mt-3">
-                        <p className="mr-3 text-xs">Fecha de Lanzamiento:</p>
-                        <p>{gameDetails.fechaLanzamiento}</p>
+
+                    <div className="flex items-center mt-3 flex-wrap">
+                        <p className="mr-3 text-sm text-gray-300">Fecha de Lanzamiento:</p>
+                        <p className="text-white">{gameDetails.fechaLanzamiento}</p>
                     </div>
-                    <div className="flex items-center mt-3">
-                        <p className="mr-3 text-xs">Equipo Desarrollador:</p>
-                        <p>{gameDetails.desarrolladora}</p>
+
+                    <div className="flex items-center mt-3 flex-wrap">
+                        <p className="mr-3 text-sm text-gray-300">Equipo Desarrollador:</p>
+                        <p className="text-white break-words">{gameDetails.desarrolladora}</p> 
                     </div>
+
                     <div className="mt-3">
-                        <p className="mr-3 text-xs">Categorías:</p>
+                        <p className="mr-3 text-sm text-gray-300">Categorías:</p>
                         <div className="flex flex-wrap gap-2 mt-2">
                             {categories.map((category, index) => (
-                                <span key={index} className="bg-gray-700 text-white text-xs py-1 px-2 rounded-full">
+                                <span key={index} className="badge badge-secondary break-words">
                                     {category}
                                 </span>
                             ))}
                         </div>
                     </div>
 
-                    <div className="flex mt-10 justify-center">
-                        <div className="mr-3 mb-3">
-                            {/* Asegúrate de que el modal llama correctamente a handleAddToCart */}
-                            <ModalAgregarCarrito 
-                                gameDetails={gameDetails} 
-                                carritoId={carritoId} 
-                                onAddToCarrito={handleAddToCart}
-                            />
-                        </div>
+                    <div className="flex mt-10">
+                        <ModalAgregarCarrito 
+                            gameDetails={gameDetails} 
+                            carritoId={carritoId} 
+                            onAddToCarrito={handleAddToCart}
+                        />
                     </div>
                 </div>
             </div>
-
-            <div className="flex justify-center mt-5">
+    
+            <div className="w-full max-w-[92%] mt-10">
                 <DividerDetails />
             </div>
-
-            <div className="flex justify-center">
-                <div className="mt-10 w-[1303px] rounded-md" style={{ backgroundColor: "#465870" }}>
-                    <AcercaDe />
+    
+            <div className="w-full max-w-[92%] mt-10">
+                <div className="rounded-md bg-neutral p-6  mx-auto">
+                    <AcercaDe descripcion={gameDetails.descripcion} />
                 </div>
             </div>
-
-            <div className="flex justify-center mt-5">
+    
+            <div className="w-full max-w-[92%] mt-5">
                 <DividerDetails />
+            </div>
+
+            <div className="w-full max-w-[92%] mt-5">
+                <GameCarrousel gameId={gameDetails?.id} />
             </div>
         </div>
     );
+    
+    
 };
 
 export default ContainerDetails;
