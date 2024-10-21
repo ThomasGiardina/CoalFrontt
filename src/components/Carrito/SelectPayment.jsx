@@ -18,8 +18,30 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
         postalCode: "",
         phone: ""
     });
+
     const token = localStorage.getItem("token");
 
+    // Cargar datos del usuario actual
+    useEffect(() => {
+        fetch("http://localhost:4002/api/usuario/actual", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Si el usuario tiene un teléfono guardado, lo establecemos en el formulario
+                if (data.telefono) {
+                    setFormValues((prevValues) => ({
+                        ...prevValues,
+                        phone: data.telefono,
+                    }));
+                }
+            })
+            .catch((error) => console.error("Error al cargar los datos del usuario:", error));
+    }, [token]);
+
+    // Obtener las tarjetas del usuario si selecciona la opción de tarjeta
     useEffect(() => {
         if (paymentMethod === "Tarjeta de Crédito/Débito") {
             fetch("http://localhost:4002/metodosPago/usuario", {
@@ -66,6 +88,7 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
         setShippingOption(e.target.value);
     };
 
+    // Validación del formulario
     const isFormValid = () => {
         const { address, city, postalCode, phone } = formValues;
         const isShippingValid = shippingOption === "retiro" || (address && city && postalCode && phone);
@@ -77,6 +100,36 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
             alert("Por favor completa todos los campos requeridos para continuar.");
             return;
         }
+
+        // Guardar los datos en localStorage
+        localStorage.setItem("direccionEnvio", JSON.stringify({
+            direccion: formValues.address,
+            ciudad: formValues.city,
+            codigoPostal: formValues.postalCode,
+            telefono: formValues.phone
+        }));
+
+        // Enviar el teléfono actualizado al servidor si no está guardado previamente
+        if (!formValues.phone) {
+            fetch("http://localhost:4002/api/usuario/actualizar", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    telefono: formValues.phone,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Teléfono actualizado correctamente", data);
+                })
+                .catch(error => {
+                    console.error("Error al actualizar el teléfono:", error);
+                });
+        }
+
         setIsConfirmed(true);  
     };
 
@@ -243,7 +296,7 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
                     Atrás
                 </button>
                 <button 
-                    className={`btn bg-primary text-white py-2 px-4 rounded-md ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`} 
+                    className={`btn bg-secondary text-white py-2 px-4 rounded-md ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`} 
                     onClick={handleConfirm}
                     disabled={!isFormValid()}
                 >
