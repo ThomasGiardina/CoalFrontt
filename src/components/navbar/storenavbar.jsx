@@ -35,7 +35,7 @@ const StoreNavbar = () => {
             <nav className="bg-background h-auto top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center text-4xl">
                     <Link to="/" className="flex items-center">
-                        <img alt="Logo" src="./logoCoalBlanco.png" className="w-14" />
+                        <img alt="Logo" src="/logoCoalBlanco.png" className="w-14" />
                         <span className="ml-2 text-white font-bold">Coal</span>
                     </Link>
                     {role === 'ADMIN' ? (

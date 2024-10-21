@@ -167,17 +167,6 @@ const ContainerDetails = () => {
             <div className="flex justify-center mt-5">
                 <DividerDetails />
             </div>
-
-            <div className="flex justify-center">
-                <div className="mt-10 w-[1303px] rounded-md" style={{ backgroundColor: "#465870" }}>
-                    <MasRecomendaciones />
-                </div>
-            </div>
-
-            <br />
-            <br />
-            <br />
-            <br />
         </div>
     );
 };
