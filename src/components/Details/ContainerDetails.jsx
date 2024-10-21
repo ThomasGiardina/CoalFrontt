@@ -106,7 +106,12 @@ const ContainerDetails = () => {
         <div className="min-h-screen w-10/12 flex flex-col items-center bg-background">
             <div className="w-full max-w-[92%] flex flex-col lg:flex-row justify-between mt-10 gap-10">
                 <div className="lg:w-[75%] w-full h-auto">
-                    <CarrouselDetails containerHeight={containerHeight} />
+                    <CarrouselDetails
+                        containerHeight="700px" 
+                        carruselImagen1={gameDetails.carruselImagen1}
+                        carruselImagen2={gameDetails.carruselImagen2}
+                        carruselImagen3={gameDetails.carruselImagen3}
+                    />
                 </div>
                 <div className="w-[330px] mt-10 lg:mt-0 px-4" ref={rightContentRef}> 
                     <img
