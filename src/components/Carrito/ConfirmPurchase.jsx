@@ -61,8 +61,14 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
                         throw new Error("Error al confirmar el carrito");
                     })
                     .then(data => {
-                        Swal.fire('Compra realizada!', 'Tu compra ha sido completada con éxito.', 'success');
-                        handleNextStep();
+                        Swal.fire({
+                            title: 'Compra realizada!',
+                            text: 'Tu compra ha sido completada con éxito.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            handleNextStep();  
+                        });
                     })
                     .catch(error => {
                         Swal.fire('Error', 'Hubo un problema al confirmar el carrito.', 'error');
@@ -74,6 +80,7 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
             Swal.fire('Error', 'Debes aceptar los términos para continuar.', 'error');
         }
     };
+    
 
     return (
         <div className="flex flex-col text-white min-h-screen w-[1400px] p-8 rounded-lg max-w-7xl mx-auto">
