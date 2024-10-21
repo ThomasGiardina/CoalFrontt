@@ -191,6 +191,50 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
                 </select>
             </div>
 
+            {shippingOption === "envio" && (
+                <div className="mt-6">
+                    <label className="block mb-2">Dirección</label>
+                    <input
+                        type="text"
+                        name="address"
+                        value={formValues.address}
+                        onChange={handleInputChange}
+                        className="bg-gray-700 p-3 w-full rounded-md"
+                        placeholder="Dirección"
+                    />
+
+                    <label className="block mb-2 mt-4">Ciudad</label>
+                    <input
+                        type="text"
+                        name="city"
+                        value={formValues.city}
+                        onChange={handleInputChange}
+                        className="bg-gray-700 p-3 w-full rounded-md"
+                        placeholder="Ciudad"
+                    />
+
+                    <label className="block mb-2 mt-4">Código Postal</label>
+                    <input
+                        type="text"
+                        name="postalCode"
+                        value={formValues.postalCode}
+                        onChange={handleInputChange}
+                        className="bg-gray-700 p-3 w-full rounded-md"
+                        placeholder="Código Postal"
+                    />
+
+                    <label className="block mb-2 mt-4">Teléfono</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value={formValues.phone}
+                        onChange={handleInputChange}
+                        className="bg-gray-700 p-3 w-full rounded-md"
+                        placeholder="Teléfono"
+                    />
+                </div>
+            )}
+
             <div className="flex justify-between mt-6">
                 <button 
                     className="btn text-white py-2 px-4 rounded-md" 
