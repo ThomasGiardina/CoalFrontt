@@ -11,7 +11,9 @@ const AddGameButton = ({ addGame }) => {
     const [platform, setPlatform] = useState('');
     const [stock, setStock] = useState('');
     const [mainImage, setMainImage] = useState(null);
-    const [secondaryImage, setSecondaryImage] = useState(null);
+    const [carruselImagen1, setCarruselImagen1] = useState(null);
+    const [carruselImagen2, setCarruselImagen2] = useState(null);
+    const [carruselImagen3, setCarruselImagen3] = useState(null);
     const [fechaLanzamiento, setFechaLanzamiento] = useState('');
     const [desarrolladora, setDesarrolladora] = useState('');
     const { isAuthenticated, role } = useContext(AuthContext); 
@@ -32,7 +34,6 @@ const AddGameButton = ({ addGame }) => {
         setPlatform('');
         setStock('');
         setMainImage(null);
-        setSecondaryImage(null);
         setSelectedCategories([]);
         setFechaLanzamiento('');
         setDesarrolladora('');
@@ -64,14 +65,24 @@ const AddGameButton = ({ addGame }) => {
             fechaLanzamiento: fechaLanzamiento,
             desarrolladora: desarrolladora,
         };
+        
         formData.append('videojuego', JSON.stringify(videojuego));
     
+        // Agregar las imágenes del carrusel al formData
         if (mainImage) {
             formData.append('foto', mainImage);
         }
     
-        if (secondaryImage) {
-            formData.append('foto2', secondaryImage);
+        if (carruselImagen1) {
+            formData.append('carruselImagen1', carruselImagen1);
+        }
+    
+        if (carruselImagen2) {
+            formData.append('carruselImagen2', carruselImagen2);
+        }
+    
+        if (carruselImagen3) {
+            formData.append('carruselImagen3', carruselImagen3);
         }
     
         const token = localStorage.getItem('token');
@@ -80,32 +91,26 @@ const AddGameButton = ({ addGame }) => {
             const response = await fetch('http://localhost:4002/videojuegos', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': `Bearer ${token}`,
                 },
-                body: formData,  
+                body: formData,
             });
     
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Detalles del error:', errorData);  
+                console.error('Detalles del error:', errorData);
                 throw new Error('Error al agregar el videojuego');
             }
     
             const data = await response.json();
             console.log('Videojuego creado: ', data);
-            
+    
             addGame(data);
-    
             handleCloseModal();
-    
         } catch (error) {
             console.error('Error:', error);
         }
     };
-    
-    
-    
-    
 
     return (
         <>
@@ -159,6 +164,26 @@ const AddGameButton = ({ addGame }) => {
                                             value={price}
                                             onChange={(e) => setPrice(e.target.value)}
                                             required
+                                        />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Imagen Carrousel 1</span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className="file-input file-input-bordered w-full"
+                                            onChange={(e) => setCarruselImagen1(e.target.files[0])}
+                                        />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Imagen Carrousel 2</span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className="file-input file-input-bordered w-full"
+                                            onChange={(e) => setCarruselImagen2(e.target.files[0])}
                                         />
                                     </div>
                                 </div>
@@ -280,12 +305,12 @@ const AddGameButton = ({ addGame }) => {
 
                                     <div className="form-control">
                                         <label className="label">
-                                            <span className="label-text">Imagen secundaria</span>
+                                            <span className="label-text">Imagen Carrousel 3</span>
                                         </label>
                                         <input
                                             type="file"
                                             className="file-input file-input-bordered w-full"
-                                            onChange={(e) => setSecondaryImage(e.target.files[0])}
+                                            onChange={(e) => setCarruselImagen3(e.target.files[0])}
                                         />
                                     </div>
                                 </div>
