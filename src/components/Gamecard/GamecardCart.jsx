@@ -4,26 +4,19 @@ import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => { 
-
-    const { id, titulo, precio, cantidad, videojuego, carrito_id, plataforma } = item; 
+const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
+    const { id, titulo, precio, cantidad, videojuego, plataforma } = item;
     const fotoUrl = videojuego && videojuego.foto
-        ? `data:image/jpeg;base64,${videojuego.foto}` 
-        : '/ruta/a/imagen_por_defecto.png'; 
+        ? `data:image/jpeg;base64,${videojuego.foto}`
+        : '/ruta/a/imagen_por_defecto.png';
     
     const token = localStorage.getItem('token');
 
     console.log("Plataforma del juego:", plataforma);
-    console.log("Carrito ID:", carrito_id); // Asegúrate de que el carrito_id está definido correctamente
 
-    const actualizarCantidadEnBackend = async (itemId, carritoId, nuevaCantidad) => {
-        if (!carritoId) {
-            console.error("El carrito_id no está definido.");
-            return;
-        }
-
+    const actualizarCantidadEnBackend = async (itemId, nuevaCantidad) => {
         try {
-            const response = await fetch(`http://localhost:4002/carritos/${carritoId}/items/${itemId}`, {
+            const response = await fetch(`http://localhost:4002/carritos/items/${itemId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -45,14 +38,14 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
         onUpdateQuantity(id, nuevaCantidad);
-        actualizarCantidadEnBackend(id, carrito_id, nuevaCantidad);  
+        actualizarCantidadEnBackend(id, nuevaCantidad);
     };
 
     const disminuirCantidad = () => {
         if (cantidad > 1) {
             const nuevaCantidad = cantidad - 1;
             onUpdateQuantity(id, nuevaCantidad);
-            actualizarCantidadEnBackend(id, carrito_id, nuevaCantidad);  
+            actualizarCantidadEnBackend(id, nuevaCantidad);
         }
     };
 
@@ -77,7 +70,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                             Authorization: `Bearer ${token}`,
                         },
                     });
-    
+
                     if (response.ok) {
                         console.log(`Producto ${titulo} eliminado del carrito.`);
 
@@ -87,7 +80,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                             text: 'El producto ha sido eliminado del carrito.',
                         });
 
-                        onDeleteItem(id); 
+                        onDeleteItem(id);
                     } else {
                         console.error("Error al eliminar el producto.");
                         Swal.fire({
@@ -111,7 +104,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     const getPlatformIcon = (platform) => {
         if (!platform) return null;
 
-        switch (platform.toUpperCase()) {  
+        switch (platform.toUpperCase()) {
             case 'XBOX':
                 return (
                     <span className="flex items-center space-x-2">
@@ -120,7 +113,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                     </span>
                 );
             case 'PLAY_STATION':
-            case 'PLAYSTATION':  
+            case 'PLAYSTATION':
                 return (
                     <span className="flex items-center space-x-2">
                         <i className="fab fa-playstation text-blue-500 text-xl"></i>
@@ -151,11 +144,11 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     };
 
     return (
-        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[200px] p-4 relative mb-6"> {/* Aumenta la altura aquí */}
-            <div className="flex items-center space-x-4 h-full"> 
+        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[200px] p-4 relative mb-6">
+            <div className="flex items-center space-x-4 h-full">
                 <img
-                    className="w-32 h-full rounded-lg object-cover"  
-                    src={fotoUrl}  
+                    className="w-32 h-full rounded-lg object-cover"
+                    src={fotoUrl}
                     alt={titulo}
                 />
             </div>
@@ -163,7 +156,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
             <div className="flex-grow flex flex-col justify-between ml-4">
                 <div className="flex justify-between items-start w-full">
                     <h2 className="text-lg font-semibold">{titulo}</h2>
-                    <button 
+                    <button
                         className="text-gray-400 hover:text-red-500 transition"
                         onClick={eliminarProducto}
                     >

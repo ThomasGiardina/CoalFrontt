@@ -18,7 +18,7 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                     console.log("Datos completos del carrito:", data);
 
                     if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-                        setCartItems(data.items);
+                        setCartItems(data.items); 
                     } else {
                         console.error("El carrito está vacío o no se encontraron items.");
                     }
@@ -60,8 +60,8 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                         <GamecardCart
                             key={item.id}
                             item={item}
-                            onUpdateQuantity={handleUpdateQuantity} 
-                            onDeleteItem={handleDeleteItem} 
+                            onUpdateQuantity={handleUpdateQuantity}
+                            onDeleteItem={handleDeleteItem}
                         />
                     ))
                 ) : (
