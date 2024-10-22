@@ -16,7 +16,7 @@ const Gamefilter = ({ games, setFilter }) => {
         NINTENDO_SWITCH: false, PLAY_STATION: false, price: maxPrice,
     });
 
-    const [searchTerm, setSearchTerm] = useState(''); 
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         if (games.length > 0) {
@@ -53,12 +53,6 @@ const Gamefilter = ({ games, setFilter }) => {
 
     const handleSearchChange = (term) => {
         setSearchTerm(term); 
-        setFilters({
-            ACCION: false, AVENTURA: false, RPG: false, SIMULACION: false,
-            DEPORTES: false, ESTRATEGIA: false, PUZZLE: false, TERROR: false,
-            VR: false, EDUCATIVO: false, XBOX: false, PC: false,
-            NINTENDO_SWITCH: false, PLAY_STATION: false, price: maxPrice,
-        });
     };
 
     const resetFilters = () => {
@@ -68,13 +62,14 @@ const Gamefilter = ({ games, setFilter }) => {
             VR: false, EDUCATIVO: false, XBOX: false, PC: false,
             NINTENDO_SWITCH: false, PLAY_STATION: false, price: maxPrice,
         });
+        setSearchTerm(''); 
     };
 
     return (
         <div className="bg-neutral p-6 rounded-xl w-[400px] h-[1010px] flex flex-col space-y-6">
             <SearchBar
                 placeholder="Buscar por título o plataforma..."
-                onSearch={handleSearchChange}  
+                onSearch={handleSearchChange} 
             />
             <div className="w-full flex-grow">
                 <h2 className="text-white font-bold mb-4 text-xl">Categorías</h2>
