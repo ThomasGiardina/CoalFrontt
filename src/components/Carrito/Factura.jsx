@@ -20,9 +20,18 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
 
         generateOrderId();
 
-        if (shippingMethod === "envio" || shippingMethod === "Envío a Domicilio") {
-            const savedAddress = localStorage.getItem("direccionEnvio");
-            setShippingAddress(savedAddress || "Dirección no proporcionada");
+        if (shippingMethod === "envio") {
+            const savedAddress = JSON.parse(localStorage.getItem("direccionEnvio"));
+            if (savedAddress) {
+                setShippingAddress(`
+                    ${savedAddress.address}, 
+                    ${savedAddress.city}, 
+                    ${savedAddress.postalCode}, 
+                    Tel: ${savedAddress.phone}
+                `);
+            } else {
+                setShippingAddress("Dirección no proporcionada");
+            }
         }
     }, [shippingMethod]);
 
