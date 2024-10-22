@@ -7,7 +7,8 @@ import Searchbar from "../Searchbar/searchbar"
 const ITEMS_PER_PAGE = 8;
 
 const StockContainer = () => {
-    const [games, setGames] = useState([]);
+    const [allGames, setAllGames] = useState([]); 
+    const [filteredGames, setFilteredGames] = useState([]); 
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -28,7 +29,8 @@ const StockContainer = () => {
             })
             .then((data) => {
                 if (Array.isArray(data)) {
-                    setGames(data);
+                    setAllGames(data); 
+                    setFilteredGames(data); 
                 } else {
                     throw new Error("Los datos no son un array");
                 }
@@ -42,30 +44,35 @@ const StockContainer = () => {
     };
 
     const addGame = (newGame) => {
-        setGames((prevGames) => [newGame, ...prevGames]);
+        setAllGames((prevGames) => [newGame, ...prevGames]);
+        setFilteredGames((prevGames) => [newGame, ...prevGames]); 
     };
 
     const updateGameInList = (updatedGame) => {
-        setGames((prevGames) =>
+        setAllGames((prevGames) =>
             prevGames.map((game) => (game.id === updatedGame.id ? updatedGame : game))
         );
+        setFilteredGames((prevGames) =>
+            prevGames.map((game) => (game.id === updatedGame.id ? updatedGame : game))
+        ); 
     };
 
     const removeGameFromList = (gameId) => {
-        setGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
+        setAllGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
+        setFilteredGames((prevGames) => prevGames.filter((game) => game.id !== gameId)); 
     };
 
     const handleSearch = (term) => {
         setSearchTerm(term);  
+        const filtered = allGames.filter((game) =>
+            game.titulo.toLowerCase().includes(term.toLowerCase()) ||
+            game.plataforma.toLowerCase().includes(term.toLowerCase())
+        );
+        setFilteredGames(filtered); 
+        setCurrentPage(1); 
     };
 
-    const filteredGames = games.filter((game) =>
-        game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        game.plataforma.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
     const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
-
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const selectedGames = filteredGames.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
@@ -94,7 +101,7 @@ const StockContainer = () => {
                 <p>Error: {error}</p>  
             ) : (
                 <>
-                    {games.length === 0 ? (
+                    {filteredGames.length === 0 ? (
                         <p className="text-center text-xl mt-10">No hay juegos cargados, Agrega para ver contenido.</p>
                     ) : (
                         <>
@@ -122,7 +129,6 @@ const StockContainer = () => {
             )}
         </div>
     );
-    
 };
 
 export default StockContainer;

@@ -23,7 +23,7 @@ const CarrouselDetails = ({ containerHeight, carruselImagen1, carruselImagen2, c
     useEffect(() => {
         const interval = setInterval(() => {
             nextSlide();
-        }, 6000);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [currentIndex]);
