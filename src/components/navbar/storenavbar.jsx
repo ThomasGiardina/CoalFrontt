@@ -37,45 +37,47 @@ const StoreNavbar = () => {
                         <img alt="Logo" src="/logoCoalBlanco.png" className="w-14" />
                         <span className="ml-2 text-white font-bold">Coal</span>
                     </Link>
-                    {role === 'ADMIN' ? (
-                        <>
-                            <Link to="/GamesAdmin" className="btn btn-ghost btn-sm ml-8">
-                                <i className="fa-solid fa-gamepad text-primary"></i>
-                                Admin de Juegos
-                            </Link>
-                            <Link to="/Statistics" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-chart-bar text-primary"></i>
-                                Estadísticas
-                            </Link>
-                            <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fas fa-file-signature text-primary"></i>
-                                Pedidos
-                            </Link>
-                            <Link to="/Store" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-store text-primary"></i>
-                                Tienda
-                            </Link>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/Store" className="btn btn-ghost btn-sm ml-8">
-                                <i className="fa-solid fa-store text-primary"></i>
-                                Tienda
-                            </Link>
+                    {isAuthenticated && role === 'ADMIN' ? (
+                    <>
+                        <Link to="/GamesAdmin" className="btn btn-ghost btn-sm ml-8">
+                            <i className="fa-solid fa-gamepad text-primary"></i>
+                            Admin de Juegos
+                        </Link>
+                        <Link to="/Statistics" className="btn btn-ghost btn-sm">
+                            <i className="fa-solid fa-chart-bar text-primary"></i>
+                            Estadísticas
+                        </Link>
+                        <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
+                            <i className="fa-solid fas fa-file-signature text-primary"></i>
+                            Pedidos
+                        </Link>
+                        <Link to="/Store" className="btn btn-ghost btn-sm">
+                            <i className="fa-solid fa-store text-primary"></i>
+                            Tienda
+                        </Link>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/Store" className="btn btn-ghost btn-sm ml-8">
+                            <i className="fa-solid fa-store text-primary"></i>
+                            Tienda
+                        </Link>
+                        {isAuthenticated && (
                             <Link to="/UserOrderHistory" className="btn btn-ghost btn-sm">
                                 <i className="fa-solid fas fa-file-contract text-primary"></i>
                                 Pedidos
                             </Link>
-                            <Link to="/About" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-info-circle text-primary"></i>
-                                Acerca de
-                            </Link>
-                            <Link to="/Support" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-headset text-primary"></i>
-                                Soporte
-                            </Link>
-                        </>
-                    )}
+                        )}
+                        <Link to="/About" className="btn btn-ghost btn-sm">
+                            <i className="fa-solid fa-info-circle text-primary"></i>
+                            Acerca de
+                        </Link>
+                        <Link to="/Support" className="btn btn-ghost btn-sm">
+                            <i className="fa-solid fa-headset text-primary"></i>
+                            Soporte
+                        </Link>
+                    </>
+                )}
                 </div>
                 <div className='relative flex items-center gap-4'>
                     {isAuthenticated ? (

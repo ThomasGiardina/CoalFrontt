@@ -1,17 +1,12 @@
 import { useState, useEffect } from 'react';
 
-
 const CarruselLogin = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const images = [
-        'https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp',
-        'https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp',
-        'https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp',
-        'https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp',
-        'https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.webp',
-        'https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.webp',
-        'https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.webp',
+        '/src/assets/log1.jpg',  
+        '/src/assets/log2.jpg', 
+        '/src/assets/log3.jpg'  
     ];
 
     const goToNext = () => {
@@ -31,23 +26,25 @@ const CarruselLogin = () => {
     }, []);
 
     return (
-        <div className="relative w-[500px] h-[660px]">
-        <div className="carousel rounded-box h-full">
-            <div className="carousel-item h-full">
-            <img src={images[currentIndex]} className="object-cover w-full h-full" />
+        <div className="relative w-[520px] h-[660px]"> 
+            <div className="carousel rounded-box w-full h-full overflow-hidden">
+                <div className="carousel-item w-full h-full">
+                    <img
+                        src={images[currentIndex]}
+                        className="object-cover w-full h-full transition-transform duration-500 ease-in-out transform hover:scale-105" 
+                    />
+                </div>
+            </div>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center space-x-2">
+                {images.map((_, index) => (
+                    <div
+                        key={index}
+                        className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-stone-950' : 'bg-gray-500'}`}
+                    ></div>
+                ))}
             </div>
         </div>
-
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center space-x-2">
-            {images.map((_, index) => (
-            <div
-                key={index}
-                className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-stone-950' : 'bg-gray-500'}`}
-            ></div>
-            ))}
-        </div>
-        </div>
     );
-    };
+};
 
 export default CarruselLogin;

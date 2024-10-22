@@ -19,7 +19,7 @@ const ContainerRegister = () => {
     return (
         <>
             <div className='h-[700px] w-[1275px] rounded-lg flex bg-neutral'>
-                <div className="my-5 ml-5 mr-28">
+                <div className="my-5 ml-5 mr-24">
                     <CarruselLogin />
                 </div>
                 <div className="flex flex-col my-20">

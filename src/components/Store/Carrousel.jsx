@@ -6,8 +6,8 @@ import provisional4 from "../../assets/provisional4.jpg";
 
 const slides = [
     {
-        title: "Explora el Mundo Gamer sin Límites",
-        subtitle: "Sumérgete en aventuras inolvidables y descubre nuevos horizontes",
+        title: "¡Aprovecha descuentos inimaginables!",
+        subtitle: "Aprovecha un 15% de dto con efectivo y 10% con debito",
         image: provisional1,
     },
     {
