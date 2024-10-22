@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress }) => {
+const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress, shippingCost, discount }) => {
     const [nombreCliente, setNombreCliente] = useState("Nombre del Cliente");
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddr
             <div className="flex justify-between mb-6 p-4 bg-white border-b">
                 <div>
                     <h2 className="font-bold text-lg">Coal</h2>
-                    <p>Tu aventura comienza aquí.</p>
+                    <p>El lema de su empresa</p>
                     <p>Dirección: Lima 757</p>
                     <p>Teléfono: 11-7662-5199</p>
                 </div>
@@ -72,6 +72,18 @@ const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddr
                             <td className="py-2 text-right text-black">{formatPrice(item.precio * item.cantidad)}</td>
                         </tr>
                     ))}
+                    <tr>
+                        <td className="py-2 text-black">Envío</td>
+                        <td className="py-2 text-center text-black">-</td>
+                        <td className="py-2 text-right text-black">{formatPrice(shippingCost)}</td>
+                    </tr>
+                    {discount > 0 && (
+                        <tr>
+                            <td className="py-2 text-black">Descuento</td>
+                            <td className="py-2 text-center text-black">-</td>
+                            <td className="py-2 text-right text-black">-{formatPrice(discount)}</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 

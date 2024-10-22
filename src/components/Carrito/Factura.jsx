@@ -126,6 +126,8 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         cartItems={cartItems}
                         total={total}
                         shippingAddress={shippingAddress} 
+                        shippingCost={shippingCost} 
+                        discount={discount}
                     />
                 </div>
             )}
