@@ -88,7 +88,7 @@ const StockContainer = () => {
                 <p className="font-bold text-4xl text-primary">Stock de Juegos</p>
                 <div className="flex space-x-4">
                     <Searchbar
-                        placeholder="Buscar por título o plataforma..." 
+                        placeholder="Buscar Juegos..." 
                         onSearch={handleSearch} 
                     />
                     <AddGameButton addGame={addGame} /> 
@@ -96,7 +96,9 @@ const StockContainer = () => {
             </div>
     
             {loading ? (
-                <p>Cargando juegos...</p>  
+                <div className='justify-center flex'>
+                    <span className="loading loading-dots loading-lg"></span>
+                </div>
             ) : error ? (
                 <p>Error: {error}</p>  
             ) : (
