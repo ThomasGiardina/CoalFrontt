@@ -9,7 +9,7 @@ const AccountSettings = () => {
     const [formData, setFormData] = useState({
         id: "",
         username: "",  
-        telefono: "",
+        telefono: "", 
         firstName: "",  
         lastName: "",  
         email: ""  
@@ -39,7 +39,7 @@ const AccountSettings = () => {
                 setFormData({
                     id: userData.id,
                     username: userData.username,  
-                    telefono: userData.telefono,
+                    telefono: userData.telefono || "", 
                     firstName: userData.firstName,
                     lastName: userData.lastName,
                     email: userData.email  
@@ -62,11 +62,13 @@ const AccountSettings = () => {
     const handleSubmit = async () => {
         const token = localStorage.getItem('token'); 
 
-        if (formData.telefono.length !== 10 || !formData.telefono.startsWith('11')) {
+        if (formData.telefono && (formData.telefono.length !== 10 || !formData.telefono.startsWith('11'))) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El teléfono debe tener exactamente 10 dígitos y comenzar con 11.',
+                background: '#1D1F23',
+                color: '#fff',
+                text: 'Si se proporciona, el teléfono debe tener exactamente 10 dígitos y comenzar con 11.',
                 confirmButtonText: 'Aceptar',
             });
             return; 
@@ -84,7 +86,7 @@ const AccountSettings = () => {
                 body: JSON.stringify({
                     id: formData.id,
                     username: formData.username,  
-                    telefono: formData.telefono,
+                    telefono: formData.telefono || null, 
                     firstName: formData.firstName,
                     lastName: formData.lastName,
                     email: formData.email  
@@ -97,6 +99,8 @@ const AccountSettings = () => {
                         icon: 'success',
                         title: 'Correo cambiado',
                         text: 'Has cambiado tu correo electrónico. Por favor, cierra sesión y vuelve a iniciar sesión para continuar.',
+                        background: '#1D1F23',
+                        color: '#fff',
                         confirmButtonText: 'Cerrar sesión',
                         allowOutsideClick: false, 
                         allowEscapeKey: false 
@@ -109,6 +113,8 @@ const AccountSettings = () => {
                         icon: 'success',
                         title: 'Cambios guardados',
                         text: 'Los cambios fueron guardados exitosamente',
+                        background: '#1D1F23',
+                        color: '#fff',
                         confirmButtonText: 'Aceptar',
                     });
                 }
@@ -117,6 +123,8 @@ const AccountSettings = () => {
                     icon: 'error',
                     title: 'Error',
                     text: 'Hubo un problema al guardar los cambios',
+                    background: '#1D1F23',
+                    color: '#fff',
                     confirmButtonText: 'Aceptar',
                 });
             }
@@ -126,6 +134,8 @@ const AccountSettings = () => {
                 icon: 'error',
                 title: 'Error',
                 text: 'Error al guardar los cambios: ' + error.message,
+                background: '#1D1F23',
+                color: '#fff',
                 confirmButtonText: 'Aceptar',
             });
         }

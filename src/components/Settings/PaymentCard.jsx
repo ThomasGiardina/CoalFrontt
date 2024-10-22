@@ -23,6 +23,8 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
             text: "¡No podrás revertir esta acción!",
             icon: 'warning',
             showCancelButton: true,
+            background: '#1D1F23',
+            color: '#fff',
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminar',
@@ -33,7 +35,8 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
                 Swal.fire(
                     '¡Eliminado!',
                     'El método de pago ha sido eliminado.',
-                    'success'
+                    'success',
+                    
                 );
             }
         });

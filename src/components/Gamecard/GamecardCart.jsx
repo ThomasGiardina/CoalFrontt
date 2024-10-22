@@ -46,6 +46,8 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                 icon: 'warning',
                 title: 'Cantidad máxima alcanzada',
                 text: `Solo hay ${stock} unidades disponibles.`,
+                background: '#1D1F23',
+                color: '#fff',
             });
         }
     };
@@ -66,6 +68,8 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
             showCancelButton: true,
             confirmButtonColor: 'primary',
             cancelButtonColor: '#d33',
+            background: '#1D1F23',
+            color: '#fff',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
         }).then(async (result) => {

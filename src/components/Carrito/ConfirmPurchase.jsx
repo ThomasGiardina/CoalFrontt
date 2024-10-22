@@ -47,6 +47,8 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
                 showCancelButton: true,
                 confirmButtonColor: 'primary',
                 cancelButtonColor: '#d33',
+                background: '#1D1F23',
+                color: '#fff',
                 confirmButtonText: 'Sí, comprar',
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
@@ -69,6 +71,8 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
                             title: 'Compra realizada!',
                             text: 'Tu compra ha sido completada con éxito.',
                             icon: 'success',
+                            background: '#1D1F23',
+                            color: '#fff',
                             confirmButtonText: 'OK'
                         }).then(() => {
                             handleNextStep();  

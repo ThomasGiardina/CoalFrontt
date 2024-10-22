@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 const SettingsImage = () => {
     const [imageSrc, setImageSrc] = useState("");  
@@ -51,17 +52,35 @@ const SettingsImage = () => {
                     body: formData
                 });
 
-                const responseText = await response.text();
-                console.log(responseText);
-    
                 if (response.ok) {
-                    alert("Imagen actualizada correctamente");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Imagen actualizada',
+                        text: 'Tu imagen se ha actualizado correctamente.',
+                        confirmButtonText: 'Aceptar',
+                        background: '#1D1F23',
+                        color: '#fff',
+                    });
                 } else {
-                    alert("Error al actualizar la imagen");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un problema al actualizar la imagen.',
+                        confirmButtonText: 'Aceptar',
+                        background: '#1D1F23',
+                        color: '#fff',
+                    });
                 }
             } catch (error) {
                 console.error("Error al actualizar la imagen:", error);
-                alert("Error al actualizar la imagen");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al actualizar la imagen.',
+                    confirmButtonText: 'Aceptar',
+                    background: '#1D1F23',
+                    color: '#fff',
+                });
             }
         }
     };

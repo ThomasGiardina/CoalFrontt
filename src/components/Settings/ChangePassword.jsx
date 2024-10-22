@@ -23,6 +23,8 @@ const ChangePassword = () => {
                     icon: 'success',
                     title: 'Contraseña cambiada',
                     text: 'La contraseña ha sido cambiada exitosamente.',
+                    background: '#1D1F23',
+                    color: '#fff',
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
                     setResetInputs(true);
@@ -39,6 +41,8 @@ const ChangePassword = () => {
                 icon: 'error',
                 title: 'Error al cambiar la contraseña',
                 text: 'La contraseña actual es incorrecta.',
+                background: '#1D1F23',
+                color: '#fff',
                 confirmButtonText: 'Aceptar'
             });
         });
