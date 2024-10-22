@@ -7,10 +7,14 @@ import html2canvas from "html2canvas";
 const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
     const [orderId, setOrderId] = useState("");
     const [orderDate, setOrderDate] = useState(new Date());
-    const [shippingAddress, setShippingAddress] = useState("");
+    const [shippingAddress, setShippingAddress] = useState({});
     const [showTraditionalInvoice, setShowTraditionalInvoice] = useState(false);
 
-    const total = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+    const shippingCost = shippingMethod === "envio" ? 5000 : 0; 
+    const discountPercentage = paymentMethod === "EFECTIVO" ? 0.15 : paymentMethod === "DEBITO" ? 0.10 : 0; 
+    const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+    const discount = subtotal * discountPercentage; 
+    const total = subtotal + shippingCost - discount; 
 
     useEffect(() => {
         const generateOrderId = () => {
@@ -23,56 +27,28 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
         if (shippingMethod === "envio") {
             const savedAddress = JSON.parse(localStorage.getItem("direccionEnvio"));
             if (savedAddress) {
-                setShippingAddress(`
-                    ${savedAddress.address}, 
-                    ${savedAddress.city}, 
-                    ${savedAddress.postalCode}, 
-                    Tel: ${savedAddress.phone}
-                `);
+                setShippingAddress({
+                    address: savedAddress.direccion || "No especificado",
+                    city: savedAddress.localidad || "No especificado",
+                    postalCode: savedAddress.codigoPostal || "No especificado",
+                    phone: savedAddress.telefono || "No especificado",
+                });
             } else {
-                setShippingAddress("Dirección no proporcionada");
+                setShippingAddress({
+                    address: "Dirección no proporcionada",
+                    city: "No especificado",
+                    postalCode: "No especificado",
+                    phone: "No especificado",
+                });
             }
         }
     }, [shippingMethod]);
 
     const formatPrice = (price) => {
-        if (typeof price !== "number" || isNaN(price)) {
-            return "0 ARS"; 
-        }
         return price.toLocaleString("es-AR", {
             style: "currency",
             currency: "ARS",
         });
-    };
-
-    const downloadInvoiceAsPDF = () => {
-        const input = document.getElementById("invoice");
-        html2canvas(input, { backgroundColor: "#ffffff" })  
-            .then((canvas) => {
-                const imgData = canvas.toDataURL("image/png");
-                const pdf = new jsPDF("p", "mm", "a4");
-                const imgWidth = 210; 
-                const pageHeight = 295; 
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-
-                pdf.save(`Factura-${orderId}.pdf`);
-            })
-            .catch((error) => {
-                console.error("Error al generar el PDF:", error);
-                Swal.fire("Error", "No se pudo descargar la factura", "error");
-            });
     };
 
     return (
@@ -97,9 +73,11 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         </div>
                         {shippingMethod === "envio" && (
                             <div className="flex justify-between mb-3">
-                                <span className="text-gray-400">Dirección de Envío:</span>
-                                <span className="text-white">{shippingAddress}</span>
-                            </div>
+                            <span className="text-gray-400">Dirección de Envío:</span>
+                            <span className="text-white">
+                                {`${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, Tel: ${shippingAddress.phone}`}
+                            </span>
+                        </div>
                         )}
                     </div>
 
@@ -116,9 +94,25 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                             ))}
                         </div>
 
+                        <hr className="border-gray-600 my-4" />
+
                         <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Total:</span>
-                            <span className="text-white">{formatPrice(total)}</span>
+                            <span className="text-gray-400">Subtotal:</span>
+                            <span className="text-white">{formatPrice(subtotal)}</span>
+                        </div>
+                        <div className="flex justify-between mb-3">
+                            <span className="text-gray-400">Envío:</span>
+                            <span className="text-white">{formatPrice(shippingCost)}</span>
+                        </div>
+                        {discount > 0 && (
+                            <div className="flex justify-between mb-3">
+                                <span className="text-gray-400">Descuento:</span>
+                                <span className="text-white">-{formatPrice(discount)}</span>
+                            </div>
+                        )}
+                        <div className="flex justify-between mb-3">
+                            <span className="text-gray-400 font-semibold">Total:</span>
+                            <span className="text-white font-semibold">{formatPrice(total)}</span>
                         </div>
                     </div>
                 </>
@@ -131,7 +125,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         orderDate={orderDate}
                         cartItems={cartItems}
                         total={total}
-                        shippingAddress={shippingAddress}
+                        shippingAddress={shippingAddress} 
                     />
                 </div>
             )}
@@ -143,14 +137,6 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                 >
                     {showTraditionalInvoice ? "Volver a la Factura Moderna" : "Ver Factura Tradicional"}
                 </button>
-                {showTraditionalInvoice && (
-                    <button
-                        className="btn bg-neutral text-white mt-6 py-2 px-4 rounded-md ml-4"
-                        onClick={downloadInvoiceAsPDF}
-                    >
-                        Descargar Factura
-                    </button>
-                )}
             </div>
         </div>
     );

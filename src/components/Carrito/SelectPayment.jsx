@@ -47,6 +47,21 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
         }
     };
 
+    const handleSaveAddress = () => {
+        const addressData = {
+            direccion: formValues.address,
+            localidad: formValues.city,
+            codigoPostal: formValues.postalCode,
+            telefono: formValues.phone,
+        };
+
+        localStorage.setItem('direccionEnvio', JSON.stringify(addressData));
+
+        const savedAddress = JSON.parse(localStorage.getItem('direccionEnvio'));
+        console.log("Dirección de envío guardada:", savedAddress);
+    };
+
+
     useEffect(() => {
         if (paymentMethod === "Tarjeta de Crédito/Débito") {
             fetchUserCards();
@@ -155,13 +170,13 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
 
         console.log("Opción de envío seleccionada:", shippingOption);
     
-        // Guardar la dirección de envío en el localStorage si se selecciona envío a domicilio
         if (shippingOption === "envio") {
-            localStorage.setItem('direccionEnvio', JSON.stringify(formValues)); // Guardamos la dirección en localStorage
+            localStorage.setItem('direccionEnvio', JSON.stringify(formValues)); 
             console.log(formValues)
+            handleSaveAddress();
         }
     
-        onConfirm(paymentTypeToSend, shippingOption); // Pasamos el método de pago y la opción de envío
+        onConfirm(paymentTypeToSend, shippingOption); 
     };
     
     

@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-const FacturaTradicional = ({ orderId, orderDate, cartItems, total }) => {
-    const [shippingAddress, setShippingAddress] = useState({});
+const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress }) => {
     const [nombreCliente, setNombreCliente] = useState("Nombre del Cliente");
 
     useEffect(() => {
-        const savedAddress = localStorage.getItem("direccionEnvio");
-        if (savedAddress) {
-            setShippingAddress(JSON.parse(savedAddress));
-        }
-
         const obtenerUsuarioActual = async () => {
             try {
                 const response = await fetch("http://localhost:4002/api/usuario/actual", {
@@ -37,13 +31,13 @@ const FacturaTradicional = ({ orderId, orderDate, cartItems, total }) => {
     };
 
     return (
-        <div className="p-8 bg-white text-black rounded-lg"> 
+        <div className="p-8 bg-white text-black rounded-lg">
             <h1 className="text-3xl font-bold text-center mb-6">Factura</h1>
 
             <div className="flex justify-between mb-6 p-4 bg-white border-b">
                 <div>
                     <h2 className="font-bold text-lg">Coal</h2>
-                    <p>El lema de su empresa</p>
+                    <p>Tu aventura comienza aquí.</p>
                     <p>Dirección: Lima 757</p>
                     <p>Teléfono: 11-7662-5199</p>
                 </div>
@@ -56,10 +50,10 @@ const FacturaTradicional = ({ orderId, orderDate, cartItems, total }) => {
             <div className="mb-6 p-4 bg-white border-b">
                 <p><strong>Facturar a:</strong></p>
                 <p>Cliente: {nombreCliente}</p>
-                <p>Dirección: {shippingAddress.direccion || "No especificado"}</p>
-                <p>Ciudad: {shippingAddress.localidad || "No especificado"}</p>
-                <p>Código Postal: {shippingAddress.codigoPostal || "No especificado"}</p>
-                <p>Teléfono: {shippingAddress.telefono || "No especificado"}</p>
+                <p>Dirección: {shippingAddress.address || "No especificado"}</p>
+                <p>Ciudad: {shippingAddress.city || "No especificado"}</p>
+                <p>Código Postal: {shippingAddress.postalCode || "No especificado"}</p>
+                <p>Teléfono: {shippingAddress.phone || "No especificado"}</p>
             </div>
 
             <table className="w-full text-left border-t">
