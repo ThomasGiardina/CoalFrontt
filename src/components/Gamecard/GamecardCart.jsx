@@ -9,10 +9,11 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     const fotoUrl = videojuego && videojuego.foto
         ? `data:image/jpeg;base64,${videojuego.foto}`
         : '/ruta/a/imagen_por_defecto.png';
-    
+
     const token = localStorage.getItem('token');
 
-    console.log("Plataforma del juego:", plataforma);
+    const stock = videojuego ? videojuego.stock : 0; 
+    console.log(stock)
 
     const actualizarCantidadEnBackend = async (itemId, nuevaCantidad) => {
         try {
@@ -37,8 +38,16 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
-        onUpdateQuantity(id, nuevaCantidad);
-        actualizarCantidadEnBackend(id, nuevaCantidad);
+        if (nuevaCantidad <= stock) { 
+            onUpdateQuantity(id, nuevaCantidad);
+            actualizarCantidadEnBackend(id, nuevaCantidad);
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cantidad máxima alcanzada',
+                text: `Solo hay ${stock} unidades disponibles.`,
+            });
+        }
     };
 
     const disminuirCantidad = () => {
@@ -62,8 +71,6 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    console.log(`Intentando eliminar el producto con id: ${id}`);
-
                     const response = await fetch(`http://localhost:4002/carritos/items/${id}`, {
                         method: "DELETE",
                         headers: {
@@ -72,17 +79,13 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                     });
 
                     if (response.ok) {
-                        console.log(`Producto ${titulo} eliminado del carrito.`);
-
                         Swal.fire({
                             icon: 'success',
                             title: 'Eliminado!',
                             text: 'El producto ha sido eliminado del carrito.',
                         });
-
                         onDeleteItem(id);
                     } else {
-                        console.error("Error al eliminar el producto.");
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -90,7 +93,6 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                         });
                     }
                 } catch (error) {
-                    console.error("Error al hacer la solicitud DELETE:", error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
