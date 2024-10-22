@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SearchBar from '../Searchbar/searchbar';
 
 const Gamefilter = ({ games, setFilter }) => {
     const categories = [
@@ -15,6 +16,8 @@ const Gamefilter = ({ games, setFilter }) => {
         NINTENDO_SWITCH: false, PLAY_STATION: false, price: maxPrice,
     });
 
+    const [searchTerm, setSearchTerm] = useState(''); 
+
     useEffect(() => {
         if (games.length > 0) {
             const highestPrice = Math.max(...games.map(game => game.precio));
@@ -25,24 +28,37 @@ const Gamefilter = ({ games, setFilter }) => {
 
     useEffect(() => {
         const filtered = games.filter(game => {
+            const matchSearchTerm = game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    game.plataforma.toLowerCase().includes(searchTerm.toLowerCase());
+    
             const matchCategory = categories.some(category => filters[category] && game.categorias.includes(category));
             const matchPlatform = platforms.some(platform => filters[platform] && game.plataforma === platform);
             const matchPrice = game.precio <= filters.price;
-
+    
             const noCategorySelected = categories.every(category => !filters[category]);
             const noPlatformSelected = platforms.every(platform => !filters[platform]);
-
-            return (noCategorySelected || matchCategory) &&
+    
+            return matchSearchTerm &&
+                    (noCategorySelected || matchCategory) &&
                     (noPlatformSelected || matchPlatform) &&
                     matchPrice;
         });
-
-        console.log("Juegos filtrados:", filtered); 
+    
         setFilter(filtered);
-    }, [filters, games, setFilter]);
+    }, [filters, games, searchTerm, setFilter]);
 
     const handlePriceChange = (e) => {
         setFilters({ ...filters, price: e.target.value });
+    };
+
+    const handleSearchChange = (term) => {
+        setSearchTerm(term); 
+        setFilters({
+            ACCION: false, AVENTURA: false, RPG: false, SIMULACION: false,
+            DEPORTES: false, ESTRATEGIA: false, PUZZLE: false, TERROR: false,
+            VR: false, EDUCATIVO: false, XBOX: false, PC: false,
+            NINTENDO_SWITCH: false, PLAY_STATION: false, price: maxPrice,
+        });
     };
 
     const resetFilters = () => {
@@ -56,6 +72,10 @@ const Gamefilter = ({ games, setFilter }) => {
 
     return (
         <div className="bg-neutral p-6 rounded-xl w-[400px] h-[1010px] flex flex-col space-y-6">
+            <SearchBar
+                placeholder="Buscar por título o plataforma..."
+                onSearch={handleSearchChange}  
+            />
             <div className="w-full flex-grow">
                 <h2 className="text-white font-bold mb-4 text-xl">Categorías</h2>
                 <ul className="space-y-3 w-full">
@@ -74,6 +94,7 @@ const Gamefilter = ({ games, setFilter }) => {
                     ))}
                 </ul>
             </div>
+    
             <div className="w-full flex-grow">
                 <h2 className="text-white font-bold mb-4 text-xl">Plataformas</h2>
                 <ul className="space-y-3 w-full">
@@ -90,6 +111,7 @@ const Gamefilter = ({ games, setFilter }) => {
                     ))}
                 </ul>
             </div>
+    
             <div className="w-full flex-grow">
                 <h2 className="text-white font-bold mb-4 text-xl">Rango de Precios</h2>
                 <input
@@ -102,6 +124,7 @@ const Gamefilter = ({ games, setFilter }) => {
                 />
                 <p className="text-primary mt-4 text-xl">${filters.price}</p>
             </div>
+    
             <div className="w-full flex-grow">
                 <button onClick={resetFilters} className="btn btn-outline btn-primary w-full h-14 text-xl rounded-lg">
                     Resetear Filtros
@@ -109,6 +132,7 @@ const Gamefilter = ({ games, setFilter }) => {
             </div>
         </div>
     );
+    
 };
 
 export default Gamefilter;

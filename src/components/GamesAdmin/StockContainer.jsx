@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GameCardStock from "../Gamecard/GamecardStock";
 import Pagination from "../Pagination/Pagination";
 import AddGameButton from "./AddGame";
+import Searchbar from "../Searchbar/searchbar"
 
 const ITEMS_PER_PAGE = 8;
 
@@ -10,6 +11,7 @@ const StockContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchGames();
@@ -53,10 +55,19 @@ const StockContainer = () => {
         setGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
     };
 
-    const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
+    const handleSearch = (term) => {
+        setSearchTerm(term);  
+    };
+
+    const filteredGames = games.filter((game) =>
+        game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.plataforma.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const selectedGames = games.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    const selectedGames = filteredGames.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -67,12 +78,11 @@ const StockContainer = () => {
     return (
         <div className="mt-10 min-h-screen">
             <div className="sticky top-0 h-36 w-full flex justify-between items-center px-10 z-10" style={{backgroundColor:"#0F1012"}}> 
-                <p className="font-bold text-4xl">Stock de Juegos</p>
+                <p className="font-bold text-4xl text-primary">Stock de Juegos</p>
                 <div className="flex space-x-4">
-                    <input
-                        type="text"
-                        placeholder="Buscar juegos..."
-                        className="px-4 py-2 border border-gray-300 rounded-lg"
+                    <Searchbar
+                        placeholder="Buscar por título o plataforma..." 
+                        onSearch={handleSearch} 
                     />
                     <AddGameButton addGame={addGame} /> 
                 </div>
