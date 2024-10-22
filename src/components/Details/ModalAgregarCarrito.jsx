@@ -1,6 +1,38 @@
-import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from 'react'; 
+import { AuthContext } from '../../context/AuthContext'; 
+import "../../index.css"
 
 const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('Acción por defecto: agregar al carrito') }) => {
+    const { isAuthenticated } = useContext(AuthContext); 
+    const navigate = useNavigate();
+    const MySwal = withReactContent(Swal); 
+
+    const isOutOfStock = gameDetails.stock <= 0;
+
+    const handleButtonClick = () => {
+        if (isAuthenticated && !isOutOfStock) {
+            document.getElementById('my_modal_1').showModal(); 
+        } else {
+            MySwal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Para agregar un juego al carrito primero debes iniciar sesión en la página',
+                showConfirmButton: false,
+                timer: 4000,
+                background: '#1D1F23', 
+                customClass: {
+                    popup: 'custom-toast', 
+                    title: 'text-white' 
+                }
+            });
+            navigate('/Login'); 
+        }
+    };
+
     return (
         <>
             <div className="join items-center w-[300px]">
@@ -8,10 +40,14 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
                     <p className="text-[16px] text-success">${gameDetails.precio} ARS</p>
                 </div>
                 <button 
-                    className="btn join-item w-[180px] h-[48px] flex justify-center items-center rounded-r-lg bg-success text-neutral hover:bg-success/80 border border-black"
-                    onClick={() => document.getElementById('my_modal_1').showModal()}
+                    className={`join-item w-[180px] h-[48px] flex justify-center items-center rounded-r-lg 
+                        ${isOutOfStock 
+                            ? 'bg-red-500 text-neutral cursor-not-allowed'  
+                            : 'bg-success text-neutral hover:bg-success/80 border border-black'}`}             
+                    onClick={handleButtonClick}
+                    disabled={isOutOfStock}
                 >
-                    Agregar al Carrito
+                    {isOutOfStock ? 'No hay Stock' : 'Agregar al Carrito'}
                 </button>
             </div>
             <dialog id="my_modal_1" className="modal">
