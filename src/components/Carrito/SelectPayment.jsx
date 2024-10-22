@@ -147,14 +147,23 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
             alert("Por favor completa todos los campos requeridos para continuar.");
             return;
         }
-
+    
         console.log("Tipo de pago seleccionado:", paymentType);
-
+    
         const paymentTypeToSend = paymentType || "Tarjeta de Crédito/Débito";
         console.log("Método de pago final:", paymentTypeToSend);
 
-        onConfirm(paymentTypeToSend, shippingOption);
+        console.log("Opción de envío seleccionada:", shippingOption);
+    
+        // Guardar la dirección de envío en el localStorage si se selecciona envío a domicilio
+        if (shippingOption === "envio") {
+            localStorage.setItem('direccionEnvio', JSON.stringify(formValues)); // Guardamos la dirección en localStorage
+            console.log(formValues)
+        }
+    
+        onConfirm(paymentTypeToSend, shippingOption); // Pasamos el método de pago y la opción de envío
     };
+    
     
     
     

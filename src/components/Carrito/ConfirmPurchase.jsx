@@ -10,7 +10,7 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
     const payment = paymentMethod; 
     const shipping = shippingMethod; 
 
-    const shippingCost = (shipping === "Envío a Domicilio") ? 5000 : 0;
+    const shippingCost = (shipping === "envio") ? 5000 : 0;
 
     const discountPercentage = payment === "EFECTIVO" 
         ? 0.15 
