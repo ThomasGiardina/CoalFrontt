@@ -51,6 +51,36 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
         });
     };
 
+    const downloadInvoiceAsPDF = () => {
+        const input = document.getElementById("invoice");
+        html2canvas(input, { backgroundColor: "#ffffff" })
+            .then((canvas) => {
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF("p", "mm", "a4");
+                const imgWidth = 210;
+                const pageHeight = 295;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                pdf.save(`Factura-${orderId}.pdf`);
+            })
+            .catch((error) => {
+                console.error("Error al generar el PDF:", error);
+                Swal.fire("Error", "No se pudo descargar la factura", "error");
+            });
+    };
+
     return (
         <div className="text-white p-8 rounded-lg w-[1400px] mx-auto">
             <h1 className="text-4xl font-bold mb-6 text-center">¡Gracias por tu compra!</h1>
@@ -73,11 +103,11 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         </div>
                         {shippingMethod === "envio" && (
                             <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Dirección de Envío:</span>
-                            <span className="text-white">
-                                {`${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, Tel: ${shippingAddress.phone}`}
-                            </span>
-                        </div>
+                                <span className="text-gray-400">Dirección de Envío:</span>
+                                <span className="text-white">
+                                    {`${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, Tel: ${shippingAddress.phone}`}
+                                </span>
+                            </div>
                         )}
                     </div>
 
@@ -139,6 +169,14 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                 >
                     {showTraditionalInvoice ? "Volver a la Factura Moderna" : "Ver Factura Tradicional"}
                 </button>
+                {showTraditionalInvoice && (
+                    <button 
+                        className="btn bg-neutral text-white mt-6 py-2 px-4 rounded-md ml-4"
+                        onClick={downloadInvoiceAsPDF} 
+                    >
+                        Descargar Factura
+                    </button>
+                )}
             </div>
         </div>
     );
