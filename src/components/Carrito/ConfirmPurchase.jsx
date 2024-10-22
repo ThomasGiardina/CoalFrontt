@@ -6,13 +6,17 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
-    const shippingCost = (shippingMethod === "envio" || shippingMethod === "Envío a Domicilio") ? 2000 : 0;
 
-    const discountPercentage = paymentMethod === "Efectivo" 
-        ? 0.20 
-        : paymentMethod === "Débito" 
-        ? 0.10 
-        : 0;  
+    const payment = paymentMethod; 
+    const shipping = shippingMethod; 
+
+    const shippingCost = (shipping === "Envío a Domicilio") ? 5000 : 0;
+
+    const discountPercentage = payment === "Efectivo" 
+        ? 0.15 
+        : payment === "Crédito" 
+        ? 0.10
+        : 0; 
 
     useEffect(() => {
         const calculatedSubtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -80,12 +84,11 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
             Swal.fire('Error', 'Debes aceptar los términos para continuar.', 'error');
         }
     };
-    
 
     return (
         <div className="flex flex-col text-white min-h-screen w-[1400px] p-8 rounded-lg max-w-7xl mx-auto">
             <div className="w-full h-auto flex space-x-8">
-                <div className="w-2/3 bg-neutral p-6 rounded-lg ">
+                <div className="w-2/3 bg-neutral p-6 rounded-lg">
                     {cartItems.length > 0 ? (
                         cartItems.map(item => (
                             <GamecardPurchase key={item.id} game={item} />
@@ -106,13 +109,18 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
                         {discountPercentage > 0 && (
                             <div className="flex justify-between mb-3">
                                 <span className="text-gray-400">Descuento ({discountPercentage * 100}%):</span>
-                                <span className="text-white">-{subtotal * discountPercentage} ARS</span>
+                                <span className="text-white">-{(subtotal * discountPercentage).toFixed(2)} ARS</span>
                             </div>
                         )}
                         <hr className="border-gray-700 my-4" />
                         <div className="flex justify-between font-semibold">
                             <span className="text-gray-300">Total:</span>
-                            <span className="text-white">{total} ARS</span>
+                            <span className="text-white">{total.toFixed(2)} ARS</span>
+                        </div>
+
+                        <div className="flex justify-between font-semibold mt-4">
+                            <span className="text-gray-300">Método de Pago:</span>
+                            <span className="text-green-400">{payment}</span>
                         </div>
                     </div>
 
@@ -130,13 +138,14 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
                         </label>
                     </div>
                 </div>
-                <div className="w-1/3 h-[200px] bg-neutral p-4 rounded-lg shadow-md flex flex-col justify-between items-center ">
+
+                <div className="w-1/3 h-[200px] bg-neutral p-4 rounded-lg shadow-md flex flex-col justify-between items-center">
                     <h2 className="text-lg font-semibold text-white mb-2 text-center">CONFIRMAR COMPRA</h2>
                     <p className="text-gray-400 text-center mb-4">
                         Una vez confirmada la compra, no podrás volver atrás.
                     </p>
                     <button 
-                        className={` bg-primary text-white py-2 px-6 rounded-md transition duration-200 w-full ${!termsAccepted ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`bg-primary text-white py-2 px-6 rounded-md transition duration-200 w-full ${!termsAccepted ? "opacity-50 cursor-not-allowed" : ""}`}
                         disabled={!termsAccepted}
                         onClick={handlePurchase}
                     >

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ConfirmPurchase from './ConfirmPurchase';
 
-const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
-    const [paymentMethod, setPaymentMethod] = useState("");
+const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
+    const [paymentMethod, setPaymentMethod] = useState(""); 
     const [cards, setCards] = useState([]);
     const [selectedCard, setSelectedCard] = useState("");
-    const [shippingOption, setShippingOption] = useState("");
-    const [isConfirmed, setIsConfirmed] = useState(false);
+    const [shippingOption, setShippingOption] = useState(""); 
     const [isNewCard, setIsNewCard] = useState(false);
     const [formValues, setFormValues] = useState({
         name: "",
@@ -21,27 +19,24 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
 
     const token = localStorage.getItem("token");
 
-    // Cargar datos del usuario actual
     useEffect(() => {
         fetch("http://localhost:4002/api/usuario/actual", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => response.json())
-            .then((data) => {
-                // Si el usuario tiene un teléfono guardado, lo establecemos en el formulario
-                if (data.telefono) {
-                    setFormValues((prevValues) => ({
-                        ...prevValues,
-                        phone: data.telefono,
-                    }));
-                }
-            })
-            .catch((error) => console.error("Error al cargar los datos del usuario:", error));
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.telefono) {
+                setFormValues((prevValues) => ({
+                    ...prevValues,
+                    phone: data.telefono,
+                }));
+            }
+        })
+        .catch((error) => console.error("Error al cargar los datos del usuario:", error));
     }, [token]);
 
-    // Obtener las tarjetas del usuario si selecciona la opción de tarjeta
     useEffect(() => {
         if (paymentMethod === "Tarjeta de Crédito/Débito") {
             fetch("http://localhost:4002/metodosPago/usuario", {
@@ -49,11 +44,11 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
                     Authorization: `Bearer ${token}`,
                 },
             })
-                .then(response => response.json())
-                .then(data => {
-                    setCards(data);
-                })
-                .catch(error => console.error("Error al obtener las tarjetas:", error));
+            .then(response => response.json())
+            .then(data => {
+                setCards(data);
+            })
+            .catch(error => console.error("Error al obtener las tarjetas:", error));
         }
     }, [paymentMethod, token]);
 
@@ -88,7 +83,6 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
         setShippingOption(e.target.value);
     };
 
-    // Validación del formulario
     const isFormValid = () => {
         const { address, city, postalCode, phone } = formValues;
         const isShippingValid = shippingOption === "retiro" || (address && city && postalCode && phone);
@@ -101,54 +95,11 @@ const SelectPayment = ({ onBack, handleNextStep, cartItems }) => {
             return;
         }
 
-        // Guardar los datos en localStorage
-        localStorage.setItem("direccionEnvio", JSON.stringify({
-            direccion: formValues.address,
-            ciudad: formValues.city,
-            codigoPostal: formValues.postalCode,
-            telefono: formValues.phone
-        }));
+        const selectedPaymentMethod = paymentMethod === "Efectivo" ? "Efectivo" : (selectedCard.tipoPago || "Tarjeta de Crédito/Débito");
+        const selectedShippingMethod = shippingOption === "envio" ? "Envío a Domicilio" : "Retiro en el Local";
 
-        // Enviar el teléfono actualizado al servidor si no está guardado previamente
-        if (!formValues.phone) {
-            fetch("http://localhost:4002/api/usuario/actualizar", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    telefono: formValues.phone,
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Teléfono actualizado correctamente", data);
-                })
-                .catch(error => {
-                    console.error("Error al actualizar el teléfono:", error);
-                });
-        }
-
-        setIsConfirmed(true);  
+        onConfirm(selectedPaymentMethod, selectedShippingMethod);
     };
-
-    useEffect(() => {
-        if (isConfirmed) {
-            handleNextStep();
-        }
-    }, [isConfirmed, handleNextStep]);
-
-    if (isConfirmed) {
-        return (
-            <ConfirmPurchase 
-                paymentMethod={paymentMethod === "Efectivo" ? "Efectivo" : `Tarjeta ${selectedCard}`} 
-                cartItems={cartItems}  
-                shippingMethod={shippingOption}
-                handleNextStep={handleNextStep}
-            />
-        );
-    }
 
     return (
         <div className="text-white p-6 rounded-lg bg-gray-800">

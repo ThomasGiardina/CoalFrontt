@@ -6,7 +6,8 @@ import Factura from "./Factura";
 
 const NewContainerCart = () => {
     const [currentStep, setCurrentStep] = useState(1);
-    const [paymentMethod, setPaymentMethod] = useState("");
+    const [paymentMethod, setPaymentMethod] = useState(""); 
+    const [shippingMethod, setShippingMethod] = useState(""); 
     const [carritoId, setCarritoId] = useState(localStorage.getItem('carritoId'));
     const [cartItems, setCartItems] = useState([]);  
 
@@ -20,8 +21,9 @@ const NewContainerCart = () => {
         setCurrentStep(currentStep - 1);
     };
 
-    const handleSelectPayment = (selectedMethod) => {
+    const handleSelectPayment = (selectedMethod, selectedShipping) => {
         setPaymentMethod(selectedMethod);
+        setShippingMethod(selectedShipping);
         handleNextStep();
     };
 
@@ -42,7 +44,7 @@ const NewContainerCart = () => {
             {currentStep === 2 && (
                 <SelectPayment
                     onBack={handleBackStep}
-                    onConfirm={handleSelectPayment}
+                    onConfirm={handleSelectPayment} 
                     handleNextStep={handleNextStep}
                     cartItems={cartItems}  
                 />
@@ -50,12 +52,19 @@ const NewContainerCart = () => {
             {currentStep === 3 && (
                 <ConfirmPurchase 
                     paymentMethod={paymentMethod} 
+                    shippingMethod={shippingMethod}
                     carritoId={carritoId} 
                     cartItems={cartItems}  
                     handleNextStep={handleNextStep}  
                 />
             )}
-            {currentStep === 4 && <Factura carritoId={carritoId} cartItems={cartItems} />}
+            {currentStep === 4 && (
+                <Factura 
+                    cartItems={cartItems}  
+                    paymentMethod={paymentMethod}
+                    shippingMethod={shippingMethod} 
+                />
+            )}
         </div>
     );
 };

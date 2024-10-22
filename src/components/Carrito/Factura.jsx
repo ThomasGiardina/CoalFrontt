@@ -84,7 +84,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         </div>
                         <div className="flex justify-between mb-3">
                             <span className="text-gray-400">Método de Pago:</span>
-                            <span className="text-green-400">{paymentMethod}</span>
+                            <span className="text-green-400">{paymentMethod}</span> 
                         </div>
                         {shippingMethod === "envio" && (
                             <div className="flex justify-between mb-3">
