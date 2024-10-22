@@ -14,7 +14,7 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
 
     const discountPercentage = payment === "Efectivo" 
         ? 0.15 
-        : payment === "Crédito" 
+        : payment === "CREDITO" 
         ? 0.10
         : 0; 
 
