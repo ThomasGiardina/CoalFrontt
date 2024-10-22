@@ -1,22 +1,34 @@
-import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 const Redirector = () => {
     const { isAuthenticated, role } = useContext(AuthContext); 
     const navigate = useNavigate(); 
+    const location = useLocation();
+    const [isLoading, setIsLoading] = useState(true); 
 
     useEffect(() => {
-        if (isAuthenticated) {
-            if (role === 'ADMIN') {
-                navigate('/GamesAdmin');
+        if (location.pathname === '/') {
+            if (isAuthenticated) {
+                if (role === 'ADMIN') {
+                    navigate('/GamesAdmin');
+                } else {
+                    navigate('/Store');
+                }
             } else {
-                navigate('/Store');
+                setIsLoading(false); 
             }
+        } else {
+            setIsLoading(false);
         }
-    }, [isAuthenticated, role, navigate]); 
+    }, [isAuthenticated, role, navigate, location.pathname]);
+
+    if (isLoading) {
+        return <div className="loading-screen">Loading...</div>; 
+    }
 
     return null;
-}
+};
 
 export default Redirector;

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajusta el tamaño como prefieras */
+    font-size: 24px;
+    color: #0F1012; /* Cambia los estilos según tu preferencia */
+}

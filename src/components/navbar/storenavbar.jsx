@@ -9,10 +9,6 @@ const StoreNavbar = () => {
     const searchBarRef = useRef(null);
     const buttonRef = useRef(null);
 
-    const toggleSearchBar = () => {
-        setShowSearchBar((prev) => !prev);
-    };
-
     const handleClickOutside = (event) => {
         if (
             searchBarRef.current &&
