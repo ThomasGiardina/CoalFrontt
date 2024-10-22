@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import FacturaTradicional from "./FacturaTradicional";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { Link } from "react-router-dom";
 
 const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
     const [orderId, setOrderId] = useState("");
@@ -167,7 +168,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                     className="btn bg-primary text-white mt-6 py-2 px-4 rounded-md"
                     onClick={() => setShowTraditionalInvoice(!showTraditionalInvoice)}
                 >
-                    {showTraditionalInvoice ? "Volver a la Factura Moderna" : "Ver Factura Tradicional"}
+                    {showTraditionalInvoice ? "Volver a Resumen" : "Ver Factura"}
                 </button>
                 {showTraditionalInvoice && (
                     <button 
@@ -177,6 +178,9 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         Descargar Factura
                     </button>
                 )}
+                <Link to="/Store" className="btn bg-primary text-white mt-6 py-2 px-4 ml-3 rounded-md">
+                    Volver a la Tienda
+                </Link>
             </div>
         </div>
     );
