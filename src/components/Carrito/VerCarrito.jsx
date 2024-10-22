@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GamecardCart from "../Gamecard/GamecardCart";
 
 const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
     const [total, setTotal] = useState(0);
     const [totalItemsCount, setTotalItemsCount] = useState(0);
     const token = localStorage.getItem('token');
+    const [isPolling] = useState(true);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -15,22 +16,22 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Datos completos del carrito:", data);
-
-                    if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-                        setCartItems(data.items); 
-                    } else {
-                        console.error("El carrito está vacío o no se encontraron items.");
-                    }
-                } else {
-                    console.error("Error al cargar el carrito, código de estado:", response.status);
+                    setCartItems(data.items || []);
                 }
             } catch (error) {
-                console.error("Error en la solicitud:", error);
+                console.error("Error al cargar el carrito:", error);
             }
         };
-        fetchCart();
-    }, [token, setCartItems]);
+
+        const intervalId = setInterval(() => {
+            if (isPolling) {
+                fetchCart();
+            }
+        }, 500);
+
+        return () => clearInterval(intervalId); 
+    }, [isPolling]);
+
 
     useEffect(() => {
         const calculatedTotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
