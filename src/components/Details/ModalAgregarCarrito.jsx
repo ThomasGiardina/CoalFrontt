@@ -1,20 +1,111 @@
+import React, { useEffect, useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from 'react'; 
 import { AuthContext } from '../../context/AuthContext'; 
-import "../../index.css"
+import "../../index.css";
 
 const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('Acción por defecto: agregar al carrito') }) => {
     const { isAuthenticated } = useContext(AuthContext); 
     const navigate = useNavigate();
     const MySwal = withReactContent(Swal); 
 
+    const [cartItems, setCartItems] = useState([]);
     const isOutOfStock = gameDetails.stock <= 0;
 
-    const handleButtonClick = () => {
-        if (isAuthenticated && !isOutOfStock) {
-            document.getElementById('my_modal_1').showModal(); 
+    useEffect(() => {
+        const fetchCartItems = async () => {
+            if (isAuthenticated) {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch('http://localhost:4002/carritos/usuarios/carrito', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al obtener el carrito');
+                    }
+
+                    const data = await response.json();
+                    setCartItems(data.items || []); 
+
+                } catch (error) {
+                    console.error('Error fetching cart items:', error);
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error.message,
+                        confirmButtonText: 'OK',
+                        background: '#1D1F23',
+                        color: '#fff',
+                        customClass: {
+                            popup: 'custom-toast',
+                        },
+                    });
+                }
+            }
+        };
+
+        fetchCartItems();
+    }, [isAuthenticated]);
+
+    const handleButtonClick = async () => {
+        if (isAuthenticated) {
+            const existingItem = cartItems.find(item => item.videojuego.id === gameDetails.id);
+            const quantityInCart = existingItem ? existingItem.cantidad : 0;
+            const totalQuantity = quantityInCart + 1; 
+
+            if (totalQuantity > gameDetails.stock) {
+                MySwal.fire({
+                    icon: 'warning',
+                    title: 'Cantidad máxima alcanzada',
+                    text: `Solo hay ${gameDetails.stock} unidades disponibles.`,
+                    confirmButtonText: 'OK',
+                    background: '#1D1F23',
+                    color: '#fff',
+                    customClass: {
+                        popup: 'custom-toast',
+                    },
+                });
+            } else {
+                setCartItems(prevItems => {
+                    if (existingItem) {
+                        return prevItems.map(item =>
+                            item.videojuego.id === gameDetails.id
+                                ? { ...item, cantidad: item.cantidad + 1 }
+                                : item
+                        );
+                    } else {
+                        return [...prevItems, { videojuego: gameDetails, cantidad: 1 }];
+                    }
+                });
+
+                onAddToCarrito();
+
+                MySwal.fire({
+                    title: 'Producto Agregado al Carrito!',
+                    text: 'El producto ha sido agregado al carrito con éxito. Elija si desea seguir comprando o ir al carrito.',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Seguir Comprando',
+                    cancelButtonText: 'Ir al Carrito',
+                    background: '#1D1F23',
+                    color: '#fff',
+                    customClass: {
+                        popup: 'custom-toast',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log('Continuar comprando presionado');
+                    } else if (result.isDismissed) {
+                        console.log('Ir al carrito presionado');
+                        navigate('/Cart'); 
+                    }
+                });
+            }
         } else {
             MySwal.fire({
                 toast: true,
@@ -50,34 +141,6 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
                     {isOutOfStock ? 'No hay Stock' : 'Agregar al Carrito'}
                 </button>
             </div>
-            <dialog id="my_modal_1" className="modal">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg">Producto Agregado al Carrito!</h3>
-                    <p className="py-4">Producto agregado al carrito con éxito. Elija si desea seguir comprando o ir al carrito.</p>
-                    <div className="modal-action">
-                        <form method="dialog">
-                            <button 
-                                className="btn mr-5" 
-                                onClick={() => {
-                                    console.log('Continuar comprando presionado');
-                                    onAddToCarrito();
-                                }}
-                            >
-                                Seguir Comprando
-                            </button>
-                            <button
-                                className="btn mr-5" 
-                                onClick={() => {
-                                    console.log('Ir al carrito presionado');
-                                    onAddToCarrito();
-                                }}
-                            >
-                                <Link to="/Cart" className="btn">Ir al carrito</Link>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
         </>
     );
 };
