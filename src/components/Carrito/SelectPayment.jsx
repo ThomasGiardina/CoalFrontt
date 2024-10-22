@@ -9,7 +9,7 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
     const [shippingOption, setShippingOption] = useState("");
     const [isNewCard, setIsNewCard] = useState(false);
     const [cardType, setCardType] = useState("");
-    const [paymentType, setPaymentType] = useState("");
+    const [paymentType, setPaymentType] = useState(""); 
     const [formValues, setFormValues] = useState({
         name: "",
         cardNumber: "",
@@ -48,11 +48,10 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
     };
 
     useEffect(() => {
-        if (paymentMethod === "Tarjeta de Crédito/Débito" && cards.length === 0) { 
+        if (paymentMethod === "Tarjeta de Crédito/Débito") {
             fetchUserCards();
         }
     }, [paymentMethod, token]);
-    
 
     const fetchUserCards = async () => {
         try {
@@ -69,57 +68,45 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
     };
 
     const handlePaymentMethodChange = (e) => {
-        const newPaymentMethod = e.target.value;
-        if (paymentMethod !== newPaymentMethod) { 
-            setPaymentMethod(newPaymentMethod);
-            if (newPaymentMethod === "Efectivo") {
-                setSelectedCard("");
-                setIsNewCard(false);
-                setPaymentType("");
-            }
+        setPaymentMethod(e.target.value);
+        if (e.target.value === "Efectivo") {
+            setSelectedCard("");
+            setIsNewCard(false);
+            setPaymentType("EFECTIVO"); 
         }
     };
-    
 
     const handleCardSelection = (e) => {
         const selectedCardId = e.target.value;
     
-        if (selectedCardId !== selectedCard) {
-            if (selectedCardId === "new") {
-                setIsNewCard(true);
-                setSelectedCard("");
-                setPaymentType(""); 
-            } else {
-                setIsNewCard(false);
-                setSelectedCard(selectedCardId);
-    
-                const selectedCardDetails = cards.find(card => card.id === parseInt(selectedCardId));
-                if (selectedCardDetails) {
-                    setPaymentType(selectedCardDetails.tipoPago);
-                }
+        if (selectedCardId === "new") {
+            setIsNewCard(true);
+            setSelectedCard("");
+            setPaymentType("");
+        } else {
+            setIsNewCard(false);
+            setSelectedCard(selectedCardId);
+
+            const selectedCardDetails = cards.find(card => card.id === parseInt(selectedCardId));
+
+            if (selectedCardDetails) {
+                setPaymentType(selectedCardDetails.tipoPago);
+                console.log("Tipo de pago seleccionado:", selectedCardDetails.tipoPago);
             }
         }
     };
-    
-    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (formValues[name] !== value) { 
-            setFormValues({
-                ...formValues,
-                [name]: value,
-            });
-        }
+        setFormValues({
+            ...formValues,
+            [name]: value,
+        });
     };
 
     const handleCardTypeChange = (e) => {
-        const newCardType = e.target.value;
-        if (cardType !== newCardType) { 
-            setCardType(newCardType);
-        }
+        setCardType(e.target.value);
     };
-    
 
     const handleShippingOptionChange = (e) => {
         setShippingOption(e.target.value);
