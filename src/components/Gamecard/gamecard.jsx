@@ -1,8 +1,21 @@
+// src/components/Gamecard/gamecard.jsx
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
+import { toggleFavorite } from '../../redux/favoritesSlice';
 
 const GameCard = ({ id, title, imageUrl, price, platform }) => {
+    const dispatch = useDispatch();
+    const favoriteGames = useSelector(state => state.favorites);
+    const isStarred = favoriteGames.some(game => game.id === id);
+
+    const handleStarClick = (e) => {
+        e.preventDefault();
+        console.log("Toggling favorite for game:", { id, title, imageUrl, price, platform });
+        dispatch(toggleFavorite({ id, title, imageUrl, price, platform }));
+    };
+
     const getPlatformIcon = (platform) => {
         switch (platform) {
             case 'XBOX':
@@ -25,6 +38,12 @@ const GameCard = ({ id, title, imageUrl, price, platform }) => {
             <div className="absolute top-2 right-4">
                 {getPlatformIcon(platform)}
             </div>
+            <button 
+                onClick={handleStarClick} 
+                className={`absolute top-2 left-2 text-2xl ${isStarred ? 'text-yellow-500' : 'text-gray-300'}`}
+            >
+                ★
+            </button>
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-bold text-white">{title}</h3>

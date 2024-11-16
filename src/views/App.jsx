@@ -1,7 +1,7 @@
 import '../index.css';
 import StoreNavbar from '../components/Navbar/storenavbar';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import { AuthProvider} from '../context/AuthContext'; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from '../context/AuthContext'; 
 import Login from './Login'; 
 import Register from './Register';  
 import Store from './Store'; 
@@ -18,6 +18,7 @@ import Support from './Support';
 import AdminOrderHistory from './AdminOrderHistory';
 import UserOrderHistory from './UserOrderHistory';
 import Redirector from '../components/AppManagement/Redirector';
+import Favorites from './Favorites';
 
 function App() {
     return (
@@ -38,8 +39,9 @@ function App() {
                     <Route path="/GamesAdmin" element={<GamesAdmin />} />
                     <Route path="/About" element={<About />} />
                     <Route path="/Support" element={<Support />} />
-                    <Route path="/AdminOrderHistory" element={<AdminOrderHistory/>} />
-                    <Route path="/UserOrderHistory" element={<UserOrderHistory/>} />
+                    <Route path="/AdminOrderHistory" element={<AdminOrderHistory />} />
+                    <Route path="/UserOrderHistory" element={<UserOrderHistory />} />
+                    <Route path="/Favorites" element={<Favorites />} />
                 </Routes>
                 <Footer />
             </Router>

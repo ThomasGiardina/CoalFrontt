@@ -111,6 +111,12 @@ const StoreNavbar = () => {
                             <i className="fa-solid fa-headset text-primary"></i>
                             Soporte
                         </Link>
+                        {isAuthenticated && (
+                            <Link to="/Favorites" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fa-star text-primary"></i>
+                                Favoritos
+                            </Link>
+                        )}
                     </>
                 )}
                 </div>

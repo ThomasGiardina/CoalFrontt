@@ -1,8 +1,8 @@
+// src/components/Store/StoreGrid.jsx
 import React, { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 import Pagination from '../Pagination/Pagination';
 import Gamefilter from './gamefilter';
-
 
 const ITEMS_PER_PAGE = 15;
 
@@ -32,7 +32,12 @@ const Storegrid = ({ games }) => {
     
         setFilteredGames(filtered); 
     }, [games, searchTerm]);
-    
+
+    useEffect(() => {
+        setFilteredGames(games);
+    }, [games]);
+
+    console.log("Filtered games in Storegrid:", filteredGames);
 
     return (
         <div className="flex">
