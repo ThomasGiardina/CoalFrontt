@@ -1,14 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
+import { useForm, ValidationError } from '@formspree/react';
 
 const ContactSupport = () => {
-    const [success, setSuccess] = useState(false);
+    const [state, handleSubmit] = useForm("xdkodnov");
     const fileInputRef = useRef(null);
 
     const initialValues = {
         name: '',
+        email: '',
         issue: '',
         photos: [],
         description: '',
@@ -16,25 +18,37 @@ const ContactSupport = () => {
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Nombre y Apellido es requerido'),
+        email: Yup.string().email('Correo electrónico inválido').required('Correo electrónico es requerido'),
         issue: Yup.string().required('Problemática es requerida'),
         photos: Yup.array().min(1, 'Debe cargar al menos una foto'),
         description: Yup.string().required('Descripción del problema es requerida'),
     });
 
-    const handleSubmit = (values, { setSubmitting, resetForm }) => {
-        console.log("Submitting form", values);
-        setSuccess(true);
-        setSubmitting(false);
-        resetForm();
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
-
     const handleFileChange = (event, setFieldValue) => {
         const files = Array.from(event.target.files);
         setFieldValue('photos', files);
     };
+
+    if (state.succeeded) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50">
+                <div className="bg-black bg-opacity-95 p-12 rounded-lg shadow-lg text-center">
+                    <h1 className="text-4xl font-bold text-green-500 mb-4">
+                        ¡Tu problema ha sido registrado correctamente!
+                    </h1>
+                    <p className="text-gray-700 mb-8 text-xl">
+                        Te responderemos cuanto antes. ¡Muchas gracias!
+                    </p>
+                    <button
+                        className="btn btn-primary text-xl px-8 py-4"
+                        onClick={() => window.location.reload()}
+                    >
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div id="contact-section" className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-2 space-y-12">
@@ -73,6 +87,18 @@ const ContactSupport = () => {
                                 className="input input-bordered w-full"
                             />
                             <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-200 text-lg font-bold mb-2" htmlFor="email">
+                                Correo Electrónico
+                            </label>
+                            <Field
+                                type="email"
+                                name="email"
+                                className="input input-bordered w-full"
+                                placeholder="ejemplo@gmail.com"
+                            />
+                            <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-200 text-lg font-bold mb-2" htmlFor="issue">
@@ -122,51 +148,6 @@ const ContactSupport = () => {
                     </Form>
                 )}
             </Formik>
-            {success && (
-                <motion.div 
-                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <motion.div 
-                        className="bg-white p-12 rounded-lg shadow-lg text-center"
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <motion.h1 
-                            className="text-4xl font-bold text-green-500 mb-4"
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.5 }}
-                        >
-                            ¡Tu problema ha sido registrado correctamente!
-                        </motion.h1>
-                        <motion.p
-                            className="text-gray-700 mb-8 text-xl"
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.5 }}
-                        >
-                            Te responderemos cuanto antes. ¡Muchas gracias!
-                        </motion.p>
-                        <motion.div
-                            className="flex justify-center"
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6, duration: 0.5 }}
-                        >
-                            <button
-                                className="btn btn-primary text-xl px-8 py-4"
-                                onClick={() => setSuccess(false)}
-                            >
-                                Cerrar
-                            </button>
-                        </motion.div>
-                    </motion.div>
-                </motion.div>
-            )}
             <div className="absolute bottom-0 left-0 w-1/4 h-48 bg-primary rounded-tr-full opacity-30 z-0"></div>
             <div className="absolute bottom-0 right-0 w-1/4 h-40 bg-accent rounded-tl-full opacity-30 z-0"></div>
         </div>
