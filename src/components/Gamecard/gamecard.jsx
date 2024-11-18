@@ -4,16 +4,51 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { toggleFavorite } from '../../redux/favoritesSlice';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import '../../index.css';
 
 const GameCard = ({ id, title, imageUrl, price, platform }) => {
     const dispatch = useDispatch();
     const favoriteGames = useSelector(state => state.favorites);
     const isStarred = favoriteGames.some(game => game.id === id);
+    const MySwal = withReactContent(Swal);
 
     const handleStarClick = (e) => {
         e.preventDefault();
-        console.log("Toggling favorite for game:", { id, title, imageUrl, price, platform });
         dispatch(toggleFavorite({ id, title, imageUrl, price, platform }));
+    
+        if (isStarred) {
+            MySwal.fire({
+                title: 'Producto eliminado de Favoritos',
+                text: `${title} ha sido eliminado de tus favoritos.`,
+                icon: 'error',
+                background: '#1D1F23',
+                color: '#fff',
+                customClass: {
+                    popup: 'custom-toast',
+                },
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        } else {
+            MySwal.fire({
+                title: 'Producto agregado a Favoritos',
+                text: `${title} ha sido agregado a tus favoritos.`,
+                icon: 'success',
+                background: '#1D1F23',
+                color: '#fff',
+                customClass: {
+                    popup: 'custom-toast',
+                },
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
     };
 
     const getPlatformIcon = (platform) => {

@@ -1,13 +1,37 @@
+/* src/index.css */
+
+/* Tailwind CSS base styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
+/* Custom styles for loading screen */
 .loading-screen {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Ajusta el tamaño como prefieras */
+    height: 100vh;
     font-size: 24px;
-    color: #0F1012; /* Cambia los estilos según tu preferencia */
+    color: #0F1012;
 }
+
+/* Custom styles for SweetAlert2 */
+.custom-toast {
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-toast .swal2-title {
+    color: white;
+}
+
+.custom-toast .swal2-popup {
+    background: #1D1F23;
+}
+
+.custom-toast .swal2-success-ring {
+    display: none;
+}
+
+/* Additional custom styles */
