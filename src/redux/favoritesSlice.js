@@ -5,7 +5,7 @@ const loadFavoritesFromLocalStorage = () => {
         const serializedState = localStorage.getItem('favorites');
         return serializedState ? JSON.parse(serializedState) : [];
     } catch (e) {
-        console.warn("Error loading favorites from localStorage", e);
+        console.warn("Error cargando localStorage", e);
         return [];
     }
 };
@@ -15,7 +15,7 @@ const saveFavoritesToLocalStorage = (favorites) => {
         const serializedState = JSON.stringify(favorites);
         localStorage.setItem('favorites', serializedState);
     } catch (e) {
-        console.warn("Error saving favorites to localStorage", e);
+        console.warn("Error guardando localStorage", e);
     }
 };
 
@@ -26,12 +26,14 @@ const favoritesSlice = createSlice({
         toggleFavorite: (state, action) => {
             const game = action.payload;
             const existingIndex = state.findIndex(item => item.id === game.id);
+            let newState;
             if (existingIndex >= 0) {
-                state.splice(existingIndex, 1);
+                newState = state.filter(item => item.id !== game.id);
             } else {
-                state.push(game);
+                newState = [...state, game];
             }
-            saveFavoritesToLocalStorage(state);
+            saveFavoritesToLocalStorage(newState);
+            return newState;
         }
     }
 });
