@@ -10,14 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.1",
+    "@cloudinary/url-gen": "^1.21.0",
+    "@formspree/react": "^2.5.1",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.3.0",
+    "@uploadcare/react-uploader": "^1.2.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
     "coal": "file:",
+    "formik": "^2.4.6",
     "framer-motion": "^11.11.8",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
@@ -35,7 +40,8 @@
     "react-router-dom": "^6.26.2",
     "redux": "^5.0.1",
     "sweetalert2": "^11.14.4",
-    "sweetalert2-react-content": "^5.0.7"
+    "sweetalert2-react-content": "^5.0.7",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

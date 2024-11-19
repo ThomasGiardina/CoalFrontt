@@ -1,9 +1,8 @@
-// src/components/Gamecard/gamecard.jsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
-import { toggleFavorite } from '../../redux/favoritesSlice';
+import { toggleFavorite } from '../../redux/slices/favoritesSlice';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import '../../index.css';

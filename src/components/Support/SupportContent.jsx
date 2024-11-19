@@ -1,8 +1,15 @@
 import React from 'react';
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaArrowDown } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const SupportContent = () => {
+    const scrollToContact = () => {
+        const contactSection = document.getElementById('contact-section');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <div className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-2 space-y-12">
             <div className="absolute top-0 left-0 w-1/4 h-48 bg-accent rounded-br-full opacity-30 z-0"></div>
@@ -120,6 +127,12 @@ const SupportContent = () => {
             </motion.div>
             <div className="absolute bottom-0 left-0 w-1/4 h-48 bg-primary rounded-tr-full opacity-30 z-0"></div>
             <div className="absolute bottom-0 right-0 w-1/4 h-40 bg-accent rounded-tl-full opacity-30 z-0"></div>
+            <button 
+                className="fixed bottom-8 right-8 bg-primary text-white p-4 rounded-full shadow-lg z-50"
+                onClick={scrollToContact}
+            >
+                <FaArrowDown className="text-2xl" />
+            </button>
         </div>
     );
 };
