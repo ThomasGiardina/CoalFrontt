@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
 
 const Redirector = () => {
-    const { isAuthenticated, role } = useContext(AuthContext); 
+    const { isAuthenticated, role } = useSelector((state) => state.auth);
     const navigate = useNavigate(); 
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true); 

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateShippingAddress } from "../../redux/slices/cartSlice";
+import { fetchUserCards } from "../../redux/slices/authSlice"; 
 import CardForm from './CardForm';
 import AddressForm from './AddressForm';
 
-const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
-    const [paymentMethod, setPaymentMethod] = useState(""); 
-    const [cards, setCards] = useState([]);
+const SelectPayment = ({ onBack, onConfirm }) => {
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token); 
+    const cards = useSelector((state) => state.auth.userCards); 
+
+    const [paymentMethod, setPaymentMethod] = useState("");
     const [selectedCard, setSelectedCard] = useState("");
     const [shippingOption, setShippingOption] = useState("");
     const [isNewCard, setIsNewCard] = useState(false);
@@ -18,69 +24,16 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
         address: "",
         city: "",
         postalCode: "",
-        phone: ""
+        phone: "",
     });
 
     const [errors, setErrors] = useState({}); 
-    const token = localStorage.getItem("token");
-
-    useEffect(() => {
-        fetchUserData();
-    }, [token]);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await fetch("http://localhost:4002/api/usuario/actual", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
-            if (data.telefono) {
-                setFormValues((prevValues) => ({
-                    ...prevValues,
-                    phone: data.telefono,
-                }));
-            }
-        } catch (error) {
-            console.error("Error al cargar los datos del usuario:", error);
-        }
-    };
-
-    const handleSaveAddress = () => {
-        const addressData = {
-            direccion: formValues.address,
-            localidad: formValues.city,
-            codigoPostal: formValues.postalCode,
-            telefono: formValues.phone,
-        };
-
-        localStorage.setItem('direccionEnvio', JSON.stringify(addressData));
-
-        const savedAddress = JSON.parse(localStorage.getItem('direccionEnvio'));
-        console.log("Dirección de envío guardada:", savedAddress);
-    };
-
 
     useEffect(() => {
         if (paymentMethod === "Tarjeta de Crédito/Débito") {
-            fetchUserCards();
+            dispatch(fetchUserCards());
         }
-    }, [paymentMethod, token]);
-
-    const fetchUserCards = async () => {
-        try {
-            const response = await fetch("http://localhost:4002/metodosPago/usuario", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
-            setCards(data);
-        } catch (error) {
-            console.error("Error al obtener las tarjetas:", error);
-        }
-    };
+    }, [paymentMethod, dispatch]);
 
     const handlePaymentMethodChange = (e) => {
         setPaymentMethod(e.target.value);
@@ -163,24 +116,21 @@ const SelectPayment = ({ onBack, onConfirm, cartItems }) => {
             return;
         }
     
-        console.log("Tipo de pago seleccionado:", paymentType);
-    
         const paymentTypeToSend = paymentType || "Tarjeta de Crédito/Débito";
         console.log("Método de pago final:", paymentTypeToSend);
 
-        console.log("Opción de envío seleccionada:", shippingOption);
-    
         if (shippingOption === "envio") {
-            localStorage.setItem('direccionEnvio', JSON.stringify(formValues)); 
-            console.log(formValues)
-            handleSaveAddress();
+            const addressData = {
+                direccion: formValues.address,
+                localidad: formValues.city,
+                codigoPostal: formValues.postalCode,
+                telefono: formValues.phone,
+            };
+            dispatch(updateShippingAddress(addressData)); 
         }
     
-        onConfirm(paymentTypeToSend, shippingOption); 
+        onConfirm(paymentTypeToSend, shippingOption);
     };
-    
-    
-    
     
     return (
         <div className="text-white p-6 rounded-lg bg-gray-800">

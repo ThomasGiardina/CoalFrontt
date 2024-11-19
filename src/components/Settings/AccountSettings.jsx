@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import Swal from 'sweetalert2';  
 import ButtonSaveChanges from "./ButtonSaveChanges";
 import InputsAccount from "./InputsAccount";
-import { AuthContext } from '../../context/AuthContext';
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/slices/authSlice";
+
 
 const AccountSettings = () => {
     const { logout } = useContext(AuthContext); 
@@ -20,7 +22,7 @@ const AccountSettings = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem("token");
+                const token = useSelector((state) => state.auth.token);
                 const response = await fetch("http://localhost:4002/api/usuario/actual", {
                     method: "GET",
                     headers: {
@@ -44,7 +46,7 @@ const AccountSettings = () => {
                     lastName: userData.lastName,
                     email: userData.email  
                 });
-
+    
                 setOriginalEmail(userData.email); 
             } catch (error) {
                 console.error("Error al cargar los datos del usuario:", error);
@@ -60,8 +62,9 @@ const AccountSettings = () => {
     };
 
     const handleSubmit = async () => {
-        const token = localStorage.getItem('token'); 
-
+        const token = useSelector((state) => state.auth.token);
+        const dispatch = useDispatch();
+    
         if (formData.telefono && (formData.telefono.length !== 10 || !formData.telefono.startsWith('11'))) {
             Swal.fire({
                 icon: 'error',
@@ -92,7 +95,7 @@ const AccountSettings = () => {
                     email: formData.email  
                 })
             });
-
+    
             if (response.ok) {
                 if (formData.email !== originalEmail) {
                     Swal.fire({
@@ -105,7 +108,7 @@ const AccountSettings = () => {
                         allowOutsideClick: false, 
                         allowEscapeKey: false 
                     }).then(() => {
-                        logout(); 
+                        dispatch(logout());
                         window.location.href = '/login'; 
                     });
                 } else {

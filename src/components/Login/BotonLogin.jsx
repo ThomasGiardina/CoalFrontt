@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext'; 
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/slices/authSlice';
 
 const BotonLogin = ({ email, password }) => {
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         try {
@@ -15,25 +15,22 @@ const BotonLogin = ({ email, password }) => {
                 },
                 body: JSON.stringify({ email, password }),
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error al iniciar sesión');
             }
-    
+
             const data = await response.json();
             console.log('Inicio de sesión exitoso:', data);
-    
-            console.log('AccessToken:', data.access_token);  
-            console.log('Role:', data.role);
 
-            login(data.access_token, data.role);
+            dispatch(login({ token: data.access_token, role: data.role }));
 
             if (data.role === 'ADMIN') {
                 navigate('/GamesAdmin');
             } else {
                 navigate('/Store');
             }
-    
+
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
         }

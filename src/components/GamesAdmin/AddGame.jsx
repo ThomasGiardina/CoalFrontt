@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext'; 
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const AddGameButton = ({ addGame }) => {
     const [showModal, setShowModal] = useState(false);
@@ -16,7 +16,8 @@ const AddGameButton = ({ addGame }) => {
     const [carruselImagen3, setCarruselImagen3] = useState(null);
     const [fechaLanzamiento, setFechaLanzamiento] = useState('');
     const [desarrolladora, setDesarrolladora] = useState('');
-    const { isAuthenticated, role } = useContext(AuthContext); 
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const role = useSelector((state) => state.auth.role);
 
     const allCategories = [
         "ACCION", "AVENTURA", "RPG", "SIMULACION", "DEPORTES", "ESTRATEGIA", 
@@ -85,7 +86,7 @@ const AddGameButton = ({ addGame }) => {
             formData.append('carruselImagen3', carruselImagen3);
         }
     
-        const token = localStorage.getItem('token');
+        const token = useSelector((state) => state.auth.token);
     
         try {
             const response = await fetch('http://localhost:4002/videojuegos', {

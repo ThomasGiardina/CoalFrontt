@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../redux/slices/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Profilepicture = () => {
-    const { logout } = useContext(AuthContext);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        logout();          
+        dispatch(logout()); 
         navigate('/');
     };
 

@@ -1,15 +1,30 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux"; 
+import { setCarritoId, setCartItems } from "../../redux/slices/cartSlice"; 
 import SelectPayment from "./SelectPayment";
 import VerCarrito from "./VerCarrito";
 import ConfirmPurchase from "./ConfirmPurchase";
 import Factura from "./Factura";
 
 const NewContainerCart = () => {
+    const dispatch = useDispatch();
+    const carritoId = useSelector((state) => state.cart.carritoId);
+    const cartItems = useSelector((state) => state.cart.cartItems);
     const [currentStep, setCurrentStep] = useState(1);
     const [paymentMethod, setPaymentMethod] = useState(""); 
     const [shippingMethod, setShippingMethod] = useState(""); 
-    const [carritoId, setCarritoId] = useState(localStorage.getItem('carritoId'));
-    const [cartItems, setCartItems] = useState([]);  
+
+    useEffect(() => {
+        if (!carritoId) {
+            dispatch(setCarritoId("12345"));
+        }
+        if (cartItems.length === 0) {
+            dispatch(setCartItems([
+                { id: 1, titulo: "Juego 1", cantidad: 2, precio: 500 },
+                { id: 2, titulo: "Juego 2", cantidad: 1, precio: 300 },
+            ])); 
+        }
+    }, [dispatch, carritoId, cartItems]); 
 
     const handleNextStep = () => {
         console.log(`Avanzando al paso ${currentStep + 1}`);

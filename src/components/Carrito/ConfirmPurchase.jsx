@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import GamecardPurchase from "../Gamecard/GamecardPurchase";  
 
-const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems = [], handleNextStep }) => {
+const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handleNextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const payment = paymentMethod; 
-    const shipping = shippingMethod; 
+    const carritoId = useSelector((state) => state.cart.carritoId);
+    const token = useSelector((state) => state.auth.token);
 
-    const shippingCost = (shipping === "envio") ? 5000 : 0;
+    const payment = paymentMethod;
+    const shipping = shippingMethod;
 
-    const discountPercentage = payment === "EFECTIVO" 
-        ? 0.15 
-        : payment === "DEBITO" 
-        ? 0.10
-        : 0; 
+    const shippingCost = shipping === "envio" ? 5000 : 0;
+
+    const discountPercentage =
+        payment === "EFECTIVO" ? 0.15 : payment === "DEBITO" ? 0.10 : 0;
 
     useEffect(() => {
         const calculatedSubtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -32,60 +33,58 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
     };
 
     const handlePurchase = () => {
-        const carritoId = localStorage.getItem('carritoId');
-    
         if (!carritoId) {
-            Swal.fire('Error', 'No se pudo confirmar el carrito. ID de carrito no válido.', 'error');
+            Swal.fire("Error", "No se pudo confirmar el carrito. ID de carrito no válido.", "error");
             return;
         }
-    
+
         if (termsAccepted) {
             Swal.fire({
-                title: '¿Estás seguro?',
+                title: "¿Estás seguro?",
                 text: "No podrás deshacer esta acción.",
-                icon: 'warning',
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: 'primary',
-                cancelButtonColor: '#d33',
-                background: '#1D1F23',
-                color: '#fff',
-                confirmButtonText: 'Sí, comprar',
-                cancelButtonText: 'Cancelar'
+                confirmButtonColor: "primary",
+                cancelButtonColor: "#d33",
+                background: "#1D1F23",
+                color: "#fff",
+                confirmButtonText: "Sí, comprar",
+                cancelButtonText: "Cancelar",
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
-                        method: 'POST',
+                        method: "POST",
                         headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                            'Content-Type': 'application/json',
-                        }
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
                     })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error("Error al confirmar el carrito");
-                    })
-                    .then(data => {
-                        Swal.fire({
-                            title: 'Compra realizada!',
-                            text: 'Tu compra ha sido completada con éxito.',
-                            icon: 'success',
-                            background: '#1D1F23',
-                            color: '#fff',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            handleNextStep();  
+                        .then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error("Error al confirmar el carrito");
+                        })
+                        .then((data) => {
+                            Swal.fire({
+                                title: "Compra realizada!",
+                                text: "Tu compra ha sido completada con éxito.",
+                                icon: "success",
+                                background: "#1D1F23",
+                                color: "#fff",
+                                confirmButtonText: "OK",
+                            }).then(() => {
+                                handleNextStep();
+                            });
+                        })
+                        .catch((error) => {
+                            Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
+                            console.error(error);
                         });
-                    })
-                    .catch(error => {
-                        Swal.fire('Error', 'Hubo un problema al confirmar el carrito.', 'error');
-                        console.error(error);
-                    });
                 }
             });
         } else {
-            Swal.fire('Error', 'Debes aceptar los términos para continuar.', 'error');
+            Swal.fire("Error", "Debes aceptar los términos para continuar.", "error");
         }
     };
 

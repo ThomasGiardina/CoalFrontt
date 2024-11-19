@@ -1,37 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCartItems, updateCartItem, removeCartItem } from "../../redux/slices/cartSlice";
 import GamecardCart from "../Gamecard/GamecardCart";
 
-const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
+const VerCarrito = ({ onContinue }) => {
+    const dispatch = useDispatch();
+    const { cartItems } = useSelector((state) => state.cart);
+
     const [total, setTotal] = useState(0);
     const [totalItemsCount, setTotalItemsCount] = useState(0);
-    const token = localStorage.getItem('token');
-    const [isPolling] = useState(true);
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 const response = await fetch("http://localhost:4002/carritos/usuarios/carrito", {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {
+                        Authorization: `Bearer ${useSelector((state) => state.auth.token)}`,
+                    },
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    setCartItems(data.items || []);
+                    dispatch(setCartItems(data.items || []));
                 }
             } catch (error) {
                 console.error("Error al cargar el carrito:", error);
             }
         };
 
-        const intervalId = setInterval(() => {
-            if (isPolling) {
-                fetchCart();
-            }
-        }, 500);
-
-        return () => clearInterval(intervalId); 
-    }, [isPolling]);
-
+        fetchCart();
+    }, [dispatch]);
 
     useEffect(() => {
         const calculatedTotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -42,15 +40,11 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
     }, [cartItems]);
 
     const handleUpdateQuantity = (itemId, nuevaCantidad) => {
-        const updatedCartItems = cartItems.map(item =>
-            item.id === itemId ? { ...item, cantidad: nuevaCantidad } : item
-        );
-        setCartItems(updatedCartItems);
+        dispatch(updateCartItem({ id: itemId, cantidad: nuevaCantidad }));
     };
 
     const handleDeleteItem = (itemId) => {
-        const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-        setCartItems(updatedCartItems);
+        dispatch(removeCartItem(itemId));
     };
 
     return (

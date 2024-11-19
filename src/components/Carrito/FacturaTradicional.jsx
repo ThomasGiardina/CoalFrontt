@@ -1,27 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 
 const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress, shippingCost, discount }) => {
     const [nombreCliente, setNombreCliente] = useState("Nombre del Cliente");
+    const token = useSelector((state) => state.auth.token);
+    const userName = useSelector((state) => state.auth.userName); 
 
     useEffect(() => {
-        const obtenerUsuarioActual = async () => {
-            try {
-                const response = await fetch("http://localhost:4002/api/usuario/actual", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await response.json();
-                setNombreCliente(`${data.firstName} ${data.lastName}`);
-            } catch (error) {
-                console.error("Error al obtener el usuario actual:", error);
-            }
-        };
+        if (userName) {
+            setNombreCliente(userName);
+        } else {
+            const obtenerUsuarioActual = async () => {
+                try {
+                    const response = await fetch("http://localhost:4002/api/usuario/actual", {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    const data = await response.json();
+                    setNombreCliente(`${data.firstName} ${data.lastName}`);
+                } catch (error) {
+                    console.error("Error al obtener el usuario actual:", error);
+                }
+            };
 
-        obtenerUsuarioActual();
-    }, []);
+            obtenerUsuarioActual();
+        }
+    }, [token, userName]);
 
     const formatPrice = (price) => {
         return price.toLocaleString("es-AR", {

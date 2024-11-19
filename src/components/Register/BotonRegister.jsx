@@ -1,11 +1,10 @@
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';  
-import { AuthContext } from '../../context/AuthContext';  
+import { login } from '../../redux/slices/authSlice'; 
 
 const BotonRegister = ({ formData }) => {
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);  
+    const dispatch = useDispatch(); 
 
     const handleRegister = async () => {
         try {
@@ -26,40 +25,29 @@ const BotonRegister = ({ formData }) => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                if (errorData.message === 'email_already_exists' || errorData.message === 'username_already_exists') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'El username o email ya está en uso.',
-                        background: '#2B2738', 
-                        color: '#fff', 
-                        confirmButtonColor: '#FF5722', 
-                        buttonsStyling: false, 
-                        customClass: {
-                            confirmButton: 'btn btn-primary', 
-                        },
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Error al crear la cuenta. Por favor, intenta nuevamente.',
-                        background: '#2B2738',
-                        color: '#fff',
-                        confirmButtonColor: '#FF5722',
-                        buttonsStyling: false,
-                        customClass: {
-                            confirmButton: 'btn btn-primary',
-                        },
-                    });
-                }
+                const errorMessage = errorData.message === 'email_already_exists' || errorData.message === 'username_already_exists'
+                    ? 'El username o email ya está en uso.'
+                    : 'Error al crear la cuenta. Por favor, intenta nuevamente.';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: errorMessage,
+                    background: '#2B2738',
+                    color: '#fff',
+                    confirmButtonColor: '#FF5722',
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'btn btn-primary',
+                    },
+                });
                 return;
             }
 
             const data = await response.json();
             console.log('Cuenta creada exitosamente:', data);
 
-            login(data.access_token, data.role);  
+            dispatch(login({ token: data.access_token, role: data.role }));
 
             Swal.fire({
                 icon: 'success',
