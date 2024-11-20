@@ -3,31 +3,32 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import favoritesReducer from './slices/favoritesSlice';
 import contactReducer from './slices/contactSlice';
-import authReducer from './slices/authSlice'; 
-import cartReducer from './slices/cartSlice'; 
+import authReducer from './slices/authSlice';
+import cartReducer from './slices/cartSlice';
 
-//autenticación
+// Configuración para persistir autenticación
 const authPersistConfig = {
     key: 'auth',
     storage,
 };
 
-//carrito
+// Configuración para persistir carrito
 const cartPersistConfig = {
     key: 'cart',
     storage,
 };
 
-// Reducers
+// Reducers persistidos
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
+// Configuración del store
 const store = configureStore({
     reducer: {
-        favorites: favoritesReducer, 
-        contact: contactReducer,   
-        auth: persistedAuthReducer, 
-        cart: persistedCartReducer, 
+        favorites: favoritesReducer,
+        contact: contactReducer,
+        auth: persistedAuthReducer,
+        cart: persistedCartReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -36,9 +37,10 @@ const store = configureStore({
                     getToken: () => store.getState().auth.token,
                 },
             },
-            serializableCheck: false,
+            serializableCheck: false, // Necesario para redux-persist
         }),
 });
 
+// Persistor para redux-persist
 export const persistor = persistStore(store);
 export default store;

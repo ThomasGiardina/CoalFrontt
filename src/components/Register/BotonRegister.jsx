@@ -1,10 +1,12 @@
-import Swal from 'sweetalert2';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../redux/slices/authSlice'; 
+import Swal from 'sweetalert2';
+import { login } from '../../redux/slices/authSlice';
 
 const BotonRegister = ({ formData }) => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
+    const navigate = useNavigate(); 
 
     const handleRegister = async () => {
         try {
@@ -19,15 +21,17 @@ const BotonRegister = ({ formData }) => {
                     password: formData.password,
                     firstname: formData.firstname,
                     lastname: formData.lastname,
-                    imagenPerfil: "defaultUser.jpg",
+                    imagenPerfil: 'defaultUser.jpg',
                 }),
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                const errorMessage = errorData.message === 'email_already_exists' || errorData.message === 'username_already_exists'
-                    ? 'El username o email ya está en uso.'
-                    : 'Error al crear la cuenta. Por favor, intenta nuevamente.';
+                const errorMessage =
+                    errorData.message === 'email_already_exists' ||
+                    errorData.message === 'username_already_exists'
+                        ? 'El username o email ya está en uso.'
+                        : 'Error al crear la cuenta. Por favor, intenta nuevamente.';
 
                 Swal.fire({
                     icon: 'error',
@@ -36,16 +40,11 @@ const BotonRegister = ({ formData }) => {
                     background: '#2B2738',
                     color: '#fff',
                     confirmButtonColor: '#FF5722',
-                    buttonsStyling: false,
-                    customClass: {
-                        confirmButton: 'btn btn-primary',
-                    },
                 });
                 return;
             }
 
             const data = await response.json();
-            console.log('Cuenta creada exitosamente:', data);
 
             dispatch(login({ token: data.access_token, role: data.role }));
 
@@ -56,18 +55,9 @@ const BotonRegister = ({ formData }) => {
                 background: '#2B2738',
                 color: '#fff',
                 confirmButtonColor: '#FF5722',
-                buttonsStyling: false,
-                customClass: {
-                    confirmButton: 'btn btn-primary',
-                },
             }).then(() => {
-                if (data.role === 'ADMIN') {
-                    navigate('/GamesAdmin');
-                } else {
-                    navigate('/Store');
-                }
+                navigate(data.role === 'ADMIN' ? '/GamesAdmin' : '/Store');
             });
-
         } catch (error) {
             console.error('Error al crear cuenta:', error.message);
             Swal.fire({
@@ -77,10 +67,6 @@ const BotonRegister = ({ formData }) => {
                 background: '#2B2738',
                 color: '#fff',
                 confirmButtonColor: '#FF5722',
-                buttonsStyling: false,
-                customClass: {
-                    confirmButton: 'btn btn-primary',
-                },
             });
         }
     };
