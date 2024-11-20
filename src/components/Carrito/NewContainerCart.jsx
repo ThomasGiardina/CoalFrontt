@@ -14,17 +14,6 @@ const NewContainerCart = () => {
     const [paymentMethod, setPaymentMethod] = useState("");
     const [shippingMethod, setShippingMethod] = useState("");
 
-    useEffect(() => {
-        if (!carritoId) {
-            dispatch(setCarritoId("12345"));
-        }
-        if (cartItems.length === 0) {
-            dispatch(setCartItems([
-                { id: 1, titulo: "Juego 1", cantidad: 2, precio: 500 },
-                { id: 2, titulo: "Juego 2", cantidad: 1, precio: 300 },
-            ]));
-        }
-    }, [dispatch, carritoId, cartItems]);
 
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
