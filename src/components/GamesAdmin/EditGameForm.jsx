@@ -34,6 +34,8 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
         setSelectedCategories(selectedCategories.filter(cat => cat !== category));
     };
 
+    const token = useSelector((state) => state.auth.token);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -67,8 +69,6 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
         if (carruselImagen3) {
             formData.append('carruselImagen3', carruselImagen3);
         }
-    
-        const token = useSelector((state) => state.auth.token);
 
         if (!token) {
             console.error("Token no disponible. El usuario no está autenticado.");

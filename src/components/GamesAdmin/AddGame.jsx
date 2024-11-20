@@ -51,6 +51,8 @@ const AddGameButton = ({ addGame }) => {
         setSelectedCategories(selectedCategories.filter(cat => cat !== category));
     };
 
+    const token = useSelector((state) => state.auth.token);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -85,8 +87,6 @@ const AddGameButton = ({ addGame }) => {
         if (carruselImagen3) {
             formData.append('carruselImagen3', carruselImagen3);
         }
-    
-        const token = useSelector((state) => state.auth.token);
     
         try {
             const response = await fetch('http://localhost:4002/videojuegos', {

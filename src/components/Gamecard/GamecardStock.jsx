@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { FaXbox, FaPlaystation, FaTrash } from "react-icons/fa";
+import { useSelector, useDispatch } from 'react-redux';
+import { refreshToken } from '../../redux/slices/authSlice';
 import EditGameForm from '../GamesAdmin/EditGameForm';
 
 const GameCardStock = ({ game, updateGame, removeGame }) => { 
@@ -29,24 +31,44 @@ const GameCardStock = ({ game, updateGame, removeGame }) => {
         setIsModalOpen(false);
     };
 
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token);
+    const refreshTokenValue = useSelector((state) => state.auth.refreshToken); 
+
     const handleDelete = async () => {
-        const token = localStorage.getItem('token'); 
+    
         try {
-            const response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {
+            let response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
+    
+            if (response.status === 401) { 
+                const refreshResponse = await dispatch(refreshToken(refreshTokenValue)); 
+                if (refreshResponse.error) {
+                    throw new Error('Error al renovar el token');
+                }
+    
+                const newToken = refreshResponse.payload.token; 
+                response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${newToken}`,
+                    },
+                });
+            }
+    
             if (!response.ok) {
                 throw new Error('Error al eliminar el juego');
             }
-
+    
             removeGame(game.id);
             console.log('Juego eliminado correctamente');
         } catch (error) {
             console.error('Error al eliminar el juego:', error);
+            alert(`No se pudo eliminar el juego: ${error.message}`);
         }
     };
 
