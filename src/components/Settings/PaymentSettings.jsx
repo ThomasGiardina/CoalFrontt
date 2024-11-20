@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import PaymentCard from "./PaymentCard";
 import ModalPayment from "./ModalPayment";
 
 const PaymentSettings = () => {
     const [metodosPago, setMetodosPago] = useState([]);  
     const [modalOpen, setModalOpen] = useState(false);   
+    const token = useSelector((state) => state.auth.token);
 
     const fetchMetodosPago = async () => {
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:4002/metodosPago/usuario', {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json',
                 },
             });
@@ -28,11 +29,10 @@ const PaymentSettings = () => {
 
     const handleSaveMetodoPago = async (nuevoMetodo) => {
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:4002/metodosPago', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(nuevoMetodo),
@@ -41,7 +41,8 @@ const PaymentSettings = () => {
             if (response.ok) {
                 fetchMetodosPago(); 
             } else {
-                console.error('Error al guardar el método de pago');
+                const errorData = await response.json();
+                console.error('Error al guardar el método de pago:', errorData);
             }
         } catch (error) {
             console.error('Error al guardar el método de pago:', error);
@@ -50,11 +51,10 @@ const PaymentSettings = () => {
 
     const handleDeleteMetodoPago = async (id) => {
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:4002/metodosPago/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json',
                 },
             });
@@ -71,7 +71,7 @@ const PaymentSettings = () => {
 
     useEffect(() => {
         fetchMetodosPago();
-    }, []);
+    }, [token]); 
 
     return (
         <>
