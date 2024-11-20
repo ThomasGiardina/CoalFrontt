@@ -24,6 +24,7 @@ const BotonLogin = ({ email, password }) => {
             console.log('Inicio de sesión exitoso:', data);
 
             dispatch(login({ token: data.access_token, role: data.role }));
+            
 
             if (data.role === 'ADMIN') {
                 navigate('/GamesAdmin');

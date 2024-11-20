@@ -6,6 +6,7 @@ const initialState = {
     role: null,
     tokenExpiry: null,
     userCards: [],
+    profileImage: null, 
 };
 
 export const refreshToken = createAsyncThunk(
@@ -50,6 +51,29 @@ export const fetchUserCards = createAsyncThunk(
     }
 );
 
+export const fetchProfileImage = createAsyncThunk(
+    'auth/fetchProfileImage',
+    async (_, { getState, rejectWithValue }) => {
+        const token = getState().auth.token;
+        const userId = getState().auth.userId;
+
+        try {
+            const response = await fetch(`http://localhost:4002/api/usuario/imagen/${userId}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) throw new Error('Error al obtener la imagen de perfil');
+            const blob = await response.blob();
+            return URL.createObjectURL(blob);
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -59,15 +83,22 @@ const authSlice = createSlice({
             state.token = action.payload.token;
             state.refreshToken = action.payload.refreshToken;
             state.role = action.payload.role;
+            state.userId = action.payload.userId;
             state.tokenExpiry = action.payload.tokenExpiry || null;
+            state.profileImage = action.payload.profileImage || null; 
         },
         logout: (state) => {
             state.isAuthenticated = false;
             state.token = null;
             state.refreshToken = null;
+            state.userId = null;
             state.role = null;
             state.tokenExpiry = null;
-            state.userCards = []; 
+            state.userCards = [];
+            state.profileImage = null; 
+        },
+        updateProfileImage: (state, action) => {
+            state.profileImage = action.payload; 
         },
     },
     extraReducers: (builder) => {
@@ -80,10 +111,12 @@ const authSlice = createSlice({
             .addCase(fetchUserCards.rejected, (state, action) => {
                 console.error('Error al obtener tarjetas:', action.payload);
                 state.isAuthenticated = false; 
+            })
+            .addCase(fetchProfileImage.fulfilled, (state, action) => {
+                state.profileImage = action.payload; 
             });
     },
 });
 
-// acciones
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateProfileImage } = authSlice.actions;
 export default authSlice.reducer;
