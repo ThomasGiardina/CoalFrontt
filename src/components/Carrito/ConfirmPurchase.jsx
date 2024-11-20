@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import GamecardPurchase from "../Gamecard/GamecardPurchase";  
+import { refreshToken } from "../../redux/slices/authSlice";  
 
 const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handleNextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
@@ -10,6 +11,9 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
 
     const carritoId = useSelector((state) => state.cart.carritoId);
     const token = useSelector((state) => state.auth.token);
+    const dispatch = useDispatch();
+
+    console.log('token:', token)
 
     const payment = paymentMethod;
     const shipping = shippingMethod;
@@ -39,6 +43,16 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
         }
 
         if (termsAccepted) {
+            if (!token) {
+                const storedRefreshToken = localStorage.getItem("refreshToken"); 
+                if (storedRefreshToken) {
+                    dispatch(refreshToken(storedRefreshToken)); 
+                } else {
+                    Swal.fire("Error", "No tienes un token de sesión válido. Por favor, inicia sesión.", "error");
+                    return;
+                }
+            }
+
             Swal.fire({
                 title: "¿Estás seguro?",
                 text: "No podrás deshacer esta acción.",

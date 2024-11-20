@@ -6,23 +6,21 @@ import contactReducer from './slices/contactSlice';
 import authReducer from './slices/authSlice';
 import cartReducer from './slices/cartSlice';
 
-// Configuración para persistir autenticación
 const authPersistConfig = {
     key: 'auth',
     storage,
+    whitelist: ['token', 'isAuthenticated'],
 };
 
-// Configuración para persistir carrito
 const cartPersistConfig = {
     key: 'cart',
     storage,
 };
 
-// Reducers persistidos
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
-// Configuración del store
+
 const store = configureStore({
     reducer: {
         favorites: favoritesReducer,
@@ -37,10 +35,10 @@ const store = configureStore({
                     getToken: () => store.getState().auth.token,
                 },
             },
-            serializableCheck: false, // Necesario para redux-persist
+            serializableCheck: false, 
         }),
 });
 
-// Persistor para redux-persist
+
 export const persistor = persistStore(store);
 export default store;

@@ -24,7 +24,8 @@ const BotonLogin = ({ email, password }) => {
             console.log('Inicio de sesión exitoso:', data);
 
             dispatch(login({ token: data.access_token, role: data.role }));
-            
+
+            console.log('Token guardado en Redux:', data.access_token);
 
             if (data.role === 'ADMIN') {
                 navigate('/GamesAdmin');
