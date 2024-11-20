@@ -90,6 +90,32 @@ export const updateShippingAddress = createAsyncThunk(
     }
 );
 
+// Eliminar un ítem del carrito
+export const deleteItemFromCarrito = createAsyncThunk(
+    'cart/deleteItemFromCarrito',
+    async (itemId, { getState, rejectWithValue }) => {
+        const { auth } = getState();
+        const token = auth.token;
+
+        if (!token) {
+            return rejectWithValue('Token no disponible.');
+        }
+
+        try {
+            const response = await fetch(`http://localhost:4002/carritos/items/${itemId}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!response.ok) throw new Error('Error al eliminar el ítem del carrito.');
+            return itemId; 
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -155,11 +181,23 @@ const cartSlice = createSlice({
             })
             .addCase(updateShippingAddress.fulfilled, (state, action) => {
                 state.loading = false;
-                state.direccionEnvio = action.payload; // Actualiza la dirección en el estado
+                state.direccionEnvio = action.payload; 
             })
             .addCase(updateShippingAddress.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Error al actualizar la dirección de envío.';
+            })
+            .addCase(deleteItemFromCarrito.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteItemFromCarrito.fulfilled, (state, action) => {
+                state.loading = false;
+                state.cartItems = state.cartItems.filter((item) => item.id !== action.payload);
+            })
+            .addCase(deleteItemFromCarrito.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Error al eliminar el ítem del carrito.';
             });
     },
 });

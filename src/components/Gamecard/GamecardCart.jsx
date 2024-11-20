@@ -1,46 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import { useDispatch } from 'react-redux';
+import { deleteItemFromCarrito } from '../../redux/slices/cartSlice';
 
 const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
-    const { id, titulo, precio, cantidad, videojuego, plataforma } = item;
-    const fotoUrl = videojuego && videojuego.foto
+    const dispatch = useDispatch();
+    const { id, titulo, precio, cantidad, videojuego, plataforma } = item || {};
+    const fotoUrl = videojuego?.foto
         ? `data:image/jpeg;base64,${videojuego.foto}`
         : '/ruta/a/imagen_por_defecto.png';
 
     const token = localStorage.getItem('token');
-
-    const stock = videojuego ? videojuego.stock : 0; 
-    console.log(stock)
-
-    const actualizarCantidadEnBackend = async (itemId, nuevaCantidad) => {
-        try {
-            const response = await fetch(`http://localhost:4002/carritos/items/${itemId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ cantidad: nuevaCantidad }),
-            });
-
-            if (response.ok) {
-                console.log(`Cantidad del item con id: ${itemId} actualizada a: ${nuevaCantidad}`);
-            } else {
-                console.error("Error al actualizar la cantidad en la base de datos");
-            }
-        } catch (error) {
-            console.error("Error al hacer la solicitud PUT:", error);
-        }
-    };
+    const stock = videojuego?.stock || 0;
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
-        if (nuevaCantidad <= stock) { 
+        if (nuevaCantidad <= stock) {
             onUpdateQuantity(id, nuevaCantidad);
-            actualizarCantidadEnBackend(id, nuevaCantidad);
         } else {
             Swal.fire({
                 icon: 'warning',
@@ -56,7 +35,6 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
         if (cantidad > 1) {
             const nuevaCantidad = cantidad - 1;
             onUpdateQuantity(id, nuevaCantidad);
-            actualizarCantidadEnBackend(id, nuevaCantidad);
         }
     };
 
@@ -66,84 +44,36 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
             text: "Se eliminará el producto del carrito.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: 'primary',
+            confirmButtonColor: '#FF6828',
             cancelButtonColor: '#d33',
             background: '#1D1F23',
             color: '#fff',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
-        }).then(async (result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`http://localhost:4002/carritos/items/${id}`, {
-                        method: "DELETE",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-
-                    if (response.ok) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Eliminado!',
-                            text: 'El producto ha sido eliminado del carrito.',
-                        });
-                        onDeleteItem(id);
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'No se pudo eliminar el producto.',
-                        });
-                    }
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Ocurrió un error al eliminar el producto.',
-                    });
-                }
+                dispatch(deleteItemFromCarrito(id)); 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Eliminado',
+                    text: 'El producto ha sido eliminado del carrito.',
+                    background: '#1D1F23',
+                    color: '#fff',
+                });
             }
         });
     };
 
     const getPlatformIcon = (platform) => {
-        if (!platform) return null;
-
-        switch (platform.toUpperCase()) {
+        switch (platform?.toUpperCase()) {
             case 'XBOX':
-                return (
-                    <span className="flex items-center space-x-2">
-                        <i className="fab fa-xbox text-green-500 text-xl"></i>
-                        <span className="text-sm">Xbox</span>
-                    </span>
-                );
-            case 'PLAY_STATION':
+                return <i className="fab fa-xbox text-green-500 text-xl"></i>;
             case 'PLAYSTATION':
-                return (
-                    <span className="flex items-center space-x-2">
-                        <i className="fab fa-playstation text-blue-500 text-xl"></i>
-                        <span className="text-sm">PlayStation</span>
-                    </span>
-                );
+                return <i className="fab fa-playstation text-blue-500 text-xl"></i>;
             case 'NINTENDO_SWITCH':
-                return (
-                    <span className="flex items-center space-x-2">
-                        <div className="text-red-700 text-xl p-1">
-                            <BsNintendoSwitch />
-                        </div>
-                        <span className="text-sm">Nintendo Switch</span>
-                    </span>
-                );
+                return <BsNintendoSwitch className="text-red-700 text-xl" />;
             case 'PC':
-                return (
-                    <span className="flex items-center space-x-2">
-                        <div className="text-gray-500 text-xl p-1">
-                            <BsPcDisplay />
-                        </div>
-                        <span className="text-sm">PC</span>
-                    </span>
-                );
+                return <BsPcDisplay className="text-gray-500 text-xl" />;
             default:
                 return <span>Plataforma desconocida</span>;
         }
@@ -155,13 +85,13 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                 <img
                     className="w-32 h-full rounded-lg object-cover"
                     src={fotoUrl}
-                    alt={titulo}
+                    alt={titulo || "Producto sin título"}
                 />
             </div>
 
             <div className="flex-grow flex flex-col justify-between ml-4">
                 <div className="flex justify-between items-start w-full">
-                    <h2 className="text-lg font-semibold">{titulo}</h2>
+                    <h2 className="text-lg font-semibold">{titulo || "Producto desconocido"}</h2>
                     <button
                         className="text-gray-400 hover:text-red-500 transition"
                         onClick={eliminarProducto}
@@ -170,12 +100,8 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                     </button>
                 </div>
 
-                <div className="flex items-center space-x-2 text-gray-400 mt-1">
-                    {getPlatformIcon(plataforma)}
-                </div>
-
                 <div className="flex items-start mt-12">
-                    <p className="text-xl font-bold text-green-400">${precio}</p>
+                    <p className="text-xl font-bold text-green-400">${precio?.toFixed(2) || "0.00"}</p>
                 </div>
             </div>
 
@@ -183,12 +109,16 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                 <button
                     className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
                     onClick={disminuirCantidad}
-                > - </button>
-                <span className="text-md">{cantidad}</span>
+                >
+                    -
+                </button>
+                <span className="text-md">{cantidad || 1}</span>
                 <button
                     className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
                     onClick={aumentarCantidad}
-                > + </button>
+                >
+                    +
+                </button>
             </div>
         </div>
     );

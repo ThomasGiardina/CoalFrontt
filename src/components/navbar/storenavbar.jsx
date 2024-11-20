@@ -30,8 +30,20 @@ const StoreNavbar = () => {
     }, []);
 
     const calculateCartSummary = () => {
-        const totalItems = cartItems.reduce((total, item) => total + item.cantidad, 0);
-        const subtotal = cartItems.reduce((total, item) => total + item.videojuego.precio * item.cantidad, 0);
+        if (!cartItems || cartItems.length === 0) {
+            return { totalItems: 0, subtotal: 0 }; 
+        }
+
+        const totalItems = cartItems.reduce(
+            (total, item) => total + (item?.cantidad || 0),
+            0
+        );
+
+        const subtotal = cartItems.reduce(
+            (total, item) => total + ((item?.videojuego?.precio || 0) * (item?.cantidad || 0)),
+            0
+        );
+
         return { totalItems, subtotal };
     };
 
@@ -55,54 +67,54 @@ const StoreNavbar = () => {
                         <span className="ml-2 text-white font-bold">Coal</span>
                     </Link>
                     {isAuthenticated && role === 'ADMIN' ? (
-                    <>
-                        <Link to="/GamesAdmin" className="btn btn-ghost btn-sm ml-8">
-                            <i className="fa-solid fa-gamepad text-primary"></i>
-                            Admin de Juegos
-                        </Link>
-                        <Link to="/Statistics" className="btn btn-ghost btn-sm">
-                            <i className="fa-solid fa-chart-bar text-primary"></i>
-                            Estadísticas
-                        </Link>
-                        <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
-                            <i className="fa-solid fas fa-file-signature text-primary"></i>
-                            Pedidos
-                        </Link>
-                        <Link to="/Store" className="btn btn-ghost btn-sm">
-                            <i className="fa-solid fa-store text-primary"></i>
-                            Tienda
-                        </Link>
-                    </>
-                ) : (
-                    <>
-                        <Link to="/Store" className="btn btn-ghost btn-sm ml-8">
-                            <i className="fa-solid fa-store text-primary"></i>
-                            Tienda
-                        </Link>
-                        {isAuthenticated && (
-                            <Link to="/UserOrderHistory" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fas fa-file-contract text-primary"></i>
+                        <>
+                            <Link to="/GamesAdmin" className="btn btn-ghost btn-sm ml-8">
+                                <i className="fa-solid fa-gamepad text-primary"></i>
+                                Admin de Juegos
+                            </Link>
+                            <Link to="/Statistics" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fa-chart-bar text-primary"></i>
+                                Estadísticas
+                            </Link>
+                            <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fas fa-file-signature text-primary"></i>
                                 Pedidos
                             </Link>
-                        )}
-                        {isAuthenticated && (
-                            <Link to="/Favorites" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-star text-primary"></i>
-                                Favoritos
+                            <Link to="/Store" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fa-store text-primary"></i>
+                                Tienda
                             </Link>
-                        )}
-                        <Link to="/About" className="btn btn-ghost btn-sm">
-                            <i className="fa-solid fa-info-circle text-primary"></i>
-                            Acerca de
-                        </Link>
-                        <Link to="/Support" className="btn btn-ghost btn-sm">
-                            <i className="fa-solid fa-headset text-primary"></i>
-                            Soporte
-                        </Link>
-                    </>
-                )}
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/Store" className="btn btn-ghost btn-sm ml-8">
+                                <i className="fa-solid fa-store text-primary"></i>
+                                Tienda
+                            </Link>
+                            {isAuthenticated && (
+                                <Link to="/UserOrderHistory" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fas fa-file-contract text-primary"></i>
+                                    Pedidos
+                                </Link>
+                            )}
+                            <Link to="/About" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fa-info-circle text-primary"></i>
+                                Acerca de
+                            </Link>
+                            <Link to="/Support" className="btn btn-ghost btn-sm">
+                                <i className="fa-solid fa-headset text-primary"></i>
+                                Soporte
+                            </Link>
+                            {isAuthenticated && (
+                                <Link to="/Favorites" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fa-star text-primary"></i>
+                                    Favoritos
+                                </Link>
+                            )}
+                        </>
+                    )}
                 </div>
-                <div className='relative flex items-center gap-4'>
+                <div className="relative flex items-center gap-4">
                     {isAuthenticated ? (
                         <>
                             {role !== 'ADMIN' && (

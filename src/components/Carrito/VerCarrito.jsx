@@ -5,17 +5,23 @@ import GamecardCart from "../Gamecard/GamecardCart";
 
 const VerCarrito = ({ onContinue }) => {
     const dispatch = useDispatch();
-    const { cartItems } = useSelector((state) => state.cart);
+    const cartItems = useSelector((state) => state.cart.cartItems);
+    const carritoId = useSelector((state) => state.cart.carritoId); 
+    const token = useSelector((state) => state.auth.token);
 
     const [total, setTotal] = useState(0);
     const [totalItemsCount, setTotalItemsCount] = useState(0);
+
+    useEffect(() => {
+        console.log("Carrito ID:", carritoId); 
+    }, [carritoId]); 
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 const response = await fetch("http://localhost:4002/carritos/usuarios/carrito", {
                     headers: {
-                        Authorization: `Bearer ${useSelector((state) => state.auth.token)}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
 
@@ -28,14 +34,14 @@ const VerCarrito = ({ onContinue }) => {
             }
         };
 
-        fetchCart();
-    }, [dispatch]);
+        if (token) fetchCart();
+    }, [dispatch, token]);
 
     useEffect(() => {
-        const calculatedTotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+        const calculatedTotal = cartItems.reduce((acc, item) => acc + (item?.precio || 0) * (item?.cantidad || 0), 0);
         setTotal(calculatedTotal);
 
-        const calculatedTotalItemsCount = cartItems.reduce((acc, item) => acc + item.cantidad, 0);
+        const calculatedTotalItemsCount = cartItems.reduce((acc, item) => acc + (item?.cantidad || 0), 0);
         setTotalItemsCount(calculatedTotalItemsCount);
     }, [cartItems]);
 
@@ -69,7 +75,7 @@ const VerCarrito = ({ onContinue }) => {
                 <div className="flex flex-col space-y-3 text-white">
                     <div className="flex justify-between">
                         <h2 className="text-xl font-medium">Total Estimado:</h2>
-                        <p className="text-xl">${total}</p>
+                        <p className="text-xl">${total.toFixed(2)}</p>
                     </div>
                     <div className="flex justify-between">
                         <h2 className="text-xl font-medium">Cantidad Total de Productos:</h2>

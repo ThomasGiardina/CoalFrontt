@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux"; 
-import { setCarritoId, setCartItems } from "../../redux/slices/cartSlice"; 
+import React, { useState, useEffect } from "react"; 
+import { useSelector, useDispatch } from "react-redux";
+import { setCarritoId, setCartItems } from "../../redux/slices/cartSlice";
 import SelectPayment from "./SelectPayment";
 import VerCarrito from "./VerCarrito";
 import ConfirmPurchase from "./ConfirmPurchase";
@@ -11,8 +11,8 @@ const NewContainerCart = () => {
     const carritoId = useSelector((state) => state.cart.carritoId);
     const cartItems = useSelector((state) => state.cart.cartItems);
     const [currentStep, setCurrentStep] = useState(1);
-    const [paymentMethod, setPaymentMethod] = useState(""); 
-    const [shippingMethod, setShippingMethod] = useState(""); 
+    const [paymentMethod, setPaymentMethod] = useState("");
+    const [shippingMethod, setShippingMethod] = useState("");
 
     useEffect(() => {
         if (!carritoId) {
@@ -22,17 +22,15 @@ const NewContainerCart = () => {
             dispatch(setCartItems([
                 { id: 1, titulo: "Juego 1", cantidad: 2, precio: 500 },
                 { id: 2, titulo: "Juego 2", cantidad: 1, precio: 300 },
-            ])); 
+            ]));
         }
-    }, [dispatch, carritoId, cartItems]); 
+    }, [dispatch, carritoId, cartItems]);
 
     const handleNextStep = () => {
-        console.log(`Avanzando al paso ${currentStep + 1}`);
         setCurrentStep(currentStep + 1);
     };
 
     const handleBackStep = () => {
-        console.log(`Avanzando al paso ${currentStep - 1}`);
         setCurrentStep(currentStep - 1);
     };
 
@@ -54,30 +52,30 @@ const NewContainerCart = () => {
             </ul>
 
             {currentStep === 1 && (
-                <VerCarrito onContinue={handleNextStep} setCartItems={setCartItems} cartItems={cartItems} />  
+                <VerCarrito onContinue={handleNextStep} cartItems={cartItems} />
             )}
             {currentStep === 2 && (
                 <SelectPayment
                     onBack={handleBackStep}
-                    onConfirm={handleSelectPayment} 
+                    onConfirm={handleSelectPayment}
                     handleNextStep={handleNextStep}
-                    cartItems={cartItems}  
+                    cartItems={cartItems}
                 />
             )}
             {currentStep === 3 && (
-                <ConfirmPurchase 
-                    paymentMethod={paymentMethod} 
+                <ConfirmPurchase
+                    paymentMethod={paymentMethod}
                     shippingMethod={shippingMethod}
-                    carritoId={carritoId} 
-                    cartItems={cartItems}  
-                    handleNextStep={handleNextStep}  
+                    carritoId={carritoId}
+                    cartItems={cartItems}
+                    handleNextStep={handleNextStep}
                 />
             )}
             {currentStep === 4 && (
-                <Factura 
-                    cartItems={cartItems}  
+                <Factura
+                    cartItems={cartItems}
                     paymentMethod={paymentMethod}
-                    shippingMethod={shippingMethod} 
+                    shippingMethod={shippingMethod}
                 />
             )}
         </div>
