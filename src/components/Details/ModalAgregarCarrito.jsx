@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Link, useNavigate } from "react-router-dom";
-import { fetchCarrito, addItemToCarrito, updateCartItem } from '../../redux/slices/cartSlice'; // Añadir la acción updateCartItem
+import { fetchCarrito, addItemToCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice'; 
 import "../../index.css";
 
 const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('Acción por defecto: agregar al carrito') }) => {
@@ -24,12 +24,10 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
 
     const handleButtonClick = async () => {
         if (isAuthenticated) {
-            // Verificar si el producto ya existe en el carrito
             const existingItem = cartItems.find(item => item.videojuego.id === gameDetails.id);
             const quantityInCart = existingItem ? existingItem.cantidad : 0;
-            const totalQuantity = quantityInCart + 1; // Aumentar cantidad
+            const totalQuantity = quantityInCart + 1; 
 
-            // Verificar que no exceda el stock disponible
             if (totalQuantity > gameDetails.stock) {
                 MySwal.fire({
                     icon: 'warning',
@@ -45,8 +43,7 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
             } else {
                 try {
                     if (existingItem) {
-                        // Si ya existe en el carrito, actualizar la cantidad
-                        await dispatch(updateCartItem({ id: existingItem.id, cantidad: totalQuantity }));
+                        await dispatch(updateCartItemAsync({ id: existingItem.id, cantidad: totalQuantity }));
                         MySwal.fire({
                             title: 'Cantidad Actualizada!',
                             text: `La cantidad del producto ha sido actualizada a ${totalQuantity}.`,
@@ -65,7 +62,6 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
                             }
                         });
                     } else {
-                        // Si no existe en el carrito, agregarlo
                         await dispatch(addItemToCarrito({ 
                             carritoId, 
                             videojuegoId: gameDetails.id, 
