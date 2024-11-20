@@ -121,6 +121,7 @@ export const updateCartItemAsync = createAsyncThunk(
         const { auth } = getState();
         const token = auth.token;
         const carritoId = getState().cart.carritoId;
+        console.log("Enviando actualización", { id, cantidad });
 
         if (!token || !carritoId) {
             return rejectWithValue('Token o carritoId no disponible.');
@@ -133,10 +134,14 @@ export const updateCartItemAsync = createAsyncThunk(
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ cantidad }),
+                body: JSON.stringify({ cantidad })
             });
 
-            if (!response.ok) throw new Error('Error al actualizar la cantidad del ítem');
+            if (!response.ok) {
+                console.log("Error en la actualización", await response.text());
+            } else {
+                console.log("Cantidad actualizada exitosamente");
+            }
             return { id, cantidad }; 
         } catch (error) {
             return rejectWithValue(error.message);
@@ -228,9 +233,11 @@ const cartSlice = createSlice({
                 state.error = action.payload || 'Error al eliminar el ítem del carrito.';
             })
             .addCase(updateCartItemAsync.fulfilled, (state, action) => {
-                const { id, cantidad } = action.payload;
+                const { id, cantidad } = action.payload;  
                 const item = state.cartItems.find((item) => item.id === id);
-                if (item) item.cantidad = cantidad; 
+                if (item) {
+                    item.cantidad = cantidad;  
+                }
             });
     },
 });

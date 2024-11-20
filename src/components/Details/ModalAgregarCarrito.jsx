@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Link, useNavigate } from "react-router-dom";
-import { fetchCarrito, addItemToCarrito } from '../../redux/slices/cartSlice';
+import { fetchCarrito, addItemToCarrito, updateCartItem } from '../../redux/slices/cartSlice'; // Añadir la acción updateCartItem
 import "../../index.css";
 
 const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('Acción por defecto: agregar al carrito') }) => {
@@ -24,10 +24,12 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
 
     const handleButtonClick = async () => {
         if (isAuthenticated) {
+            // Verificar si el producto ya existe en el carrito
             const existingItem = cartItems.find(item => item.videojuego.id === gameDetails.id);
             const quantityInCart = existingItem ? existingItem.cantidad : 0;
-            const totalQuantity = quantityInCart + 1;
+            const totalQuantity = quantityInCart + 1; // Aumentar cantidad
 
+            // Verificar que no exceda el stock disponible
             if (totalQuantity > gameDetails.stock) {
                 MySwal.fire({
                     icon: 'warning',
@@ -41,14 +43,36 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
                     },
                 });
             } else {
-                dispatch(addItemToCarrito({ 
-                    carritoId, 
-                    videojuegoId: gameDetails.id, 
-                    cantidad: 1, 
-                    token 
-                }))
-                    .then(() => {
-                        onAddToCarrito();
+                try {
+                    if (existingItem) {
+                        // Si ya existe en el carrito, actualizar la cantidad
+                        await dispatch(updateCartItem({ id: existingItem.id, cantidad: totalQuantity }));
+                        MySwal.fire({
+                            title: 'Cantidad Actualizada!',
+                            text: `La cantidad del producto ha sido actualizada a ${totalQuantity}.`,
+                            icon: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: 'Seguir Comprando',
+                            cancelButtonText: 'Ir al Carrito',
+                            background: '#1D1F23',
+                            color: '#fff',
+                            customClass: {
+                                popup: 'custom-toast',
+                            },
+                        }).then((result) => {
+                            if (!result.isConfirmed) {
+                                navigate('/Cart');
+                            }
+                        });
+                    } else {
+                        // Si no existe en el carrito, agregarlo
+                        await dispatch(addItemToCarrito({ 
+                            carritoId, 
+                            videojuegoId: gameDetails.id, 
+                            cantidad: 1, 
+                            token 
+                        }));
+
                         MySwal.fire({
                             title: 'Producto Agregado al Carrito!',
                             text: 'El producto ha sido agregado al carrito con éxito. Elija si desea seguir comprando o ir al carrito.',
@@ -66,21 +90,21 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
                                 navigate('/Cart');
                             }
                         });
-                    })
-                    .catch((error) => {
-                        console.error("Error al agregar el item al carrito:", error);
-                        MySwal.fire({
-                            icon: 'error',
-                            title: 'Error al agregar el producto',
-                            text: error.message,
-                            confirmButtonText: 'OK',
-                            background: '#1D1F23',
-                            color: '#fff',
-                            customClass: {
-                                popup: 'custom-toast',
-                            },
-                        });
+                    }
+                } catch (error) {
+                    console.error("Error al agregar o actualizar el item en el carrito:", error);
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Error al agregar el producto',
+                        text: error.message,
+                        confirmButtonText: 'OK',
+                        background: '#1D1F23',
+                        color: '#fff',
+                        customClass: {
+                            popup: 'custom-toast',
+                        },
                     });
+                }
             }
         } else {
             MySwal.fire({
