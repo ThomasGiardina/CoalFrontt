@@ -115,6 +115,34 @@ export const deleteItemFromCarrito = createAsyncThunk(
     }
 );
 
+export const updateCartItemAsync = createAsyncThunk(
+    'cart/updateCartItem',
+    async ({ id, cantidad }, { getState, rejectWithValue }) => {
+        const { auth } = getState();
+        const token = auth.token;
+        const carritoId = getState().cart.carritoId;
+
+        if (!token || !carritoId) {
+            return rejectWithValue('Token o carritoId no disponible.');
+        }
+
+        try {
+            const response = await fetch(`http://localhost:4002/carritos/items/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ cantidad }),
+            });
+
+            if (!response.ok) throw new Error('Error al actualizar la cantidad del ítem');
+            return { id, cantidad }; 
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 const cartSlice = createSlice({
     name: 'cart',
@@ -198,6 +226,11 @@ const cartSlice = createSlice({
             .addCase(deleteItemFromCarrito.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Error al eliminar el ítem del carrito.';
+            })
+            .addCase(updateCartItemAsync.fulfilled, (state, action) => {
+                const { id, cantidad } = action.payload;
+                const item = state.cartItems.find((item) => item.id === id);
+                if (item) item.cantidad = cantidad; 
             });
     },
 });

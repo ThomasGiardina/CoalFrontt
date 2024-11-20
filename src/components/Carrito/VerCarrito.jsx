@@ -66,7 +66,7 @@ const VerCarrito = ({ onContinue }) => {
                         />
                     ))
                 ) : (
-                    <p className="text-white">El carrito está vacío.</p>
+                    <p className="text-white">El carrito está vacío.</p> 
                 )}
             </div>
             <div className="bg-neutral w-[500px] h-[300px] p-6 rounded-lg shadow-lg">

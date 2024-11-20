@@ -4,7 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { useDispatch } from 'react-redux';
-import { deleteItemFromCarrito } from '../../redux/slices/cartSlice';
+import { deleteItemFromCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice'; // Asegúrate de importar la acción async
 
 const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     const dispatch = useDispatch();
@@ -16,10 +16,11 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
     const token = localStorage.getItem('token');
     const stock = videojuego?.stock || 0;
 
+    // Función para aumentar la cantidad
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
         if (nuevaCantidad <= stock) {
-            onUpdateQuantity(id, nuevaCantidad);
+            dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad })); // Asegúrate de usar dispatch aquí
         } else {
             Swal.fire({
                 icon: 'warning',
@@ -31,13 +32,15 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
         }
     };
 
+    // Función para disminuir la cantidad
     const disminuirCantidad = () => {
         if (cantidad > 1) {
             const nuevaCantidad = cantidad - 1;
-            onUpdateQuantity(id, nuevaCantidad);
+            dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad })); // Actualizamos con el dispatch
         }
     };
 
+    // Función para eliminar el producto
     const eliminarProducto = () => {
         Swal.fire({
             title: '¿Estás seguro?',
@@ -52,7 +55,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteItemFromCarrito(id)); 
+                dispatch(deleteItemFromCarrito(id)); // Despachamos la acción de eliminar el producto
                 Swal.fire({
                     icon: 'success',
                     title: 'Eliminado',
@@ -64,6 +67,7 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
         });
     };
 
+    // Función para obtener el ícono de la plataforma
     const getPlatformIcon = (platform) => {
         switch (platform?.toUpperCase()) {
             case 'XBOX':
@@ -110,14 +114,14 @@ const GamecardCart = ({ item, onUpdateQuantity, onDeleteItem }) => {
                     className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
                     onClick={disminuirCantidad}
                 >
-                    -
+                    - 
                 </button>
                 <span className="text-md">{cantidad || 1}</span>
                 <button
                     className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
                     onClick={aumentarCantidad}
                 >
-                    +
+                    + 
                 </button>
             </div>
         </div>
