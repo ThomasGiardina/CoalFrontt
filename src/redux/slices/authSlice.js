@@ -36,20 +36,32 @@ export const refreshToken = createAsyncThunk(
 export const fetchUserCards = createAsyncThunk(
     'auth/fetchUserCards',
     async (_, { getState, rejectWithValue }) => {
-        const token = getState().auth.token; 
+        const token = getState().auth.token;
+        console.log('Token usado para fetchUserCards:', token); 
+        if (!token) {
+            console.error('Token no disponible');
+            return rejectWithValue('Token no disponible');
+        }
         try {
             const response = await fetch('http://localhost:4002/metodosPago/usuario', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            if (!response.ok) throw new Error('Error al obtener las tarjetas');
-            return await response.json(); 
+            if (!response.ok) {
+                console.error('Error al obtener las tarjetas:', response.statusText);
+                throw new Error('Error al obtener las tarjetas');
+            }
+            const data = await response.json();
+            console.log('Tarjetas obtenidas:', data); 
+            return data;
         } catch (error) {
-            return rejectWithValue(error.message); 
+            console.error('Error en fetchUserCards:', error.message);
+            return rejectWithValue(error.message);
         }
     }
 );
+
 
 export const fetchProfileImage = createAsyncThunk(
     'auth/fetchProfileImage',
@@ -105,12 +117,9 @@ const authSlice = createSlice({
         builder
             .addCase(fetchUserCards.fulfilled, (state, action) => {
                 state.userCards = action.payload;
-                state.token = action.payload.token;
-                state.refreshToken = action.payload.refreshToken;
             })
             .addCase(fetchUserCards.rejected, (state, action) => {
-                console.error('Error al obtener tarjetas:', action.payload);
-                state.isAuthenticated = false; 
+                state.error = action.payload; 
             })
             .addCase(fetchProfileImage.fulfilled, (state, action) => {
                 state.profileImage = action.payload; 
