@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-
-const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress, shippingCost, discount }) => {
+const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress, shippingCost, discount, shippingMethod}) => {
     const [nombreCliente, setNombreCliente] = useState("Nombre del Cliente");
     const token = useSelector((state) => state.auth.token);
     const userName = useSelector((state) => state.auth.userName); 
+
+    const parsedShippingAddress =
+        typeof shippingAddress === "string" ? JSON.parse(shippingAddress) : shippingAddress;
 
     useEffect(() => {
         if (userName) {
@@ -58,10 +60,14 @@ const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddr
             <div className="mb-6 p-4 bg-white border-b">
                 <p><strong>Facturar a:</strong></p>
                 <p>Cliente: {nombreCliente}</p>
-                <p>Dirección: {shippingAddress.address || "No especificado"}</p>
-                <p>Ciudad: {shippingAddress.city || "No especificado"}</p>
-                <p>Código Postal: {shippingAddress.postalCode || "No especificado"}</p>
-                <p>Teléfono: {shippingAddress.phone || "No especificado"}</p>
+                {shippingMethod === "envio" && shippingAddress && (
+                    <>
+                        <p>Dirección: {parsedShippingAddress.direccion || ""}</p>
+                        <p>Ciudad: {parsedShippingAddress.localidad || ""}</p>
+                        <p>Código Postal: {parsedShippingAddress.codigoPostal || ""}</p>
+                        <p>Teléfono: {parsedShippingAddress.telefono || ""}</p>
+                    </>
+                )}
             </div>
 
             <table className="w-full text-left border-t">

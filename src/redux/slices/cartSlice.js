@@ -212,7 +212,6 @@ const cartSlice = createSlice({
             })
             .addCase(updateShippingAddress.fulfilled, (state, action) => {
                 state.loading = false;
-                state.direccionEnvio = action.payload;
             })
             .addCase(updateShippingAddress.rejected, (state, action) => {
                 state.loading = false;

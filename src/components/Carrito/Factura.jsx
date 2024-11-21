@@ -11,13 +11,19 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
     const [orderDate] = useState(new Date());
     const [showTraditionalInvoice, setShowTraditionalInvoice] = useState(false);
 
-    const shippingAddress = useSelector((state) => state.cart.shippingAddress) || {};
+    const shippingAddress = useSelector((state) => state.cart.direccionEnvio) || null;
+
+    const parsedShippingAddress =
+        typeof shippingAddress === "string" ? JSON.parse(shippingAddress) : shippingAddress;
+
 
     const shippingCost = shippingMethod === "envio" ? 5000 : 0; 
     const discountPercentage = paymentMethod === "EFECTIVO" ? 0.15 : paymentMethod === "DEBITO" ? 0.10 : 0; 
     const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
     const discount = subtotal * discountPercentage; 
     const total = subtotal + shippingCost - discount; 
+
+    
 
     useEffect(() => {
         const generateOrderId = () => {
@@ -85,11 +91,11 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                             <span className="text-gray-400">Método de Pago:</span>
                             <span className="text-green-400">{paymentMethod}</span> 
                         </div>
-                        {shippingMethod === "envio" && (
+                        {shippingMethod === "envio" && parsedShippingAddress && (
                             <div className="flex justify-between mb-3">
                                 <span className="text-gray-400">Dirección de Envío:</span>
                                 <span className="text-white">
-                                    {`${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, Tel: ${shippingAddress.phone}`}
+                                    {`${parsedShippingAddress.direccion || ""}, ${parsedShippingAddress.localidad || ""}, ${parsedShippingAddress.codigoPostal || ""}, Tel: ${parsedShippingAddress.telefono || ""}`}
                                 </span>
                             </div>
                         )}
@@ -142,6 +148,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         shippingAddress={shippingAddress} 
                         shippingCost={shippingCost} 
                         discount={discount}
+                        shippingMethod={shippingMethod}
                     />
                 </div>
             )}
