@@ -62,13 +62,14 @@ const ModalAgregarCarrito = ({ gameDetails, onAddToCarrito = () => console.log('
                             }
                         });
                     } else {
-                        await dispatch(addItemToCarrito({ 
-                            carritoId, 
-                            videojuegoId: gameDetails.id, 
-                            cantidad: 1, 
-                            token 
+                        await dispatch(addItemToCarrito({
+                            carritoId,
+                            videojuegoId: gameDetails.id,
+                            cantidad: 1,
                         }));
-
+                
+                        await dispatch(fetchCarrito());
+                    
                         MySwal.fire({
                             title: 'Producto Agregado al Carrito!',
                             text: 'El producto ha sido agregado al carrito con éxito. Elija si desea seguir comprando o ir al carrito.',

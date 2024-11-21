@@ -37,10 +37,9 @@ export const fetchCarrito = createAsyncThunk(
 // Agregar un ítem al carrito
 export const addItemToCarrito = createAsyncThunk(
     'cart/addItemToCarrito',
-    async ({ videojuegoId, cantidad }, { getState, rejectWithValue }) => {
-        const { auth, cart } = getState();
+    async ({ carritoId, videojuegoId, cantidad }, { getState, dispatch, rejectWithValue }) => {
+        const { auth } = getState();
         const token = auth.token;
-        const carritoId = cart.carritoId;
 
         if (!token || !carritoId) {
             return rejectWithValue('Token o carritoId no disponible.');
@@ -55,13 +54,17 @@ export const addItemToCarrito = createAsyncThunk(
                 },
                 body: JSON.stringify({ videojuegoId, cantidad }),
             });
+
             if (!response.ok) throw new Error('Error al agregar el ítem al carrito.');
+
+            dispatch(fetchCarrito());
             return await response.json();
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 );
+
 
 // Actualizar dirección de envío
 export const updateShippingAddress = createAsyncThunk(
