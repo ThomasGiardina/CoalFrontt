@@ -21,7 +21,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     const shippingCost = shipping === "envio" ? 5000 : 0;
 
     const discountPercentage =
-        payment === "EFECTIVO" ? 0.15 : payment === "DEBITO" ? 0.10 : 0;
+        payment === "Efectivo" ? 0.15 : payment === "DEBITO" ? 0.10 : 0;
 
     useEffect(() => {
         const calculatedSubtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -137,7 +137,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
 
                         <div className="flex justify-between font-semibold mt-4">
                             <span className="text-gray-300">Método de Pago:</span>
-                            <span className="text-green-400">{payment}</span>
+                            <span className="text-green-400 uppercase">{payment}</span>
                         </div>
                     </div>
 

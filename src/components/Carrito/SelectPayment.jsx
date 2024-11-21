@@ -182,10 +182,10 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             alert("Por favor completa todos los campos requeridos para continuar.");
             return;
         }
-
-        const paymentTypeToSend = paymentType || "Tarjeta de Crédito/Débito";
+    
+        const paymentTypeToSend = paymentMethod === "Efectivo" ? "Efectivo" : paymentType || "Tarjeta de Crédito/Débito";
         console.log("Método de pago final:", paymentTypeToSend);
-
+    
         if (shippingOption === "envio") {
             const addressData = {
                 direccion: formValues.address,
@@ -198,6 +198,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     
         onConfirm(paymentTypeToSend, shippingOption);
     };
+    
 
     return (
         <div className="text-white p-6 rounded-lg bg-gray-800">
