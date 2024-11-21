@@ -193,11 +193,12 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                 codigoPostal: formValues.postalCode,
                 telefono: formValues.phone,
             };
-            dispatch(updateShippingAddress(addressData)); 
+            dispatch(updateShippingAddress(addressData));
         }
-    
         onConfirm(paymentTypeToSend, shippingOption);
     };
+    
+    
     
 
     return (

@@ -69,22 +69,12 @@ export const addItemToCarrito = createAsyncThunk(
 // Actualizar dirección de envío
 export const updateShippingAddress = createAsyncThunk(
     'cart/updateShippingAddress',
-    async (addressData, { getState, rejectWithValue }) => {
-        const { auth, cart } = getState();
-        const token = auth.token;
-        const carritoId = cart.carritoId;
-
-        if (!token || !carritoId) {
-            return rejectWithValue('Token o carritoId no disponible.');
-        }
-
-        try {
-            return addressData; 
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+    async (addressData, { dispatch }) => {
+        dispatch(setDireccionEnvio(addressData));
+        return addressData; 
     }
 );
+
 
 // Eliminar un ítem del carrito
 export const deleteItemFromCarrito = createAsyncThunk(
@@ -98,7 +88,6 @@ export const deleteItemFromCarrito = createAsyncThunk(
         }
 
         try {
-            // Eliminar el ítem del carrito en el servidor
             const response = await fetch(`http://localhost:4002/carritos/items/${itemId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +95,6 @@ export const deleteItemFromCarrito = createAsyncThunk(
 
             if (!response.ok) throw new Error('Error al eliminar el ítem del carrito.');
 
-            // Obtener el carrito actualizado desde el servidor
             const updatedCartResponse = await fetch('http://localhost:4002/carritos/usuarios/carrito', {
                 method: 'GET',
                 headers: { Authorization: `Bearer ${token}` },
@@ -116,10 +104,8 @@ export const deleteItemFromCarrito = createAsyncThunk(
 
             const updatedCartData = await updatedCartResponse.json();
             
-            // Actualizar el estado del carrito con los datos actualizados
             dispatch(setCartItems(updatedCartData.items || []));
 
-            // Retornar el ID del ítem eliminado
             return itemId;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -232,6 +218,7 @@ const cartSlice = createSlice({
             })
             .addCase(updateShippingAddress.fulfilled, (state, action) => {
                 state.loading = false;
+                state.direccionEnvio = action.payload; 
             })
             .addCase(updateShippingAddress.rejected, (state, action) => {
                 state.loading = false;
