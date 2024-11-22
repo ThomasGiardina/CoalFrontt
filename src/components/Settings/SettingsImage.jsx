@@ -100,7 +100,7 @@ const SettingsImage = () => {
             <div className="relative">
                 <img
                     alt="Imagen de usuario"
-                    src={profileImage || "https://via.placeholder.com/150"}
+                    src={profileImage || "https://www.vecteezy.com/free-vector/default-user"}
                     className="w-24 h-24 mb-3 rounded-full cursor-pointer"
                     onClick={() => document.getElementById("imageInput").click()}
                 />

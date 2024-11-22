@@ -20,7 +20,7 @@ const Profilepicture = () => {
                 <div className="w-10 rounded-full">
                     <img
                         alt="profile"
-                        src={profileImage || "https://via.placeholder.com/150"} 
+                        src={profileImage || "https://www.vecteezy.com/free-vector/default-user"} 
                     />
                 </div>
             </div>
