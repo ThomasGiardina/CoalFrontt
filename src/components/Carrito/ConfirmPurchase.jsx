@@ -14,7 +14,8 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     const token = useSelector((state) => state.auth.token);
     const userId = useSelector((state) => state.auth.userId);
     const selectedPaymentMethodId = useSelector((state) => state.cart.metodoDePagoId);
-    const shippingAddress = useSelector((state) => state.cart.direccionEnvio); // Para dirección de envío si es necesaria
+    console.log(selectedPaymentMethodId)
+    const shippingAddress = useSelector((state) => state.cart.direccionEnvio); 
     const dispatch = useDispatch();
 
     const payment = paymentMethod;
@@ -39,6 +40,12 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     };
 
     const handlePurchase = () => {
+        console.log("ID del carrito:", carritoId);
+        console.log("Token de usuario:", token);
+        console.log("Método de pago seleccionado (selectedPaymentMethodId):", selectedPaymentMethodId);
+        console.log("Dirección de envío:", shippingAddress);
+        console.log("Método de envío:", shippingMethod);
+
         if (!carritoId) {
             Swal.fire("Error", "No se pudo confirmar el carrito. ID de carrito no válido.", "error");
             return;
@@ -61,10 +68,11 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     
         // Datos que se enviarán al backend
         const requestData = {
-            tipoEntrega: shippingMethod, // DELIVERY o RETIRO_LOCAL
-            metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId, // ID del método de pago
-            direccionEnvio: shippingMethod === "envio" ? shippingAddress : null, // Dirección de envío solo si es DELIVERY
+            tipoEntrega: shippingMethod.toUpperCase(),
+            metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId,
+            direccionEnvio: shippingMethod === "envio" ? JSON.stringify(shippingAddress) : null,
         };
+        
     
         fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
             method: "POST",
@@ -73,6 +81,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(requestData),
+            
         })
             .then((response) => {
                 if (response.ok) {
@@ -89,7 +98,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                     color: "#fff",
                     confirmButtonText: "OK",
                 }).then(() => {
-                    handleNextStep(); // Navega a la siguiente pantalla (factura, historial, etc.)
+                    handleNextStep(); 
                 });
             })
             .catch((error) => {

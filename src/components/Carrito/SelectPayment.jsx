@@ -6,6 +6,7 @@ import CardForm from './CardForm';
 import AddressForm from './AddressForm';
 import ModalPayment from "../Settings/ModalPayment";
 import Swal from "sweetalert2";
+import { setMetodoDePagoId } from "../../redux/slices/cartSlice";
 
 const SelectPayment = ({ onBack, onConfirm }) => {
     const dispatch = useDispatch();
@@ -55,8 +56,8 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     };
     
     const handleCardSelection = (e) => {
-        const selectedCardId = e?.target?.value; 
-
+        const selectedCardId = e?.target?.value;
+    
         if (selectedCardId === "") {
             setSelectedCard(""); 
             return;
@@ -67,7 +68,9 @@ const SelectPayment = ({ onBack, onConfirm }) => {
         } else {
             setIsNewCard(false);
             setSelectedCard(selectedCardId);
-
+    
+            dispatch(setMetodoDePagoId(selectedCardId)); 
+    
             const selectedCardDetails = cards.find(card => card.id === parseInt(selectedCardId));
     
             if (selectedCardDetails) {
@@ -77,6 +80,9 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             }
         }
     };
+    
+    
+    
 
     const closeModal = () => {
         setIsModalOpen(false);
