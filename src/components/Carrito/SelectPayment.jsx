@@ -179,23 +179,26 @@ const SelectPayment = ({ onBack, onConfirm }) => {
 
     const handleConfirm = () => {
         if (!isFormValid()) {
-            alert("Por favor completa todos los campos requeridos para continuar.");
+            Swal.fire("Error", "Por favor completa todos los campos requeridos para continuar.", "error");
             return;
         }
     
-        const paymentTypeToSend = paymentMethod === "Efectivo" ? "Efectivo" : paymentType || "Tarjeta de Crédito/Débito";
-        console.log("Método de pago final:", paymentTypeToSend);
-    
-        if (shippingOption === "envio") {
-            const addressData = {
+        const addressData = shippingOption === "envio"
+            ? {
                 direccion: formValues.address,
                 localidad: formValues.city,
                 codigoPostal: formValues.postalCode,
                 telefono: formValues.phone,
-            };
-            dispatch(updateShippingAddress(addressData));
+            }
+            : null;
+    
+        if (shippingOption === "envio") {
+            dispatch(updateShippingAddress(addressData)); // Actualiza la dirección en Redux
+        } else {
+            dispatch(setDireccionEnvio(null)); // Limpia la dirección si es retiro en local
         }
-        onConfirm(paymentTypeToSend, shippingOption);
+    
+        onConfirm(paymentMethod, shippingOption, selectedCard, addressData);
     };
     
     

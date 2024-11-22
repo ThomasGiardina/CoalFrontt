@@ -5,7 +5,10 @@ const initialState = {
     carritoId: null, 
     cartItems: [], 
     direccionEnvio: null, 
-    metodoDePago: null, 
+    metodoDePago: null,
+    tipoEntrega: null, // DELIVERY o RETIRO_LOCAL 
+    cantidadItems: 0,
+    metodoDePagoId: null, // ID del método de pago
     loading: false, 
     error: null, 
 };
@@ -158,6 +161,7 @@ const cartSlice = createSlice({
         },
         setCartItems: (state, action) => {
             state.cartItems = action.payload;
+            state.cantidadItems = action.payload.length; // Calcula la cantidad de items
         },
         addCartItem: (state, action) => {
             state.cartItems.push(action.payload);
@@ -174,15 +178,32 @@ const cartSlice = createSlice({
         },
         setDireccionEnvio: (state, action) => {
             state.direccionEnvio = action.payload;
+            state.tipoEntrega = 'DELIVERY'; // Asigna tipo de entrega como DELIVERY
+            state.metodoDePagoId = state.metodoDePagoId === null ? null : state.metodoDePagoId; // Asegura que el método de pago no cambie
+        },
+        setRetiroEnLocal: (state) => {
+            state.tipoEntrega = 'RETIRO_LOCAL'; // Asigna tipo de entrega como RETIRO_LOCAL
+            state.direccionEnvio = null; // Limpia la dirección de envío
         },
         setMetodoDePago: (state, action) => {
             state.metodoDePago = action.payload;
+        },
+        setMetodoDePagoId: (state, action) => {
+            if (action.payload === "EFECTIVO") {
+                state.metodoDePagoId = null; // Si es EFECTIVO, metodoDePagoId es null
+                state.metodoDePago = "EFECTIVO";
+            } else {
+                state.metodoDePagoId = action.payload; // Guarda el ID del método de pago
+            }
         },
         clearCart: (state) => {
             state.carritoId = null;
             state.cartItems = [];
             state.direccionEnvio = null;
             state.metodoDePago = null;
+            state.tipoEntrega = null;
+            state.cantidadItems = 0;
+            state.metodoDePagoId = null;
         },
     },
     extraReducers: (builder) => {
@@ -195,6 +216,7 @@ const cartSlice = createSlice({
                 state.loading = false;
                 state.carritoId = action.payload.id;
                 state.cartItems = action.payload.items || [];
+                state.cantidadItems = action.payload.items ? action.payload.items.length : 0; // Calcula cantidad de items
             })
             .addCase(fetchCarrito.rejected, (state, action) => {
                 state.loading = false;
@@ -245,7 +267,9 @@ export const {
     updateCartItem,
     removeCartItem,
     setDireccionEnvio,
+    setRetiroEnLocal,
     setMetodoDePago,
+    setMetodoDePagoId,
     clearCart,
 } = cartSlice.actions;
 

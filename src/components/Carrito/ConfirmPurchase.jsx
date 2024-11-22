@@ -9,11 +9,13 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
 
+    // Obtén valores del estado global de Redux
     const carritoId = useSelector((state) => state.cart.carritoId);
     const token = useSelector((state) => state.auth.token);
+    const userId = useSelector((state) => state.auth.userId);
+    const selectedPaymentMethodId = useSelector((state) => state.cart.metodoDePagoId);
+    const shippingAddress = useSelector((state) => state.cart.direccionEnvio); // Para dirección de envío si es necesaria
     const dispatch = useDispatch();
-
-    console.log('token:', token)
 
     const payment = paymentMethod;
     const shipping = shippingMethod;
@@ -41,65 +43,59 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
             Swal.fire("Error", "No se pudo confirmar el carrito. ID de carrito no válido.", "error");
             return;
         }
-
-        if (termsAccepted) {
-            if (!token) {
-                const storedRefreshToken = localStorage.getItem("refreshToken"); 
-                if (storedRefreshToken) {
-                    dispatch(refreshToken(storedRefreshToken)); 
-                } else {
-                    Swal.fire("Error", "No tienes un token de sesión válido. Por favor, inicia sesión.", "error");
-                    return;
-                }
-            }
-
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "No podrás deshacer esta acción.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "primary",
-                cancelButtonColor: "#d33",
-                background: "#1D1F23",
-                color: "#fff",
-                confirmButtonText: "Sí, comprar",
-                cancelButtonText: "Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        },
-                    })
-                        .then((response) => {
-                            if (response.ok) {
-                                return response.json();
-                            }
-                            throw new Error("Error al confirmar el carrito");
-                        })
-                        .then((data) => {
-                            Swal.fire({
-                                title: "Compra realizada!",
-                                text: "Tu compra ha sido completada con éxito.",
-                                icon: "success",
-                                background: "#1D1F23",
-                                color: "#fff",
-                                confirmButtonText: "OK",
-                            }).then(() => {
-                                handleNextStep();
-                            });
-                        })
-                        .catch((error) => {
-                            Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
-                            console.error(error);
-                        });
-                }
-            });
-        } else {
+    
+        if (!termsAccepted) {
             Swal.fire("Error", "Debes aceptar los términos para continuar.", "error");
+            return;
         }
+    
+        if (!token) {
+            const storedRefreshToken = localStorage.getItem("refreshToken");
+            if (storedRefreshToken) {
+                dispatch(refreshToken(storedRefreshToken));
+            } else {
+                Swal.fire("Error", "No tienes un token de sesión válido. Por favor, inicia sesión.", "error");
+                return;
+            }
+        }
+    
+        // Datos que se enviarán al backend
+        const requestData = {
+            tipoEntrega: shippingMethod, // DELIVERY o RETIRO_LOCAL
+            metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId, // ID del método de pago
+            direccionEnvio: shippingMethod === "envio" ? shippingAddress : null, // Dirección de envío solo si es DELIVERY
+        };
+    
+        fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error("Error al confirmar el carrito");
+            })
+            .then((data) => {
+                Swal.fire({
+                    title: "Compra realizada!",
+                    text: "Tu compra ha sido completada con éxito.",
+                    icon: "success",
+                    background: "#1D1F23",
+                    color: "#fff",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    handleNextStep(); // Navega a la siguiente pantalla (factura, historial, etc.)
+                });
+            })
+            .catch((error) => {
+                Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
+                console.error(error);
+            });
     };
 
     return (
