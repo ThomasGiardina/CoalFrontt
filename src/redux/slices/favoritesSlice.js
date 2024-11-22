@@ -1,39 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const loadFavoritesFromLocalStorage = () => {
-    try {
-        const serializedState = localStorage.getItem('favorites');
-        return serializedState ? JSON.parse(serializedState) : [];
-    } catch (e) {
-        console.warn("Error cargando localStorage", e);
-        return [];
-    }
-};
-
-const saveFavoritesToLocalStorage = (favorites) => {
-    try {
-        const serializedState = JSON.stringify(favorites);
-        localStorage.setItem('favorites', serializedState);
-    } catch (e) {
-        console.warn("Error guardando localStorage", e);
-    }
-};
-
 const favoritesSlice = createSlice({
     name: 'favorites',
-    initialState: loadFavoritesFromLocalStorage(),
+    initialState: [],
     reducers: {
         toggleFavorite: (state, action) => {
             const game = action.payload;
             const existingIndex = state.findIndex(item => item.id === game.id);
-            let newState;
+
             if (existingIndex >= 0) {
-                newState = state.filter(item => item.id !== game.id);
+                state.splice(existingIndex, 1);
             } else {
-                newState = [...state, game];
+                state.push(game);
             }
-            saveFavoritesToLocalStorage(newState);
-            return newState;
         }
     }
 });
