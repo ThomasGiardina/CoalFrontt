@@ -44,7 +44,7 @@ export const fetchCarrito = createAsyncThunk(
 // Agregar un ítem al carrito
 export const addItemToCarrito = createAsyncThunk(
     'cart/addItemToCarrito',
-    async ({ carritoId, videojuegoId, cantidad }, { getState, dispatch, rejectWithValue }) => {
+    async ({ carritoId, videojuegoId, cantidad }, { getState, rejectWithValue }) => {
         const { auth } = getState();
         const token = auth.token;
 
@@ -64,13 +64,13 @@ export const addItemToCarrito = createAsyncThunk(
 
             if (!response.ok) throw new Error('Error al agregar el ítem al carrito.');
 
-            dispatch(fetchCarrito());
             return await response.json();
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 );
+
 
 export const updateShippingAddress = createAsyncThunk(
     'cart/updateShippingAddress',
@@ -210,9 +210,7 @@ const cartSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchCarrito.fulfilled, (state, action) => {
-                state.loading = false;
-                state.carritoId = action.payload.id;
-                state.cartItems = Array.isArray(action.payload.items)
+                const newCartItems = Array.isArray(action.payload.items)
                     ? action.payload.items.map(item => ({
                         id: item.id,
                         cantidad: item.cantidad,
@@ -222,8 +220,15 @@ const cartSlice = createSlice({
                         plataforma: item.videojuego?.plataforma || 'Desconocida',
                         stock: item.videojuego?.stock || 0,
                     }))
-                    : []; 
-                state.cantidadItems = state.cartItems.length;
+                    : [];
+            
+                if (JSON.stringify(state.cartItems) !== JSON.stringify(newCartItems)) {
+                    state.cartItems = newCartItems;
+                    state.cantidadItems = newCartItems.length;
+                }
+            
+                state.loading = false;
+                state.carritoId = action.payload.id || null;
             })
             .addCase(fetchCarrito.rejected, (state, action) => {
                 state.loading = false;
@@ -235,7 +240,20 @@ const cartSlice = createSlice({
             })
             .addCase(addItemToCarrito.fulfilled, (state, action) => {
                 state.loading = false;
-                state.cartItems.push(action.payload);
+            
+                // Actualiza localmente el carrito en lugar de hacer un fetch adicional
+                const existingItemIndex = state.cartItems.findIndex(
+                    (item) => item.id === action.payload.id
+                );
+            
+                if (existingItemIndex >= 0) {
+                    state.cartItems[existingItemIndex].cantidad += action.payload.cantidad;
+                } else {
+                    state.cartItems.push({
+                        ...action.payload,
+                        cantidad: action.payload.cantidad || 1,
+                    });
+                }
             })
             .addCase(addItemToCarrito.rejected, (state, action) => {
                 state.loading = false;

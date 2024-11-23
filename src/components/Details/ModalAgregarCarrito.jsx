@@ -11,17 +11,17 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
     const MySwal = withReactContent(Swal);
 
     const dispatch = useDispatch();
-    const { isAuthenticated, token } = useSelector((state) => state.auth);
+    const { isAuthenticated } = useSelector((state) => state.auth);
     const { cartItems, carritoId } = useSelector((state) => state.cart);
 
     const isOutOfStock = gameDetails.stock <= 0;
 
-    // Fetch del carrito al cargar el componente si el usuario está autenticado
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && cartItems.length === 0) {
             dispatch(fetchCarrito());
         }
-    }, [isAuthenticated, dispatch]);
+    }, [isAuthenticated, dispatch, cartItems.length]);
+    
 
     const handleButtonClick = async () => {
         if (!isAuthenticated) {
@@ -35,14 +35,14 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                 background: '#1D1F23',
                 customClass: {
                     popup: 'custom-toast',
-                    title: 'text-white'
-                }
+                    title: 'text-white',
+                },
             });
             navigate('/Login');
             return;
         }
 
-        const existingItem = cartItems.find(item => item.videojuego.id === gameDetails.id);
+        const existingItem = cartItems.find((item) => item.videojuego?.id === gameDetails.id);
         const quantityInCart = existingItem ? existingItem.cantidad : 0;
         const totalQuantity = quantityInCart + 1;
 
@@ -63,8 +63,15 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
 
         try {
             if (existingItem) {
-                // Actualizar cantidad si el producto ya está en el carrito
-                await dispatch(updateCartItemAsync({ id: existingItem.id, cantidad: totalQuantity }));
+                dispatch(addCartItem({
+                    id: newItem.id,
+                    cantidad: 1,
+                    titulo: gameDetails.titulo,
+                    precio: gameDetails.precio,
+                    foto: gameDetails.foto,
+                    plataforma: gameDetails.plataforma,
+                    stock: gameDetails.stock,
+                }));
                 MySwal.fire({
                     title: 'Cantidad Actualizada!',
                     text: `La cantidad del producto ha sido actualizada a ${totalQuantity}.`,
@@ -83,14 +90,13 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                     }
                 });
             } else {
-                // Agregar nuevo producto al carrito
-                await dispatch(addItemToCarrito({
-                    carritoId,
-                    videojuegoId: gameDetails.id,
-                    cantidad: 1,
-                }));
-
-                await dispatch(fetchCarrito());
+                await dispatch(
+                    addItemToCarrito({
+                        carritoId,
+                        videojuegoId: gameDetails.id,
+                        cantidad: 1,
+                    })
+                );
 
                 MySwal.fire({
                     title: 'Producto Agregado al Carrito!',
@@ -111,7 +117,7 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                 });
             }
         } catch (error) {
-            console.error("Error al agregar o actualizar el item en el carrito:", error);
+            console.error('Error al agregar o actualizar el item en el carrito:', error);
             MySwal.fire({
                 icon: 'error',
                 title: 'Error al agregar el producto',
