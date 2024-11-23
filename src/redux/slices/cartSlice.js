@@ -31,7 +31,6 @@ export const fetchCarrito = createAsyncThunk(
             if (!response.ok) throw new Error('Error al obtener el carrito.');
 
             const data = await response.json();
-            console.log('Datos obtenidos del backend:', data);
             return data;
         } catch (error) {
             console.error('Error en fetchCarrito:', error.message);

@@ -41,8 +41,6 @@ const Storegrid = ({ games }) => {
         setFilteredGames(games);
     }, [games]);
 
-    console.log("Filtered games in Storegrid:", filteredGames);
-
     return (
         <div className="flex">
             <div className="w-[400px] mr-6 ml-10">

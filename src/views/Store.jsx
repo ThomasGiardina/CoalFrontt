@@ -9,7 +9,6 @@ const Store = () => {
         fetch("http://localhost:4002/videojuegos")
             .then((response) => response.json())
             .then((data) => {
-                console.log("Datos recibidos:", data); 
                 setGames(Array.isArray(data) ? data : []);
             })
             .catch((error) => {
