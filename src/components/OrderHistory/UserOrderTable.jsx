@@ -87,6 +87,7 @@ const UserOrderTable = () => {
                     {orders.length} Productos
                 </p>
                 <div className="flex space-x-4 items-center">
+                <div className="relative">
                     <DatePicker
                         selected={startDate}
                         onChange={(update) => {
@@ -96,10 +97,10 @@ const UserOrderTable = () => {
                                 setDateRange(update);
                             }
                         }}
-                        startDate={startDate} 
-                        endDate={endDate} 
+                        startDate={startDate}
+                        endDate={endDate}
                         selectsRange
-                        isClearable 
+                        isClearable
                         customInput={
                             <button className="btn btn-circle btn-outline btn-primary">
                                 <i className="fas fa-calendar-alt text-lg"></i>
@@ -107,6 +108,7 @@ const UserOrderTable = () => {
                         }
                         calendarClassName="bg-neutral text-white"
                     />
+                </div>
                     <input
                         type="text"
                         placeholder="Buscar pedidos..."
