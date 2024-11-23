@@ -1,32 +1,57 @@
-import React, { useState, forwardRef } from 'react';
-import OrderRow from '../OrderHistory/OrderRow';
+import React, { useState, useEffect } from 'react';
+import OrderRow from './OrderRow';
 import Pagination from '../Pagination/Pagination';
 import DatePicker from 'react-datepicker';
+import { useSelector } from "react-redux";
 import 'react-datepicker/dist/react-datepicker.css';
 
-const UserOrderTable = ({ orders }) => {
+const UserOrderTable = () => {
+    const [orders, setOrders] = useState([]); 
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(null); 
     const [searchTerm, setSearchTerm] = useState('');
+    const token = useSelector((state) => state.auth.token);
+    console.log(token);
     const [currentPage, setCurrentPage] = useState(1);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
 
     const ordersPerPage = 12;
 
-    const CalendarButton = forwardRef(({ onClick }, ref) => (
-        <button
-            onClick={onClick}
-            ref={ref}
-            className="btn btn-circle btn-outline btn-primary"
-        >
-            <i className="fas fa-calendar-alt text-lg"></i>
-        </button>
-    ));
+    useEffect(() => {
+        const fetchOrders = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const response = await fetch('http://localhost:4002/api/pedidos/usuario', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener los pedidos');
+                }
+
+                const data = await response.json();
+                setOrders(data); 
+            } catch (err) {
+                setError(err.message || 'Error desconocido');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, []); 
 
     const filteredOrders = orders
-        .filter(order => order.id.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter(order => order.id.toString().toLowerCase().includes(searchTerm.toLowerCase())) 
         .filter(order => {
-            if (!startDate || !endDate) return true;
-            const orderDate = new Date(order.date);
+            if (!startDate || !endDate) return true; 
+            const orderDate = new Date(order.fecha); 
             return orderDate >= startDate && orderDate <= endDate;
         })
         .slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
@@ -36,6 +61,14 @@ const UserOrderTable = ({ orders }) => {
     };
 
     const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+    if (loading) {
+        return <p className="text-center text-primary">Cargando pedidos...</p>;
+    }
+
+    if (error) {
+        return <p className="text-center text-red-500">Error: {error}</p>;
+    }
 
     return (
         <div>
@@ -54,8 +87,12 @@ const UserOrderTable = ({ orders }) => {
                         startDate={startDate}
                         endDate={endDate}
                         selectsRange
-                        customInput={<CalendarButton />}
-                        calendarClassName="bg-neutral text-white" 
+                        customInput={
+                            <button className="btn btn-circle btn-outline btn-primary">
+                                <i className="fas fa-calendar-alt text-lg"></i>
+                            </button>
+                        }
+                        calendarClassName="bg-neutral text-white"
                     />
                     <input
                         type="text"

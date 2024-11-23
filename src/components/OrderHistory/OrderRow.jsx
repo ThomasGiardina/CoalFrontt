@@ -20,29 +20,35 @@ const OrderRow = ({ order, isSelecting, isRowSelected = () => false, handleSelec
                 </td>
             )}
             <td className="text-center">{order.id}</td>
-            <td className="text-center">{order.date}</td>
-            {order.customer && (
-                <td className="text-center">
-                    <div className="flex items-center justify-center space-x-3">
-                        <div className="avatar">
-                            <div className="w-10 rounded-full">
-                                <img src="https://daisyui.com/tailwind-css-component-profile-3@56w.png" alt="Avatar" />
-                            </div>
-                        </div>
-                        <div>{order.customer}</div>
-                    </div>
-                </td>
-            )}
             <td className="text-center">
-                <Badges type="payment" value={order.payment} />
+                {new Date(order.fecha).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                })}
             </td>
-            <td className="text-center">{order.total}</td>
-            <td className="text-center">{order.items} artículos</td>
+
             <td className="text-center">
-                <Badges type="delivery" value={order.delivery} />
+                <Badges type="payment" value={order.tipoPago} />
+            </td>
+            <td className="text-center">{`$${order.montoTotal.toFixed(2)}`}</td>
+            <td className="text-center">
+                <div
+                    className="tooltip tooltip-primary "
+                    data-tip={
+                        order.productosAdquiridos
+                            ?.map(item => `${item.videojuego.titulo} x${item.cantidad}`)
+                            .join('\n') 
+                    }
+                >
+                    {order.cantidadArticulos} {order.cantidadArticulos > 1 ? 'artículos' : 'artículo'}
+                </div>
             </td>
             <td className="text-center">
-                <Badges type="status" value={order.status} />
+                <Badges type="delivery" value={order.tipoEntrega} />
+            </td>
+            <td className="text-center">
+                <Badges type="status" value={order.estadoPedido} />
             </td>
             {toggleMenu && (
                 <td className="relative text-center">
