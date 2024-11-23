@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import GamecardPurchase from "../Gamecard/GamecardPurchase";  
-import { refreshToken } from "../../redux/slices/authSlice";  
+import { refreshToken } from "../../redux/slices/authSlice";    
 
 const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handleNextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
 
-    // Obtén valores del estado global de Redux
     const carritoId = useSelector((state) => state.cart.carritoId);
     const token = useSelector((state) => state.auth.token);
     const userId = useSelector((state) => state.auth.userId);
@@ -39,73 +38,62 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
         setTermsAccepted(e.target.checked);
     };
 
-    const handlePurchase = () => {
-        console.log("ID del carrito:", carritoId);
-        console.log("Token de usuario:", token);
-        console.log("Método de pago seleccionado (selectedPaymentMethodId):", selectedPaymentMethodId);
-        console.log("Dirección de envío:", shippingAddress);
-        console.log("Método de envío:", shippingMethod);
-
-        if (!carritoId) {
-            Swal.fire("Error", "No se pudo confirmar el carrito. ID de carrito no válido.", "error");
-            return;
-        }
-    
+    const handlePurchase = async () => {
         if (!termsAccepted) {
             Swal.fire("Error", "Debes aceptar los términos para continuar.", "error");
             return;
         }
     
-        if (!token) {
-            const storedRefreshToken = localStorage.getItem("refreshToken");
-            if (storedRefreshToken) {
-                dispatch(refreshToken(storedRefreshToken));
-            } else {
-                Swal.fire("Error", "No tienes un token de sesión válido. Por favor, inicia sesión.", "error");
-                return;
-            }
+        if (!carritoId || !paymentMethod || !shippingMethod) {
+            Swal.fire("Error", "Faltan datos esenciales para completar la compra.", "error");
+            return;
         }
     
-        // Datos que se enviarán al backend
         const requestData = {
             tipoEntrega: shippingMethod.toUpperCase(),
             metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId,
             direccionEnvio: shippingMethod === "envio" ? JSON.stringify(shippingAddress) : null,
+            montoTotal: total, 
+            cantidadArticulos: cartItems.reduce((acc, item) => acc + item.cantidad, 0), 
+            items: cartItems.map(item => ({
+                videojuegoId: item.id,
+                cantidad: item.cantidad,
+                precio: item.precio
+            }))
         };
         
     
-        fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-            
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error("Error al confirmar el carrito");
-            })
-            .then((data) => {
-                Swal.fire({
-                    title: "Compra realizada!",
-                    text: "Tu compra ha sido completada con éxito.",
-                    icon: "success",
-                    background: "#1D1F23",
-                    color: "#fff",
-                    confirmButtonText: "OK",
-                }).then(() => {
-                    handleNextStep(); 
-                });
-            })
-            .catch((error) => {
-                Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
-                console.error(error);
+        try {
+            const response = await fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
             });
+    
+            if (!response.ok) {
+                throw new Error("Error al confirmar el carrito");
+            }
+    
+            const responseData = await response.json();
+    
+            Swal.fire({
+                title: "Compra realizada!",
+                text: "Tu compra ha sido completada con éxito.",
+                icon: "success",
+            }).then(() => {
+                handleNextStep();
+            });
+        } catch (error) {
+            Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
+        }
     };
+    
+    
+    
+    
 
     return (
         <div className="flex flex-col text-white min-h-screen w-[1400px] p-8 rounded-lg max-w-7xl mx-auto">

@@ -4,22 +4,20 @@ import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { useDispatch } from 'react-redux';
-import { deleteItemFromCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice'; 
+import { deleteItemFromCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice';
 
 const GamecardCart = ({ item, onUpdateQuantity }) => {
     const dispatch = useDispatch();
-    const { id, titulo, precio, cantidad, videojuego, plataforma } = item || {};
-    const fotoUrl = videojuego?.foto
-        ? `data:image/jpeg;base64,${videojuego.foto}`
-        : '/ruta/a/imagen_por_defecto.png';
+    const { id, titulo, precio, cantidad, foto, plataforma, stock } = item || {};
 
-    const stock = videojuego?.stock || 0;
+    const fotoUrl = foto
+        ? `data:image/jpeg;base64,${foto}`
+        : '/ruta/a/imagen_por_defecto.png';
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
         if (nuevaCantidad <= stock) {
-            console.log("Despachando actualización de cantidad", id, nuevaCantidad);
-            dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad })); 
+            dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad }));
         } else {
             Swal.fire({
                 icon: 'warning',
@@ -52,14 +50,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteItemFromCarrito(id)); 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Eliminado',
-                    text: 'El producto ha sido eliminado del carrito.',
-                    background: '#1D1F23',
-                    color: '#fff',
-                });
+                dispatch(deleteItemFromCarrito(id));
             }
         });
     };

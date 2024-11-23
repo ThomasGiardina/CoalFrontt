@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateShippingAddress, setMetodoDePago } from "../../redux/slices/cartSlice"; 
+import { updateShippingAddress, setMetodoDePago, setDireccionEnvio } from "../../redux/slices/cartSlice";
 import { fetchUserCards } from "../../redux/slices/authSlice"; 
 import CardForm from './CardForm';
 import AddressForm from './AddressForm';
 import ModalPayment from "../Settings/ModalPayment";
 import Swal from "sweetalert2";
 import { setMetodoDePagoId } from "../../redux/slices/cartSlice";
+
+
 
 const SelectPayment = ({ onBack, onConfirm }) => {
     const dispatch = useDispatch();
@@ -150,8 +152,17 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     };
 
     const handleShippingOptionChange = (e) => {
-        setShippingOption(e.target.value);
+        const option = e.target.value;
+        setShippingOption(option);
+    
+        if (option === "retiro") {
+            dispatch(setTipoEntrega("RETIRO_LOCAL"));
+            dispatch(setDireccionEnvio(null));
+        } else {
+            dispatch(setTipoEntrega("DELIVERY"));
+        }
     };
+    
 
     const validateForm = () => {
         let formErrors = {};
@@ -199,9 +210,9 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             : null;
     
         if (shippingOption === "envio") {
-            dispatch(updateShippingAddress(addressData)); // Actualiza la dirección en Redux
+            dispatch(setDireccionEnvio(addressData)); 
         } else {
-            dispatch(setDireccionEnvio(null)); // Limpia la dirección si es retiro en local
+            dispatch(setDireccionEnvio(null)); 
         }
     
         onConfirm(paymentMethod, shippingOption, selectedCard, addressData);

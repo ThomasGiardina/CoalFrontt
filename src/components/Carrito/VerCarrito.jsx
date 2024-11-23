@@ -1,49 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCartItems, updateCartItem, removeCartItem } from "../../redux/slices/cartSlice";
+import { fetchCarrito, setCartItems, updateCartItem, removeCartItem } from "../../redux/slices/cartSlice"; 
 import GamecardCart from "../Gamecard/GamecardCart";
 
 const VerCarrito = ({ onContinue }) => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.cartItems);
-    const carritoId = useSelector((state) => state.cart.carritoId); 
+    const carritoId = useSelector((state) => state.cart.carritoId);
     const token = useSelector((state) => state.auth.token);
 
     const [total, setTotal] = useState(0);
     const [totalItemsCount, setTotalItemsCount] = useState(0);
 
     useEffect(() => {
-        console.log("Carrito ID:", carritoId); 
-    }, [carritoId]); 
-
-    useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const response = await fetch("http://localhost:4002/carritos/usuarios/carrito", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    dispatch(setCartItems(data.items || []));
-                }
-            } catch (error) {
-                console.error("Error al cargar el carrito:", error);
-            }
-        };
-
-        if (token) fetchCart();
+        if (token) {
+            dispatch(fetchCarrito());
+        }
     }, [dispatch, token]);
 
     useEffect(() => {
-        const calculatedTotal = cartItems.reduce((acc, item) => acc + (item?.precio || 0) * (item?.cantidad || 0), 0);
+        const calculatedTotal = cartItems.reduce(
+            (acc, item) => acc + (item.precio || 0) * (item.cantidad || 0),
+            0
+        );
         setTotal(calculatedTotal);
-
-        const calculatedTotalItemsCount = cartItems.reduce((acc, item) => acc + (item?.cantidad || 0), 0);
+    
+        const calculatedTotalItemsCount = cartItems.reduce(
+            (acc, item) => acc + (item.cantidad || 0),
+            0
+        );
         setTotalItemsCount(calculatedTotalItemsCount);
     }, [cartItems]);
+    
 
     const handleUpdateQuantity = (itemId, nuevaCantidad) => {
         dispatch(updateCartItem({ id: itemId, cantidad: nuevaCantidad }));
@@ -66,7 +54,7 @@ const VerCarrito = ({ onContinue }) => {
                         />
                     ))
                 ) : (
-                    <p className="text-white">El carrito está vacío.</p> 
+                    <p className="text-white">El carrito está vacío.</p>
                 )}
             </div>
             <div className="bg-neutral w-[500px] h-[300px] p-6 rounded-lg shadow-lg">
