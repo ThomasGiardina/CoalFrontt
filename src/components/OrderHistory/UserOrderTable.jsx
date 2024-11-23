@@ -11,10 +11,9 @@ const UserOrderTable = () => {
     const [error, setError] = useState(null); 
     const [searchTerm, setSearchTerm] = useState('');
     const token = useSelector((state) => state.auth.token);
-    console.log(token);
     const [currentPage, setCurrentPage] = useState(1);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [startDate, endDate] = dateRange; 
 
     const ordersPerPage = 12;
 
@@ -36,11 +35,11 @@ const UserOrderTable = () => {
                 }
 
                 const data = await response.json();
-                setOrders(data); 
+                setOrders(data);
             } catch (err) {
                 setError(err.message || 'Error desconocido');
             } finally {
-                setLoading(false);
+                setLoading(false); 
             }
         };
 
@@ -48,13 +47,24 @@ const UserOrderTable = () => {
     }, []); 
 
     const filteredOrders = orders
-        .filter(order => order.id.toString().toLowerCase().includes(searchTerm.toLowerCase())) 
-        .filter(order => {
-            if (!startDate || !endDate) return true; 
-            const orderDate = new Date(order.fecha); 
-            return orderDate >= startDate && orderDate <= endDate;
-        })
-        .slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
+    .filter(order => order.id.toString().toLowerCase().includes(searchTerm.toLowerCase())) 
+    .filter(order => {
+        const orderDate = new Date(order.fecha); 
+        if (startDate && endDate) {
+            const adjustedEndDate = new Date(endDate);
+            adjustedEndDate.setHours(23, 59, 59, 999); 
+            return orderDate >= startDate && orderDate <= adjustedEndDate;
+        } else if (startDate) {
+            return (
+                orderDate.getFullYear() === startDate.getFullYear() &&
+                orderDate.getMonth() === startDate.getMonth() &&
+                orderDate.getDate() === startDate.getDate()
+            );
+        }
+        return true; 
+    })
+    .slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
+
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -79,14 +89,17 @@ const UserOrderTable = () => {
                 <div className="flex space-x-4 items-center">
                     <DatePicker
                         selected={startDate}
-                        onChange={(dates) => {
-                            const [start, end] = dates;
-                            setStartDate(start);
-                            setEndDate(end);
+                        onChange={(update) => {
+                            if (!Array.isArray(update)) {
+                                setDateRange([update, update]);
+                            } else {
+                                setDateRange(update);
+                            }
                         }}
-                        startDate={startDate}
-                        endDate={endDate}
+                        startDate={startDate} 
+                        endDate={endDate} 
                         selectsRange
+                        isClearable 
                         customInput={
                             <button className="btn btn-circle btn-outline btn-primary">
                                 <i className="fas fa-calendar-alt text-lg"></i>
