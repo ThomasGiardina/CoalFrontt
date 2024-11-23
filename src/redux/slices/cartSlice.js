@@ -135,12 +135,6 @@ export const updateCartItemAsync = createAsyncThunk(
                 },
                 body: JSON.stringify({ cantidad }),
             });
-
-            if (!response.ok) {
-                console.log('Error en la actualización', await response.text());
-            } else {
-                console.log('Cantidad actualizada exitosamente');
-            }
             return { id, cantidad };
         } catch (error) {
             return rejectWithValue(error.message);
