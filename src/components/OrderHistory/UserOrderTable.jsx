@@ -47,12 +47,20 @@ const UserOrderTable = () => {
     }, []); 
 
     const filteredOrders = orders
-    .filter(order => order.id.toString().toLowerCase().includes(searchTerm.toLowerCase())) 
     .filter(order => {
-        const orderDate = new Date(order.fecha); 
+        const search = searchTerm.toLowerCase();
+        const matchesId = order.id.toString().toLowerCase().includes(search);
+        const matchesPayment = order.tipoPago?.toLowerCase().includes(search);
+        const matchesDelivery = order.tipoEntrega?.toLowerCase().includes(search);
+        const matchesStatus = order.estadoPedido?.toLowerCase().includes(search);
+
+        return matchesId || matchesPayment || matchesDelivery || matchesStatus;
+    })
+    .filter(order => {
+        const orderDate = new Date(order.fecha);
         if (startDate && endDate) {
             const adjustedEndDate = new Date(endDate);
-            adjustedEndDate.setHours(23, 59, 59, 999); 
+            adjustedEndDate.setHours(23, 59, 59, 999); // Incluir el día completo
             return orderDate >= startDate && orderDate <= adjustedEndDate;
         } else if (startDate) {
             return (
@@ -61,9 +69,10 @@ const UserOrderTable = () => {
                 orderDate.getDate() === startDate.getDate()
             );
         }
-        return true; 
+        return true;
     })
     .slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
+
 
 
     const handlePageChange = (page) => {
