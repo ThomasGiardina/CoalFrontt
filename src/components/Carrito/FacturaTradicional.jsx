@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress, shippingCost, discount }) => {
+const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddress, shippingCost, discount, shippingMethod}) => {
     const [nombreCliente, setNombreCliente] = useState("Nombre del Cliente");
+    const token = useSelector((state) => state.auth.token);
+    const userName = useSelector((state) => state.auth.userName); 
+
+    const parsedShippingAddress =
+        typeof shippingAddress === "string" ? JSON.parse(shippingAddress) : shippingAddress;
 
     useEffect(() => {
-        const obtenerUsuarioActual = async () => {
-            try {
-                const response = await fetch("http://localhost:4002/api/usuario/actual", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await response.json();
-                setNombreCliente(`${data.firstName} ${data.lastName}`);
-            } catch (error) {
-                console.error("Error al obtener el usuario actual:", error);
-            }
-        };
+        if (userName) {
+            setNombreCliente(userName);
+        } else {
+            const obtenerUsuarioActual = async () => {
+                try {
+                    const response = await fetch("http://localhost:4002/api/usuario/actual", {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    const data = await response.json();
+                    setNombreCliente(`${data.firstName} ${data.lastName}`);
+                } catch (error) {
+                    console.error("Error al obtener el usuario actual:", error);
+                }
+            };
 
-        obtenerUsuarioActual();
-    }, []);
+            obtenerUsuarioActual();
+        }
+    }, [token, userName]);
 
     const formatPrice = (price) => {
         return price.toLocaleString("es-AR", {
@@ -50,10 +60,14 @@ const FacturaTradicional = ({ orderId, orderDate, cartItems, total, shippingAddr
             <div className="mb-6 p-4 bg-white border-b">
                 <p><strong>Facturar a:</strong></p>
                 <p>Cliente: {nombreCliente}</p>
-                <p>Dirección: {shippingAddress.address || "No especificado"}</p>
-                <p>Ciudad: {shippingAddress.city || "No especificado"}</p>
-                <p>Código Postal: {shippingAddress.postalCode || "No especificado"}</p>
-                <p>Teléfono: {shippingAddress.phone || "No especificado"}</p>
+                {shippingMethod === "envio" && shippingAddress && (
+                    <>
+                        <p>Dirección: {parsedShippingAddress.direccion || ""}</p>
+                        <p>Ciudad: {parsedShippingAddress.localidad || ""}</p>
+                        <p>Código Postal: {parsedShippingAddress.codigoPostal || ""}</p>
+                        <p>Teléfono: {parsedShippingAddress.telefono || ""}</p>
+                    </>
+                )}
             </div>
 
             <table className="w-full text-left border-t">

@@ -25,7 +25,7 @@ const defaultFormData = {
     codigoSeguridad: '',
     fechaVencimiento: '',
     direccion: '',
-    tipoPago: 'CREDITO',
+    tipoPago: '',
 };
 
 const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaultFormData }) => {
@@ -49,6 +49,13 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
             return 'La dirección solo debe contener letras, números y un máximo de 100 caracteres.';
         }
         return '';
+    };
+
+    const validateTipoPago = (tipo) => {
+        if (!tipo || tipo === "") {
+            return "Por favor seleccione un tipo de tarjeta.";
+        }
+        return "";
     };
 
     useEffect(() => {
@@ -85,20 +92,26 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        const tipoPagoError = validateTipoPago(formData.tipoPago);
+        if (tipoPagoError) {
+            alert(tipoPagoError);
+            return;
+        }
+    
         if (!isEditing && formData.codigoSeguridad.length !== 3) {
             alert('El código de seguridad debe tener exactamente 3 dígitos.');
             return;
         }
-
+    
         if (dateError || nameError || addressError) {
             alert('Por favor corrige los errores antes de continuar.');
             return;
         }
-
+    
         try {
-            await onSave(formData); 
-            onRequestClose();       
+            await onSave(formData);
+            onRequestClose();
         } catch (error) {
             console.error('Error al guardar el método de pago:', error);
         }
@@ -188,6 +201,7 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             onChange={handleInputChange}
                             className="select select-bordered w-full bg-gray-700 text-white"
                         >
+                            <option value="">Seleccione Tipo de Tarjeta</option>
                             <option value="CREDITO">CREDITO</option>
                             <option value="DEBITO">DEBITO</option>
                         </select>

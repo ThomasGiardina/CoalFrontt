@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext'; 
+import React, { useState} from 'react';
+import { useSelector } from "react-redux";
+
 
 const EditGameButton = ({ game, updateGame, closeModal }) => {
     const [selectedCategories, setSelectedCategories] = useState(game.categorias || []);
@@ -15,7 +16,8 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
     const [carruselImagen3, setCarruselImagen3] = useState(null);
     const [fechaLanzamiento, setFechaLanzamiento] = useState(game.fechaLanzamiento);
     const [desarrolladora, setDesarrolladora] = useState(game.desarrolladora);
-    const { isAuthenticated, role } = useContext(AuthContext);
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); //por ahora no se usa
+    const role = useSelector((state) => state.auth.role);
 
     const allCategories = [
         "ACCION", "AVENTURA", "RPG", "SIMULACION", "DEPORTES", "ESTRATEGIA", 
@@ -31,6 +33,8 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
     const handleCategoryRemove = (category) => {
         setSelectedCategories(selectedCategories.filter(cat => cat !== category));
     };
+
+    const token = useSelector((state) => state.auth.token);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -65,8 +69,11 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
         if (carruselImagen3) {
             formData.append('carruselImagen3', carruselImagen3);
         }
-    
-        const token = localStorage.getItem('token');
+
+        if (!token) {
+            console.error("Token no disponible. El usuario no está autenticado.");
+            return;
+        }
     
         try {
             const response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {

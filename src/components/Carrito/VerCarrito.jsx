@@ -1,56 +1,44 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCarrito, setCartItems, updateCartItem, removeCartItem } from "../../redux/slices/cartSlice"; 
 import GamecardCart from "../Gamecard/GamecardCart";
 
-const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
+const VerCarrito = ({ onContinue }) => {
+    const dispatch = useDispatch();
+    const cartItems = useSelector((state) => state.cart.cartItems);
+    const carritoId = useSelector((state) => state.cart.carritoId);
+    const token = useSelector((state) => state.auth.token);
+
     const [total, setTotal] = useState(0);
     const [totalItemsCount, setTotalItemsCount] = useState(0);
-    const token = localStorage.getItem('token');
-    const [isPolling] = useState(true);
 
     useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const response = await fetch("http://localhost:4002/carritos/usuarios/carrito", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setCartItems(data.items || []);
-                }
-            } catch (error) {
-                console.error("Error al cargar el carrito:", error);
-            }
-        };
-
-        const intervalId = setInterval(() => {
-            if (isPolling) {
-                fetchCart();
-            }
-        }, 500);
-
-        return () => clearInterval(intervalId); 
-    }, [isPolling]);
-
+        if (token) {
+            dispatch(fetchCarrito());
+        }
+    }, [dispatch, token]);
 
     useEffect(() => {
-        const calculatedTotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+        const calculatedTotal = cartItems.reduce(
+            (acc, item) => acc + (item.precio || 0) * (item.cantidad || 0),
+            0
+        );
         setTotal(calculatedTotal);
-
-        const calculatedTotalItemsCount = cartItems.reduce((acc, item) => acc + item.cantidad, 0);
+    
+        const calculatedTotalItemsCount = cartItems.reduce(
+            (acc, item) => acc + (item.cantidad || 0),
+            0
+        );
         setTotalItemsCount(calculatedTotalItemsCount);
     }, [cartItems]);
+    
 
     const handleUpdateQuantity = (itemId, nuevaCantidad) => {
-        const updatedCartItems = cartItems.map(item =>
-            item.id === itemId ? { ...item, cantidad: nuevaCantidad } : item
-        );
-        setCartItems(updatedCartItems);
+        dispatch(updateCartItem({ id: itemId, cantidad: nuevaCantidad }));
     };
 
     const handleDeleteItem = (itemId) => {
-        const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-        setCartItems(updatedCartItems);
+        dispatch(removeCartItem(itemId));
     };
 
     return (
@@ -75,7 +63,7 @@ const VerCarrito = ({ onContinue, setCartItems, cartItems }) => {
                 <div className="flex flex-col space-y-3 text-white">
                     <div className="flex justify-between">
                         <h2 className="text-xl font-medium">Total Estimado:</h2>
-                        <p className="text-xl">${total}</p>
+                        <p className="text-xl">${total.toFixed(2)}</p>
                     </div>
                     <div className="flex justify-between">
                         <h2 className="text-xl font-medium">Cantidad Total de Productos:</h2>

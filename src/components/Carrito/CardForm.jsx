@@ -1,6 +1,36 @@
 import React from "react";
 
 const CardForm = ({ formValues, handleInputChange, cardType, handleCardTypeChange, errors }) => {
+    const handleSaveNewCard = async (newCardData) => {
+        try {
+            const response = await fetch("http://localhost:4002/metodosPago", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newCardData),
+            });
+    
+            if (response.ok) {
+                const savedCard = await response.json(); // Obtén la tarjeta guardada, incluyendo su ID
+                console.log("Tarjeta guardada con éxito:", savedCard);
+    
+                // Actualiza el metodoDePagoId con el ID de la nueva tarjeta
+                dispatch(setMetodoDePagoId(savedCard.id));
+    
+                Swal.fire("¡Éxito!", "La tarjeta fue creada con éxito.", "success");
+            } else {
+                const error = await response.json();
+                console.error("Error al guardar la tarjeta:", error);
+                Swal.fire("Error", "No se pudo crear la tarjeta.", "error");
+            }
+        } catch (error) {
+            console.error("Error al guardar la tarjeta:", error);
+            Swal.fire("Error", "Ocurrió un problema al guardar la tarjeta.", "error");
+        }
+    };
+    
     return (
         <div>
             <label className="block mb-2">Tipo de Tarjeta</label>

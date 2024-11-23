@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import InputsNewPassword from './InputsNewPassword';
 import Swal from 'sweetalert2';  
+import { useSelector } from 'react-redux';
 
 const ChangePassword = () => {
     const [resetInputs, setResetInputs] = useState(false);
+    const token = useSelector((state) => state.auth.token); // Obtener token desde Redux
 
     const handlePasswordChange = (currentPassword, newPassword) => {
         fetch('http://localhost:4002/api/usuario/cambiar-contrasena', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                'Authorization': `Bearer ${token}` // Obtener el token desde Redux
             },
             body: new URLSearchParams({
                 contraseñaActual: currentPassword,
@@ -28,7 +30,8 @@ const ChangePassword = () => {
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
                     setResetInputs(true);
-                    setTimeout(() => setResetInputs(false), 100); 
+                    // Eliminar setTimeout y reiniciar directamente el estado
+                    setResetInputs(false);
                 });
             } else {
                 return response.text().then(text => {

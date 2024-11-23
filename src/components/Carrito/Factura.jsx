@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux"; 
 import Swal from "sweetalert2";
 import FacturaTradicional from "./FacturaTradicional";
 import jsPDF from "jspdf";
@@ -7,15 +8,22 @@ import { Link } from "react-router-dom";
 
 const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
     const [orderId, setOrderId] = useState("");
-    const [orderDate, setOrderDate] = useState(new Date());
-    const [shippingAddress, setShippingAddress] = useState({});
+    const [orderDate] = useState(new Date());
     const [showTraditionalInvoice, setShowTraditionalInvoice] = useState(false);
+
+    const shippingAddress = useSelector((state) => state.cart.direccionEnvio) || null;
+
+    const parsedShippingAddress =
+        typeof shippingAddress === "string" ? JSON.parse(shippingAddress) : shippingAddress;
+
 
     const shippingCost = shippingMethod === "envio" ? 5000 : 0; 
     const discountPercentage = paymentMethod === "EFECTIVO" ? 0.15 : paymentMethod === "DEBITO" ? 0.10 : 0; 
     const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
     const discount = subtotal * discountPercentage; 
     const total = subtotal + shippingCost - discount; 
+
+    
 
     useEffect(() => {
         const generateOrderId = () => {
@@ -24,26 +32,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
         };
 
         generateOrderId();
-
-        if (shippingMethod === "envio") {
-            const savedAddress = JSON.parse(localStorage.getItem("direccionEnvio"));
-            if (savedAddress) {
-                setShippingAddress({
-                    address: savedAddress.direccion || "No especificado",
-                    city: savedAddress.localidad || "No especificado",
-                    postalCode: savedAddress.codigoPostal || "No especificado",
-                    phone: savedAddress.telefono || "No especificado",
-                });
-            } else {
-                setShippingAddress({
-                    address: "Dirección no proporcionada",
-                    city: "No especificado",
-                    postalCode: "No especificado",
-                    phone: "No especificado",
-                });
-            }
-        }
-    }, [shippingMethod]);
+    }, []);
 
     const formatPrice = (price) => {
         return price.toLocaleString("es-AR", {
@@ -102,11 +91,11 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                             <span className="text-gray-400">Método de Pago:</span>
                             <span className="text-green-400">{paymentMethod}</span> 
                         </div>
-                        {shippingMethod === "envio" && (
+                        {shippingMethod === "envio" && parsedShippingAddress && (
                             <div className="flex justify-between mb-3">
                                 <span className="text-gray-400">Dirección de Envío:</span>
                                 <span className="text-white">
-                                    {`${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, Tel: ${shippingAddress.phone}`}
+                                    {`${parsedShippingAddress.direccion || ""}, ${parsedShippingAddress.localidad || ""}, ${parsedShippingAddress.codigoPostal || ""}, Tel: ${parsedShippingAddress.telefono || ""}`}
                                 </span>
                             </div>
                         )}
@@ -159,6 +148,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         shippingAddress={shippingAddress} 
                         shippingCost={shippingCost} 
                         discount={discount}
+                        shippingMethod={shippingMethod}
                     />
                 </div>
             )}

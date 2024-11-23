@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import GamecardPurchase from "../Gamecard/GamecardPurchase";  
+import { refreshToken } from "../../redux/slices/authSlice";    
 
-const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems = [], handleNextStep }) => {
+const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handleNextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const payment = paymentMethod; 
-    const shipping = shippingMethod; 
+    const carritoId = useSelector((state) => state.cart.carritoId);
+    const token = useSelector((state) => state.auth.token);
+    const userId = useSelector((state) => state.auth.userId);
+    const selectedPaymentMethodId = useSelector((state) => state.cart.metodoDePagoId);
+    console.log(selectedPaymentMethodId)
+    const shippingAddress = useSelector((state) => state.cart.direccionEnvio); 
+    const dispatch = useDispatch();
 
-    const shippingCost = (shipping === "envio") ? 5000 : 0;
+    const payment = paymentMethod;
+    const shipping = shippingMethod;
 
-    const discountPercentage = payment === "EFECTIVO" 
-        ? 0.15 
-        : payment === "DEBITO" 
-        ? 0.10
-        : 0; 
+    const shippingCost = shipping === "envio" ? 5000 : 0;
+
+    const discountPercentage =
+        payment === "Efectivo" ? 0.15 : payment === "DEBITO" ? 0.10 : 0;
 
     useEffect(() => {
         const calculatedSubtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -31,63 +38,62 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
         setTermsAccepted(e.target.checked);
     };
 
-    const handlePurchase = () => {
-        const carritoId = localStorage.getItem('carritoId');
-    
-        if (!carritoId) {
-            Swal.fire('Error', 'No se pudo confirmar el carrito. ID de carrito no válido.', 'error');
+    const handlePurchase = async () => {
+        if (!termsAccepted) {
+            Swal.fire("Error", "Debes aceptar los términos para continuar.", "error");
             return;
         }
     
-        if (termsAccepted) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "No podrás deshacer esta acción.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: 'primary',
-                cancelButtonColor: '#d33',
-                background: '#1D1F23',
-                color: '#fff',
-                confirmButtonText: 'Sí, comprar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error("Error al confirmar el carrito");
-                    })
-                    .then(data => {
-                        Swal.fire({
-                            title: 'Compra realizada!',
-                            text: 'Tu compra ha sido completada con éxito.',
-                            icon: 'success',
-                            background: '#1D1F23',
-                            color: '#fff',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            handleNextStep();  
-                        });
-                    })
-                    .catch(error => {
-                        Swal.fire('Error', 'Hubo un problema al confirmar el carrito.', 'error');
-                        console.error(error);
-                    });
-                }
+        if (!carritoId || !paymentMethod || !shippingMethod) {
+            Swal.fire("Error", "Faltan datos esenciales para completar la compra.", "error");
+            return;
+        }
+    
+        const requestData = {
+            tipoEntrega: shippingMethod.toUpperCase(),
+            metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId,
+            direccionEnvio: shippingMethod === "envio" ? JSON.stringify(shippingAddress) : null,
+            montoTotal: total, 
+            cantidadArticulos: cartItems.reduce((acc, item) => acc + item.cantidad, 0), 
+            items: cartItems.map(item => ({
+                videojuegoId: item.id,
+                cantidad: item.cantidad,
+                precio: item.precio
+            }))
+        };
+        
+    
+        try {
+            const response = await fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
             });
-        } else {
-            Swal.fire('Error', 'Debes aceptar los términos para continuar.', 'error');
+    
+            if (!response.ok) {
+                throw new Error("Error al confirmar el carrito");
+            }
+    
+            const responseData = await response.json();
+    
+            Swal.fire({
+                title: "Compra realizada!",
+                text: "Tu compra ha sido completada con éxito.",
+                icon: "success",
+            }).then(() => {
+                handleNextStep();
+            });
+        } catch (error) {
+            Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
         }
     };
+    
+    
+    
+    
 
     return (
         <div className="flex flex-col text-white min-h-screen w-[1400px] p-8 rounded-lg max-w-7xl mx-auto">
@@ -124,7 +130,7 @@ const ConfirmPurchase = ({ paymentMethod, carritoId, shippingMethod, cartItems =
 
                         <div className="flex justify-between font-semibold mt-4">
                             <span className="text-gray-300">Método de Pago:</span>
-                            <span className="text-green-400">{payment}</span>
+                            <span className="text-green-400 uppercase">{payment}</span>
                         </div>
                     </div>
 
