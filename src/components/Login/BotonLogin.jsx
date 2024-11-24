@@ -23,7 +23,7 @@ const BotonLogin = ({ email, password }) => {
             const data = await response.json();
             console.log('Inicio de sesión exitoso:', data);
 
-            dispatch(login({ token: data.access_token, role: data.role }));
+            dispatch(login({ token: data.access_token, role: data.role, userId: data.user_id}));
 
             console.log('Token guardado en Redux:', data.access_token);
 

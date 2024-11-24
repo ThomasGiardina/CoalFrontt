@@ -10,7 +10,9 @@ const UserOrderTable = () => {
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
     const [searchTerm, setSearchTerm] = useState('');
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const token = useSelector((state) => state.auth.token);
+    const userId = useSelector((state) => state.auth.userId); 
     const [currentPage, setCurrentPage] = useState(1);
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange; 
@@ -21,30 +23,32 @@ const UserOrderTable = () => {
         const fetchOrders = async () => {
             setLoading(true);
             setError(null);
-
+    
             try {
-                const response = await fetch('http://localhost:4002/api/pedidos/usuario', {
+                const response = await fetch(`http://localhost:4002/api/pedidos/usuario/${userId}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-
+    
                 if (!response.ok) {
                     throw new Error('Error al obtener los pedidos');
                 }
-
+    
                 const data = await response.json();
                 setOrders(data);
             } catch (err) {
                 setError(err.message || 'Error desconocido');
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
-
-        fetchOrders();
-    }, []); 
+    
+        if (isAuthenticated && userId) { 
+            fetchOrders();
+        }
+    }, [userId, token, isAuthenticated]);
 
     const filteredOrders = orders
     .filter(order => {
@@ -60,7 +64,7 @@ const UserOrderTable = () => {
         const orderDate = new Date(order.fecha);
         if (startDate && endDate) {
             const adjustedEndDate = new Date(endDate);
-            adjustedEndDate.setHours(23, 59, 59, 999); // Incluir el día completo
+            adjustedEndDate.setHours(23, 59, 59, 999); 
             return orderDate >= startDate && orderDate <= adjustedEndDate;
         } else if (startDate) {
             return (
