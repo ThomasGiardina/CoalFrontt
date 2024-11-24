@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateShippingAddress, setMetodoDePago, setDireccionEnvio } from "../../redux/slices/cartSlice";
+import { updateShippingAddress, setMetodoDePago, setDireccionEnvio, setRetiroEnLocal } from "../../redux/slices/cartSlice";
 import { fetchUserCards } from "../../redux/slices/authSlice"; 
 import CardForm from './CardForm';
 import AddressForm from './AddressForm';
@@ -83,9 +83,6 @@ const SelectPayment = ({ onBack, onConfirm }) => {
         }
     };
     
-    
-    
-
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -152,17 +149,15 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     };
 
     const handleShippingOptionChange = (e) => {
-        const option = e.target.value;
-        setShippingOption(option);
+        const option = e.target.value; 
+        setShippingOption(option); 
     
         if (option === "retiro") {
-            dispatch(setTipoEntrega("RETIRO_LOCAL"));
-            dispatch(setDireccionEnvio(null));
+            dispatch(setRetiroEnLocal()); 
         } else {
-            dispatch(setTipoEntrega("DELIVERY"));
+            dispatch(setDireccionEnvio({})); 
         }
     };
-    
 
     const validateForm = () => {
         let formErrors = {};
