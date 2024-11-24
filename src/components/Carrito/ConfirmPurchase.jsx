@@ -13,11 +13,11 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     const token = useSelector((state) => state.auth.token);
     const userId = useSelector((state) => state.auth.userId);
     const selectedPaymentMethodId = useSelector((state) => state.cart.metodoDePagoId);
-    console.log(selectedPaymentMethodId)
     const shippingAddress = useSelector((state) => state.cart.direccionEnvio); 
     const dispatch = useDispatch();
 
-    const payment = paymentMethod;
+    const payment = useSelector((state) => state.cart.metodoDePago);
+
     const shipping = shippingMethod;
 
     const shippingCost = shipping === "envio" ? 5000 : 0;
@@ -90,10 +90,6 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
             Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
         }
     };
-    
-    
-    
-    
 
     return (
         <div className="flex flex-col text-white min-h-screen w-[1400px] p-8 rounded-lg max-w-7xl mx-auto">
@@ -132,6 +128,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                             <span className="text-gray-300">Método de Pago:</span>
                             <span className="text-green-400 uppercase">{payment}</span>
                         </div>
+
                     </div>
 
                     <div className="mt-6">
