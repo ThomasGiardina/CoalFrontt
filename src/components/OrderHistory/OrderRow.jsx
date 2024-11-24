@@ -2,8 +2,6 @@ import React from 'react';
 import Badges from './Badges';
 
 const OrderRow = ({ order, isSelecting, isRowSelected = () => false, handleSelectRow = () => {}, toggleMenu = null, menuOpen = false }) => {
-    console.log("Contenido de order:", order);
-
     return (
         <tr
             className={`hover:bg-neutral-focus ${isSelecting && isRowSelected(order.id) ? 'bg-neutral-focus' : ''}`}
