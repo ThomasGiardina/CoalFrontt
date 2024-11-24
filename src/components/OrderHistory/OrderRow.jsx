@@ -2,6 +2,8 @@ import React from 'react';
 import Badges from './Badges';
 
 const OrderRow = ({ order, isSelecting, isRowSelected = () => false, handleSelectRow = () => {}, toggleMenu = null, menuOpen = false }) => {
+    console.log("Contenido de order:", order);
+
     return (
         <tr
             className={`hover:bg-neutral-focus ${isSelecting && isRowSelected(order.id) ? 'bg-neutral-focus' : ''}`}
@@ -35,16 +37,19 @@ const OrderRow = ({ order, isSelecting, isRowSelected = () => false, handleSelec
                 {order.montoTotal ? `$${order.montoTotal.toFixed(2)}` : 'Sin monto'}
             </td>
             <td className="text-center">
-                <div
-                    className="tooltip tooltip-primary "
-                    data-tip={
-                        order.productosAdquiridos
-                            ?.map(item => `${item.videojuego.titulo} x${item.cantidad}`)
-                            .join('\n') 
-                    }
-                >
-                    {order.cantidadArticulos} {order.cantidadArticulos > 1 ? 'artículos' : 'artículo'}
-                </div>
+                
+            <div
+                className="tooltip tooltip-primary"
+                data-tip={
+                    order.productosAdquiridos?.length
+                        ? order.productosAdquiridos
+                            .map(item => `${item.titulo} x${item.cantidad}`)
+                            .join('\n')
+                        : 'No hay productos en esta orden'
+                }
+            >
+                {order.cantidadArticulos} {order.cantidadArticulos > 1 ? 'artículos' : 'artículo'}
+            </div>
             </td>
             <td className="text-center">
                 <Badges type="delivery" value={order.tipoEntrega} />
