@@ -20,35 +20,36 @@ const UserOrderTable = () => {
     const ordersPerPage = 12;
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            setLoading(true);
-            setError(null);
-    
-            try {
-                const response = await fetch(`http://localhost:4002/api/pedidos/usuario/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-    
-                if (!response.ok) {
-                    throw new Error('Error al obtener los pedidos');
-                }
-    
-                const data = await response.json();
-                setOrders(data);
-            } catch (err) {
-                setError(err.message || 'Error desconocido');
-            } finally {
-                setLoading(false);
-            }
-        };
-    
-        if (isAuthenticated && userId) { 
+        if (isAuthenticated && userId && token) { 
             fetchOrders();
         }
-    }, [userId, token, isAuthenticated]);
+    }, [isAuthenticated, userId, token]);
+    
+
+    const fetchOrders = async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(`http://localhost:4002/api/pedidos/usuario/${userId}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al obtener los pedidos');
+            }
+
+            const data = await response.json();
+            setOrders(data);
+        } catch (err) {
+            setError(err.message || 'Error desconocido');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filteredOrders = orders
     .filter(order => {
@@ -84,14 +85,6 @@ const UserOrderTable = () => {
     };
 
     const totalPages = Math.ceil(orders.length / ordersPerPage);
-
-    if (loading) {
-        return <p className="text-center text-primary">Cargando pedidos...</p>;
-    }
-
-    if (error) {
-        return <p className="text-center text-red-500">Error: {error}</p>;
-    }
 
     return (
         <div>
