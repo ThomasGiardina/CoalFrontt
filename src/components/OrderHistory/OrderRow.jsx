@@ -31,7 +31,9 @@ const OrderRow = ({ order, isSelecting, isRowSelected = () => false, handleSelec
             <td className="text-center">
                 <Badges type="payment" value={order.tipoPago} />
             </td>
-            <td className="text-center">{`$${order.montoTotal.toFixed(2)}`}</td>
+            <td className="text-center">
+                {order.montoTotal ? `$${order.montoTotal.toFixed(2)}` : 'Sin monto'}
+            </td>
             <td className="text-center">
                 <div
                     className="tooltip tooltip-primary "

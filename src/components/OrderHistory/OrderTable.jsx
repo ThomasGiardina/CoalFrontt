@@ -1,142 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import OrderRow from './OrderRow';
-import Pagination from '../Pagination/Pagination'; 
+import Pagination from '../Pagination/Pagination';
+import { useSelector } from 'react-redux';
 
 const OrderTable = () => {
-    const [menuOpen, setMenuOpen] = useState(null); 
-    const [activeTab, setActiveTab] = useState('Todas');
-    const [startDate, setStartDate] = useState(null); 
-    const [endDate, setEndDate] = useState(null); 
-    const [isSelecting, setIsSelecting] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [orders, setOrders] = useState([]); 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null); 
     const [currentPage, setCurrentPage] = useState(1); 
+    const token = useSelector((state) => state.auth.token); 
 
-    const ordersPerPage = 12; 
+    const ordersPerPage = 12;
 
-    const orders = [
-        { id: '#1002', date: '11 Feb, 2024', customer: 'Wade Warren', payment: 'Débito', total: '$20.00', items: 2, delivery: 'Delivery', status: 'Pendiente' },
-        { id: '#1004', date: '13 Feb, 2024', customer: 'Esther Howard', payment: 'Crédito', total: '$22.00', items: 3, delivery: 'Retiro local', status: 'Completado' },
-        { id: '#1007', date: '15 Feb, 2024', customer: 'Jenny Wilson', payment: 'Efectivo', total: '$25.00', items: 1, delivery: 'Delivery', status: 'Pendiente' },
-        { id: '#1009', date: '17 Feb, 2024', customer: 'Guy Hawkins', payment: 'Crédito', total: '$27.00', items: 5, delivery: 'Retiro local', status: 'Completado' },
-    ];
+    useEffect(() => {
+        const fetchOrders = async () => {
+            setLoading(true);
+            setError(null);
 
-    const toggleMenu = (index) => {
-        setMenuOpen(menuOpen === index ? null : index); 
-    };
+            try {
+                const response = await fetch('http://localhost:4002/api/pedidos', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
-    const filteredOrders = () => {
-        let filtered = orders;
-        if (activeTab === 'Completas') {
-            filtered = orders.filter((order) => order.status === 'Completado');
-        } else if (activeTab === 'Pendientes') {
-            filtered = orders.filter((order) => order.status === 'Pendiente');
-        }
+                if (!response.ok) {
+                    throw new Error('Error al obtener los pedidos del backend');
+                }
 
-        const startIndex = (currentPage - 1) * ordersPerPage;
-        const endIndex = startIndex + ordersPerPage;
+                const data = await response.json();
+                setOrders(data);
+            } catch (err) {
+                setError(err.message || 'Error desconocido');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        return filtered.slice(startIndex, endIndex); 
-    };
+        fetchOrders();
+    }, [token]);
+
+    const filteredOrders = orders.slice(
+        (currentPage - 1) * ordersPerPage,
+        currentPage * ordersPerPage
+    );
 
     const handlePageChange = (page) => {
-        if (page >= 1 && page <= Math.ceil(orders.length / ordersPerPage)) {
-            setCurrentPage(page);
-        }
+        setCurrentPage(page);
     };
 
-    const totalPages = Math.ceil(orders.length / ordersPerPage); 
+    const totalPages = Math.ceil(orders.length / ordersPerPage);
 
-    const handleSelectRow = (id) => {
-        setSelectedRows((prevSelectedRows) => {
-            if (prevSelectedRows.includes(id)) {
-                return prevSelectedRows.filter((rowId) => rowId !== id);
-            } else {
-                return [...prevSelectedRows, id];
-            }
-        });
-    };
+    if (loading) {
+        return <p className="text-center text-primary">Cargando pedidos...</p>;
+    }
 
-    const handleSelectAll = () => {
-        if (selectedRows.length === orders.length) {
-            setSelectedRows([]); 
-        } else {
-            setSelectedRows(orders.map((order) => order.id)); 
-        }
-    };
-
-    const isRowSelected = (id) => selectedRows.includes(id);
-
-    const handleExport = () => {
-        console.log('Exportando las filas seleccionadas:', selectedRows);
-
-        setIsSelecting(false);
-        setSelectedRows([]); 
-    };
+    if (error) {
+        return <p className="text-center text-red-500">Error: {error}</p>;
+    }
 
     return (
         <div className="mt-6">
             <div className="flex justify-between items-center mb-4">
-                <div className="flex space-x-4">
-                    <div role="tablist" className="tabs tabs-lifted text-lg">
-                        <a
-                            role="tab"
-                            className={`tab tab-bordered ${activeTab === 'Todas' ? 'tab-active text-primary px-6 py-3 [--tab-bg:transparent] [--tab-border-color:var(--primary)]' : ''}`}
-                            onClick={() => setActiveTab('Todas')}
-                        >
-                            Todas
-                        </a>
-                        <a
-                            role="tab"
-                            className={`tab tab-bordered ${activeTab === 'Completas' ? 'tab-active text-primary px-6 py-3 [--tab-bg:transparent] [--tab-border-color:var(--primary)]' : ''}`}
-                            onClick={() => setActiveTab('Completas')}
-                        >
-                            Completas
-                        </a>
-                        <a
-                            role="tab"
-                            className={`tab tab-bordered ${activeTab === 'Pendientes' ? 'tab-active text-primary px-6 py-3 [--tab-bg:transparent] [--tab-border-color:var(--primary)]' : ''}`}
-                            onClick={() => setActiveTab('Pendientes')}
-                        >
-                            Pendientes
-                        </a>
-                    </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                    <input
-                        type="text"
-                        placeholder="Buscar órdenes..."
-                        className="px-4 py-2 bg-neutral text-text border border-neutral-300 rounded-lg focus:outline-none focus:border-primary"
-                    />
-
-                    <button
-                        className={`btn ${selectedRows.length > 0 ? 'btn-success' : 'btn-primary'}`}
-                        onClick={() => {
-                            if (selectedRows.length > 0) {
-                                handleExport();
-                            } else {
-                                setIsSelecting(!isSelecting);
-                            }
-                        }}
-                    >
-                        {selectedRows.length > 0 ? 'Exportar' : 'Seleccionar'}
-                    </button>
-                </div>
+                <p className="text-2xl font-bold text-neutral-300 ml-5">Pedidos Administrativos</p>
             </div>
             <div className="overflow-x-auto">
                 <table className="table w-full bg-neutral text-text table-auto">
                     <thead>
                         <tr className="text-primary">
-                            {isSelecting && (
-                                <th className="text-center">
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox checkbox-primary"
-                                        onChange={handleSelectAll}
-                                        checked={selectedRows.length === orders.length}
-                                    />
-                                </th>
-                            )}
                             <th className="text-center">Pedido</th>
                             <th className="text-center">Fecha</th>
                             <th className="text-center">Cliente</th>
@@ -149,15 +82,13 @@ const OrderTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredOrders().map((order, index) => (
+                        {filteredOrders.map((order, index) => (
                             <OrderRow
                                 key={index}
                                 order={order}
-                                isSelecting={isSelecting}
-                                isRowSelected={isRowSelected}
-                                handleSelectRow={handleSelectRow}
-                                toggleMenu={() => toggleMenu(index)} 
-                                menuOpen={menuOpen === index} 
+                                isSelecting={false}
+                                toggleMenu={null}
+                                menuOpen={false}
                             />
                         ))}
                     </tbody>
