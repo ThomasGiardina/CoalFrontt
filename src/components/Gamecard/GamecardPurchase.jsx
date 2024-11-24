@@ -26,8 +26,8 @@ const GamecardPurchase = ({ game }) => {
         });
     };
 
-    const fotoUrl = game.videojuego && game.videojuego.foto
-        ? `data:image/jpeg;base64,${game.videojuego.foto}` 
+    const fotoUrl = game.foto 
+        ? `data:image/jpeg;base64,${game.foto}` 
         : '/ruta/a/imagen_por_defecto.png';
 
     return (
