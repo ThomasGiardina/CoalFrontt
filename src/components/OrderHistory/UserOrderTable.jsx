@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import OrderRow from './OrderRow';
+import UserOrderRow from './UserOrderRow';
 import Pagination from '../Pagination/Pagination';
 import DatePicker from 'react-datepicker';
 import { useSelector } from "react-redux";
@@ -140,7 +140,7 @@ const UserOrderTable = () => {
                     </thead>
                     <tbody>
                         {filteredOrders.map((order, index) => (
-                            <OrderRow
+                            <UserOrderRow
                                 key={index}
                                 order={order}
                                 isSelecting={false}
