@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import SearchBar from '../Searchbar/searchbar';
 
 const Gamefilter = ({ games, setFilter }) => {
@@ -17,6 +18,7 @@ const Gamefilter = ({ games, setFilter }) => {
     });
 
     const [searchTerm, setSearchTerm] = useState('');
+    const location = useLocation();
 
     useEffect(() => {
         if (games.length > 0) {
@@ -25,6 +27,14 @@ const Gamefilter = ({ games, setFilter }) => {
             setFilters(prevFilters => ({ ...prevFilters, price: highestPrice }));
         }
     }, [games]);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const filter = queryParams.get('filter');
+        if (filter && platforms.includes(filter)) {
+            setFilters(prevFilters => ({ ...prevFilters, [filter]: true }));
+        }
+    }, [location.search, platforms]);
 
     useEffect(() => {
         const filtered = games.filter(game => {
@@ -127,7 +137,6 @@ const Gamefilter = ({ games, setFilter }) => {
             </div>
         </div>
     );
-    
 };
 
 export default Gamefilter;

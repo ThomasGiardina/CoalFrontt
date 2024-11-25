@@ -3,10 +3,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
+import { useNavigate } from 'react-router-dom';
 
 const ContactSupport = () => {
-    const [state, handleSubmit] = useForm("xdkodnov");
+    const [state, handleSubmitFormspree] = useForm("xdkodnov");
     const fileInputRef = useRef(null);
+    const navigate = useNavigate();
 
     const initialValues = {
         name: '',
@@ -29,6 +31,13 @@ const ContactSupport = () => {
         setFieldValue('photos', files);
     };
 
+    const handleSubmit = (values, { setSubmitting }) => {
+        handleSubmitFormspree(values);
+        setTimeout(() => {
+            setSubmitting(false);
+        }, 1000);
+    };
+
     if (state.succeeded) {
         return (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50">
@@ -41,7 +50,7 @@ const ContactSupport = () => {
                     </p>
                     <button
                         className="btn btn-primary text-xl px-8 py-4"
-                        onClick={() => window.location.reload()}
+                        onClick={() => navigate('/store')}
                     >
                         Cerrar
                     </button>
@@ -119,7 +128,7 @@ const ContactSupport = () => {
                                 type="file"
                                 name="photos"
                                 multiple
-                                className="input input-bordered w-full"
+                                className="input input-bordered w-full file-input file-input-bordered file-input-primary"
                                 onChange={(event) => handleFileChange(event, setFieldValue)}
                                 ref={fileInputRef}
                             />
