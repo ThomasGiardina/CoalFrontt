@@ -10,7 +10,9 @@ const UserOrderTable = () => {
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
     const [searchTerm, setSearchTerm] = useState('');
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const token = useSelector((state) => state.auth.token);
+    const userId = useSelector((state) => state.auth.userId); 
     const [currentPage, setCurrentPage] = useState(1);
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange; 
@@ -18,33 +20,36 @@ const UserOrderTable = () => {
     const ordersPerPage = 12;
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            setLoading(true);
-            setError(null);
+        if (isAuthenticated && userId && token) { 
+            fetchOrders();
+        }
+    }, [isAuthenticated, userId, token]);
+    
 
-            try {
-                const response = await fetch('http://localhost:4002/api/pedidos/usuario', {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+    const fetchOrders = async () => {
+        setLoading(true);
+        setError(null);
 
-                if (!response.ok) {
-                    throw new Error('Error al obtener los pedidos');
-                }
+        try {
+            const response = await fetch(`http://localhost:4002/api/pedidos/usuario/${userId}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-                const data = await response.json();
-                setOrders(data);
-            } catch (err) {
-                setError(err.message || 'Error desconocido');
-            } finally {
-                setLoading(false); 
+            if (!response.ok) {
+                throw new Error('Error al obtener los pedidos');
             }
-        };
 
-        fetchOrders();
-    }, []); 
+            const data = await response.json();
+            setOrders(data);
+        } catch (err) {
+            setError(err.message || 'Error desconocido');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filteredOrders = orders
     .filter(order => {
@@ -60,7 +65,7 @@ const UserOrderTable = () => {
         const orderDate = new Date(order.fecha);
         if (startDate && endDate) {
             const adjustedEndDate = new Date(endDate);
-            adjustedEndDate.setHours(23, 59, 59, 999); // Incluir el día completo
+            adjustedEndDate.setHours(23, 59, 59, 999); 
             return orderDate >= startDate && orderDate <= adjustedEndDate;
         } else if (startDate) {
             return (
@@ -80,14 +85,6 @@ const UserOrderTable = () => {
     };
 
     const totalPages = Math.ceil(orders.length / ordersPerPage);
-
-    if (loading) {
-        return <p className="text-center text-primary">Cargando pedidos...</p>;
-    }
-
-    if (error) {
-        return <p className="text-center text-red-500">Error: {error}</p>;
-    }
 
     return (
         <div>

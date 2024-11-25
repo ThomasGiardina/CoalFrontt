@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
 
-const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
+const Factura = ({ cartItems = [], shippingMethod }) => {
     const [orderId, setOrderId] = useState("");
     const [orderDate] = useState(new Date());
     const [showTraditionalInvoice, setShowTraditionalInvoice] = useState(false);
@@ -16,9 +16,11 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
     const parsedShippingAddress =
         typeof shippingAddress === "string" ? JSON.parse(shippingAddress) : shippingAddress;
 
+    const payment = useSelector((state) => state.cart.metodoDePago);
+
 
     const shippingCost = shippingMethod === "envio" ? 5000 : 0; 
-    const discountPercentage = paymentMethod === "EFECTIVO" ? 0.15 : paymentMethod === "DEBITO" ? 0.10 : 0; 
+    const discountPercentage = payment === "EFECTIVO" ? 0.15 : payment === "DEBITO" ? 0.10 : 0; 
     const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
     const discount = subtotal * discountPercentage; 
     const total = subtotal + shippingCost - discount; 
@@ -89,7 +91,7 @@ const Factura = ({ cartItems = [], paymentMethod, shippingMethod }) => {
                         </div>
                         <div className="flex justify-between mb-3">
                             <span className="text-gray-400">Método de Pago:</span>
-                            <span className="text-green-400">{paymentMethod}</span> 
+                            <span className="text-green-400">{payment}</span> 
                         </div>
                         {shippingMethod === "envio" && parsedShippingAddress && (
                             <div className="flex justify-between mb-3">
