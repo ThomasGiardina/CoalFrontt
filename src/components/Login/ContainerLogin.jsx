@@ -6,6 +6,7 @@ import BotonLogin from "./BotonLogin";
 import DivLogin from "../Register/DivLogin";
 import BotonesLinksLogin from "./BotonesLinksLogin";
 import { Link } from "react-router-dom";
+import ForgotPassword from './ForgotPassword';
 
 const ContainerLogin = () => {
     const [email, setEmail] = useState("");   
@@ -26,9 +27,7 @@ const ContainerLogin = () => {
                     </div>
                     <BotonLogin email={email} password={password} />
                     <div className="flex justify-center mt-5">
-                        <a target="_blank" href="https://youtu.be/2qvAxPqy2wA" style={{ color: "#1E90FF" }}>
-                            ¿Olvidaste tu Contraseña?
-                        </a>
+                        <ForgotPassword />
                     </div>
                     <DivLogin />
                     <BotonesLinksLogin />

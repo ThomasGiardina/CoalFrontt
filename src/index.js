@@ -6,6 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 import store, { persistor } from './redux/store'; 
 import App from './App'; 
 import './index.css'; 
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 ReactDOM.render(
     <Provider store={store}>
