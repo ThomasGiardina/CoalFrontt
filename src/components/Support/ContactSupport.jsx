@@ -85,7 +85,7 @@ const ContactSupport = () => {
                 onSubmit={handleSubmit}
             >
                 {({ isSubmitting, setFieldValue }) => (
-                    <Form className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md relative z-10">
+                    <Form className="w-full max-w-lg bg-background p-8 rounded-lg shadow-md relative z-10">
                         <div className="mb-4">
                             <label className="block text-gray-200 text-lg font-bold mb-2" htmlFor="name">
                                 Nombre y Apellido
