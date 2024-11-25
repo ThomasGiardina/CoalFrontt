@@ -6,7 +6,7 @@ import { updateProfileImage } from "../../redux/slices/authSlice";
 const SettingsImage = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
-    const profileImage = useSelector((state) => state.auth.profileImage); 
+    const profileImage = useSelector((state) => state.auth.profileImage);
     const [username, setUsername] = useState("");
     const [userId, setUserId] = useState(null);
 

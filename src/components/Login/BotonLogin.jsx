@@ -23,7 +23,25 @@ const BotonLogin = ({ email, password }) => {
             const data = await response.json();
             console.log('Inicio de sesión exitoso:', data);
 
-            dispatch(login({ token: data.access_token, role: data.role, userId: data.user_id}));
+            const profileImageResponse = await fetch(`http://localhost:4002/api/usuario/imagen/${data.user_id}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${data.access_token}`,
+                },
+            });
+
+            let profileImage = null;
+            if (profileImageResponse.ok) {
+                const blob = await profileImageResponse.blob();
+                profileImage = URL.createObjectURL(blob);
+            }
+
+            dispatch(login({
+                token: data.access_token,
+                role: data.role,
+                userId: data.user_id,
+                profileImage: profileImage,
+            }));
 
             console.log('Token guardado en Redux:', data.access_token);
 
