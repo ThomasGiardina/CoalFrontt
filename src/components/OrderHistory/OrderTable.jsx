@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import OrderRow from './AdminOrderRow';
 import Pagination from '../Pagination/Pagination';
 import { useSelector } from 'react-redux';
 import AdminOrderRow from './AdminOrderRow';
@@ -57,54 +56,50 @@ const OrderTable = () => {
         );
     };
     
-    
     const handleSendMessage = (order) => {
         console.log('Enviar mensaje al cliente:', order.cliente);
     };
     
-    const handleDelete = (order) => {
-        console.log('Eliminar pedido con ID:', order.id);
+    const handleCancelOrder = (updatedOrder) => {
+        setOrders((prevOrders) =>
+            prevOrders.map((order) =>
+                order.id === updatedOrder.id ? updatedOrder : order
+            )
+        );
     };
-
-    const toggleMenu = (index) => {
-        setMenuOpen(menuOpen === index ? null : index);
-    };
-
+    
     const filteredOrders = () => {
-        let filtered = orders;
-
-        // Filtrar por tabs
-        if (activeTab === 'Completas') {
-            filtered = orders.filter((order) => order.estadoPedido === 'Completado');
+        let filtered = [...orders]; 
+        if (activeTab === 'Completos') {
+            filtered = filtered.filter((order) => order.estadoPedido === 'CONFIRMADO');
         } else if (activeTab === 'Pendientes') {
-            filtered = orders.filter((order) => order.estadoPedido === 'Pendiente');
+            filtered = filtered.filter((order) => order.estadoPedido === 'PENDIENTE');
+        } else if (activeTab === 'Cancelados') {
+            filtered = filtered.filter((order) => order.estadoPedido === 'CANCELADO');
         }
-
-        // Filtrar por búsqueda
         if (searchTerm) {
             const search = searchTerm.toLowerCase();
             filtered = filtered.filter((order) => {
                 return (
                     order.id.toString().toLowerCase().includes(search) ||
-                    order.cliente?.toLowerCase().includes(search) || 
+                    order.cliente?.toLowerCase().includes(search) ||
                     order.tipoPago?.toLowerCase().includes(search) ||
                     order.tipoEntrega?.toLowerCase().includes(search) ||
                     order.estadoPedido?.toLowerCase().includes(search)
                 );
             });
         }
-
-        // Paginación
         const startIndex = (currentPage - 1) * ordersPerPage;
         const endIndex = startIndex + ordersPerPage;
+    
         return filtered.slice(startIndex, endIndex);
-    };
+    };    
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
-    const totalPages = Math.ceil(orders.length / ordersPerPage);
+    const totalPages = Math.ceil(filteredOrders().length / ordersPerPage);
 
     const handleSelectRow = (id) => {
         setSelectedRows((prevSelectedRows) => {
@@ -115,7 +110,6 @@ const OrderTable = () => {
             }
         });
     };
-
     const handleSelectAll = () => {
         const filtered = filteredOrders();
         if (selectedRows.length === filtered.length) {
@@ -126,21 +120,18 @@ const OrderTable = () => {
     };
 
     const isRowSelected = (id) => selectedRows.includes(id);
-
+    
     const handleExport = () => {
         console.log('Exportando las filas seleccionadas:', selectedRows);
         setIsSelecting(false);
         setSelectedRows([]);
     };
-
     if (loading) {
         return <p className="text-center text-primary">Cargando pedidos...</p>;
     }
-
     if (error) {
         return <p className="text-center text-red-500">Error: {error}</p>;
     }
-
     return (
         <div className="mt-6">
             <div className="flex justify-between items-center mb-4">
@@ -155,10 +146,10 @@ const OrderTable = () => {
                         </a>
                         <a
                             role="tab"
-                            className={`tab tab-bordered ${activeTab === 'Completas' ? 'tab-active text-primary' : ''}`}
-                            onClick={() => setActiveTab('Completas')}
+                            className={`tab tab-bordered ${activeTab === 'Completos' ? 'tab-active text-primary' : ''}`}
+                            onClick={() => setActiveTab('Completos')}
                         >
-                            Completas
+                            Completos
                         </a>
                         <a
                             role="tab"
@@ -166,6 +157,13 @@ const OrderTable = () => {
                             onClick={() => setActiveTab('Pendientes')}
                         >
                             Pendientes
+                        </a>
+                        <a
+                            role="tab"
+                            className={`tab tab-bordered ${activeTab === 'Cancelados' ? 'tab-active text-primary' : ''}`}
+                            onClick={() => setActiveTab('Cancelados')}
+                        >
+                            Cancelados
                         </a>
                     </div>
                 </div>
@@ -231,7 +229,7 @@ const OrderTable = () => {
                                 menuOpenId={menuOpen}
                                 setMenuOpenId={setMenuOpen}
                                 onSendMessage={handleSendMessage}
-                                onDelete={handleDelete}
+                                onCancel={handleCancelOrder}
                                 onConfirm={handleConfirmOrder}
                             />                        
                         ))}

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import Badges from './Badges';
-import MenuDropdown from './MenuDropdown';
+import { useSelector } from "react-redux";
+import 'react-datepicker/dist/react-datepicker.css';
+import Swal from "sweetalert2";
+
 
 const AdminOrderRow = ({ 
     order, 
@@ -8,11 +11,11 @@ const AdminOrderRow = ({
     menuOpenId, 
     setMenuOpenId, 
     onSendMessage, 
-    onDelete, 
+    onCancel, 
     onConfirm 
 }) => {
     const rowRef = useRef(null);
-    const buttonRef = useRef(null);
+    const token = useSelector((state) => state.auth.token);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -35,15 +38,109 @@ const AdminOrderRow = ({
             window.removeEventListener('scroll', handleScroll);
         };
     }, [menuOpenId, order.id, setMenuOpenId]);
-
-    const toggleMenu = (e) => {
-        e.stopPropagation();
-        if (menuOpenId === order.id) {
-            setMenuOpenId(null);
-        } else {
-            setMenuOpenId(order.id);
+    
+    const handleStatusChange = async (pedidoId, newStatus) => {
+        try {
+            const endpoint =
+                newStatus === 'CONFIRMADO'
+                    ? `http://localhost:4002/api/pedidos/${pedidoId}/confirmar`
+                    : `http://localhost:4002/api/pedidos/${pedidoId}/pendiente`;
+    
+            const response = await fetch(endpoint, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
+            if (response.ok) {
+                const updatedPedido = await response.json();
+                console.log(`Pedido actualizado a ${newStatus}:`, updatedPedido);
+                onConfirm && onConfirm(updatedPedido);
+            } else {
+                console.error(`Error al cambiar el estado a ${newStatus}:`, response.statusText);
+            }
+        } catch (error) {
+            console.error(`Error al realizar la solicitud: ${error.message}`);
         }
-    };               
+    };      
+
+    const handleCancel = async (pedidoId) => {
+        const MySwal = Swal.mixin({
+            customClass: {
+                popup: 'custom-toast',
+                title: 'text-white',
+            },
+            background: '#1D1F23',
+            color: '#fff',
+        });
+    
+        const result = await MySwal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción cancelará el pedido y no se puede revertir.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'No, volver',
+            reverseButtons: true,
+            background: '#1D1F23',
+            customClass: {
+                popup: 'custom-toast',
+                title: 'text-white',
+                confirmButton: 'btn-confirm',
+                cancelButton: 'btn-cancel',
+            },
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`http://localhost:4002/api/pedidos/${pedidoId}/cancelar`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+    
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(errorMessage || 'Hubo un problema al cancelar el pedido.');
+                }
+    
+                const updatedPedido = await response.json();
+                onCancel && onCancel(updatedPedido);
+    
+                await MySwal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'El pedido ha sido cancelado con éxito.',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    background: '#1D1F23',
+                    customClass: {
+                        popup: 'custom-toast',
+                        title: 'text-white',
+                    },
+                });
+            } catch (error) {
+                await MySwal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: error.message,
+                    showConfirmButton: false,
+                    timer: 4000,
+                    background: '#1D1F23',
+                    customClass: {
+                        popup: 'custom-toast',
+                        title: 'text-white',
+                    },
+                });
+            }
+        }
+    };            
 
     return (
         <tr
@@ -99,23 +196,68 @@ const AdminOrderRow = ({
                 <Badges type="status" value={order.estadoPedido} />
             </td>
             <td className="relative text-center">
-                <button
-                    ref={buttonRef} 
-                    className="btn btn-ghost btn-circle text-primary"
-                    onClick={toggleMenu}
-                >
-                    <i className="fas fa-ellipsis-v"></i>
-                </button>
-                {menuOpenId === order.id && (
-                    <MenuDropdown
-                        buttonRef={buttonRef} 
-                        pedidoId={order.id}
-                        onSendMessage={() => onSendMessage(order)}
-                        onDelete={() => onDelete(order)}
-                        onConfirm={(updatedOrder) => onConfirm(updatedOrder)} 
-                        closeMenu={() => setMenuOpenId(null)}
-                    />
-                )}
+                <div className="dropdown dropdown-end">
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-ghost btn-circle text-primary"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <i className="fas fa-ellipsis-v"></i>
+                    </div>
+                    <ul
+                        tabIndex={0}
+                        className="dropdown-content menu bg-neutral shadow-lg rounded-box w-48 z-50"
+                    >
+                        <li>
+                            <button
+                                className="text-text hover:bg-blue-600 hover:text-white"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onSendMessage(order);
+                                }}
+                            >
+                                Enviar mensaje
+                            </button>
+                        </li>
+                        {order.estadoPedido !== "CANCELADO" && (
+                            <>
+                                <li>
+                                    <button
+                                        className={`text-text hover:text-white ${
+                                            order.estadoPedido === "CONFIRMADO"
+                                                ? "hover:bg-yellow-700"
+                                                : "hover:bg-green-700"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            const newStatus =
+                                                order.estadoPedido === "CONFIRMADO"
+                                                    ? "PENDIENTE"
+                                                    : "CONFIRMADO";
+                                            handleStatusChange(order.id, newStatus);
+                                        }}
+                                    >
+                                        {order.estadoPedido === "CONFIRMADO"
+                                            ? "Cambiar a pendiente"
+                                            : "Confirmar pedido"}
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        className="text-text hover:bg-error hover:text-white"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCancel(order.id);
+                                        }}
+                                    >
+                                        Cancelar pedido
+                                    </button>
+                                </li>
+                            </>
+                        )}
+                    </ul>
+                </div>
             </td>
         </tr>
     );
