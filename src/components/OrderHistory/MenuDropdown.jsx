@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from "react-redux";
 
-
-const MenuDropdown = ({ buttonRef, onSendMessage, onDelete, onConfirm }) => {
+const MenuDropdown = ({ buttonRef, pedidoId, onSendMessage, onDelete, onConfirm }) => {
     const [position, setPosition] = useState({ top: 0, left: 0 });
+    const token = useSelector((state) => state.auth.token);
 
     useEffect(() => {
         if (buttonRef?.current) {
@@ -14,7 +15,33 @@ const MenuDropdown = ({ buttonRef, onSendMessage, onDelete, onConfirm }) => {
             });
         }
     }, [buttonRef]);
-    
+
+    const handleConfirm = async () => {
+        if (!pedidoId) {
+            console.error('Pedido no está definido');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:4002/api/pedidos/${pedidoId}/confirmar`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al confirmar el pedido');
+            }
+
+            const updatedPedido = await response.json();
+            console.log('Pedido confirmado:', updatedPedido);
+            onConfirm && onConfirm(updatedPedido);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
 
     return (
         <ul
@@ -25,7 +52,6 @@ const MenuDropdown = ({ buttonRef, onSendMessage, onDelete, onConfirm }) => {
             }}
             onClick={(e) => e.stopPropagation()}
         >
-
             <li
                 className="text-neutral hover:bg-primary hover:text-white"
                 onClick={(e) => {
@@ -39,7 +65,7 @@ const MenuDropdown = ({ buttonRef, onSendMessage, onDelete, onConfirm }) => {
                 className="text-neutral hover:bg-warning hover:text-white"
                 onClick={(e) => {
                     e.stopPropagation();
-                    onConfirm && onConfirm();
+                    handleConfirm();
                 }}
             >
                 <button>Confirmar pedido</button>

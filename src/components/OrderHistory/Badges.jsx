@@ -22,7 +22,9 @@ const Badges = ({ type, value }) => {
 
     return (
         <span
-            className={`inline-flex items-center justify-center w-24 h-8 text-sm font-medium px-3 py-1 rounded-full ${getBadgeColor()}`}
+            className={`inline-flex items-center justify-center h-8 text-sm font-medium px-3 py-1 rounded-full ${getBadgeColor()} ${
+                value === 'CONFIRMADO' ? 'w-32' : 'w-24'
+            }`}
         >
             {value}
         </span>

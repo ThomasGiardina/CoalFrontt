@@ -12,8 +12,7 @@ const AdminOrderRow = ({
     onConfirm 
 }) => {
     const rowRef = useRef(null);
-    const buttonRef = useRef(null); 
-
+    const buttonRef = useRef(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -21,22 +20,21 @@ const AdminOrderRow = ({
                 setMenuOpenId(null); 
             }
         };
-    
+
         const handleScroll = () => {
             if (menuOpenId === order.id) {
                 setMenuOpenId(null); 
             }
         };
-    
+
         document.addEventListener('mousedown', handleClickOutside);
         window.addEventListener('scroll', handleScroll);
-    
+
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
             window.removeEventListener('scroll', handleScroll);
         };
     }, [menuOpenId, order.id, setMenuOpenId]);
-    
 
     const toggleMenu = (e) => {
         e.stopPropagation();
@@ -111,9 +109,10 @@ const AdminOrderRow = ({
                 {menuOpenId === order.id && (
                     <MenuDropdown
                         buttonRef={buttonRef} 
+                        pedidoId={order.id}
                         onSendMessage={() => onSendMessage(order)}
                         onDelete={() => onDelete(order)}
-                        onConfirm={() => onConfirm(order)}
+                        onConfirm={(updatedOrder) => onConfirm(updatedOrder)} 
                         closeMenu={() => setMenuOpenId(null)}
                     />
                 )}

@@ -37,7 +37,7 @@ const OrderTable = () => {
                 }
     
                 const data = await response.json();
-                console.log('Pedidos recibidos:', data); // Verifica aquí
+                console.log('Pedidos recibidos:', data); 
                 setOrders(data);
             } catch (err) {
                 setError(err.message || 'Error desconocido');
@@ -49,9 +49,14 @@ const OrderTable = () => {
         fetchOrders();
     }, [token]);
 
-    const handleConfirmOrder = (order) => {
-        console.log('Confirmar pedido con ID:', order.id);
+    const handleConfirmOrder = (updatedOrder) => {
+        setOrders((prevOrders) =>
+            prevOrders.map((order) =>
+                order.id === updatedOrder.id ? updatedOrder : order
+            )
+        );
     };
+    
     
     const handleSendMessage = (order) => {
         console.log('Enviar mensaje al cliente:', order.cliente);
@@ -81,7 +86,7 @@ const OrderTable = () => {
             filtered = filtered.filter((order) => {
                 return (
                     order.id.toString().toLowerCase().includes(search) ||
-                    order.cliente?.toLowerCase().includes(search) || // Corregir cliente
+                    order.cliente?.toLowerCase().includes(search) || 
                     order.tipoPago?.toLowerCase().includes(search) ||
                     order.tipoEntrega?.toLowerCase().includes(search) ||
                     order.estadoPedido?.toLowerCase().includes(search)
