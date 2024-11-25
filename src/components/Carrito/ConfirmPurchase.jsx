@@ -51,6 +51,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     
         const requestData = {
             tipoEntrega: shippingMethod.toUpperCase(),
+            tipoPago: paymentMethod.toUpperCase(),
             metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId,
             direccionEnvio: shippingMethod === "envio" ? JSON.stringify(shippingAddress) : null,
             montoTotal: total, 
@@ -61,6 +62,8 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                 precio: item.precio
             }))
         };
+
+        console.log(requestData)
         
     
         try {
