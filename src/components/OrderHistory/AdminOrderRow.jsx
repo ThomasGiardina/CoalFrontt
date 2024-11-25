@@ -12,19 +12,19 @@ const AdminOrderRow = ({
     onConfirm 
 }) => {
     const rowRef = useRef(null);
-    const buttonRef = useRef(null); // Nuevo ref agregado
+    const buttonRef = useRef(null); 
 
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuOpenId === order.id && rowRef.current && !rowRef.current.contains(event.target)) {
-                setMenuOpenId(null); // Close menu when clicking outside
+                setMenuOpenId(null); 
             }
         };
     
         const handleScroll = () => {
             if (menuOpenId === order.id) {
-                setMenuOpenId(null); // Close menu on scroll
+                setMenuOpenId(null); 
             }
         };
     
@@ -102,7 +102,7 @@ const AdminOrderRow = ({
             </td>
             <td className="relative text-center">
                 <button
-                    ref={buttonRef} // Referencia para calcular la posición dinámica
+                    ref={buttonRef} 
                     className="btn btn-ghost btn-circle text-primary"
                     onClick={toggleMenu}
                 >
@@ -110,6 +110,7 @@ const AdminOrderRow = ({
                 </button>
                 {menuOpenId === order.id && (
                     <MenuDropdown
+                        buttonRef={buttonRef} 
                         onSendMessage={() => onSendMessage(order)}
                         onDelete={() => onDelete(order)}
                         onConfirm={() => onConfirm(order)}
