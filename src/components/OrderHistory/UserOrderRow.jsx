@@ -25,7 +25,7 @@ const UserOrderRow = ({ order }) => {
                         order.productosAdquiridos?.length
                             ? order.productosAdquiridos
                                 .map((item) => `${item.titulo} x${item.cantidad}`)
-                                .join('\n')
+                                .join(' ; ')
                             : 'No hay productos en esta orden'
                     }
                 >
