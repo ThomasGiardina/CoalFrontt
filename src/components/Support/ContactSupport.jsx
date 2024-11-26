@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
-import { useForm, ValidationError } from '@formspree/react';
+import { useForm } from '@formspree/react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ContactSupport = () => {
     const [state, handleSubmitFormspree] = useForm("xdkodnov");
@@ -31,33 +32,29 @@ const ContactSupport = () => {
         setFieldValue('photos', files);
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values, { setSubmitting, resetForm }) => {
         handleSubmitFormspree(values);
-        setTimeout(() => {
-            setSubmitting(false);
-        }, 1000);
-    };
+        setSubmitting(false);
 
-    if (state.succeeded) {
-        return (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50">
-                <div className="bg-black bg-opacity-95 p-12 rounded-lg shadow-lg text-center">
-                    <h1 className="text-4xl font-bold text-green-500 mb-4">
-                        ¡Tu problema ha sido registrado correctamente!
-                    </h1>
-                    <p className="text-gray-700 mb-8 text-xl">
-                        Te responderemos cuanto antes. ¡Muchas gracias!
-                    </p>
-                    <button
-                        className="btn btn-primary text-xl px-8 py-4"
-                        onClick={() => navigate('/store')}
-                    >
-                        Cerrar
-                    </button>
-                </div>
-            </div>
-        );
-    }
+        if (state.succeeded) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Mensaje enviado!',
+                text: 'Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto pronto.',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                background: '#1D1F23',
+                customClass: {
+                    popup: 'custom-toast',
+                    title: 'text-primary',
+                    confirmButton: 'btn-primary',
+                },
+            }).then(() => {
+                resetForm(); 
+                navigate('/store'); 
+            });
+        }
+    };
 
     return (
         <div id="contact-section" className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-2 space-y-12">
@@ -72,7 +69,7 @@ const ContactSupport = () => {
                 Formulario de Contacto
             </motion.h1>
             <motion.p
-                className="text-lg text-gray-700 mb-6 relative z-10"
+                className="text-lg text-white    mb-6 relative z-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 1 }}
@@ -128,7 +125,7 @@ const ContactSupport = () => {
                                 type="file"
                                 name="photos"
                                 multiple
-                                className="input input-bordered w-full file-input file-input-bordered file-input-primary"
+                                className="file-input file-input-bordered w-full"
                                 onChange={(event) => handleFileChange(event, setFieldValue)}
                                 ref={fileInputRef}
                             />
