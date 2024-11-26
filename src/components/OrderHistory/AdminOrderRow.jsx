@@ -183,13 +183,15 @@ const AdminOrderRow = ({
                         order.productosAdquiridos?.length
                             ? order.productosAdquiridos
                                 .map((item) => `${item.titulo} x${item.cantidad}`)
-                                .join('\n')
+                                .join(' ; ')
                             : 'No hay productos en esta orden'
                     }
                 >
                     {order.cantidadArticulos} {order.cantidadArticulos > 1 ? 'artículos' : 'artículo'}
                 </div>
+
             </td>
+
             <td className="text-center">
                 <Badges type="delivery" value={order.tipoEntrega} />
             </td>
