@@ -5,14 +5,14 @@ import { useSelector } from 'react-redux';
 
 const ChangePassword = () => {
     const [resetInputs, setResetInputs] = useState(false);
-    const token = useSelector((state) => state.auth.token); // Obtener token desde Redux
+    const token = useSelector((state) => state.auth.token);
 
     const handlePasswordChange = (currentPassword, newPassword) => {
         fetch('http://localhost:4002/api/usuario/cambiar-contrasena', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer ${token}` // Obtener el token desde Redux
+                'Authorization': `Bearer ${token}`
             },
             body: new URLSearchParams({
                 contraseñaActual: currentPassword,
@@ -30,7 +30,7 @@ const ChangePassword = () => {
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
                     setResetInputs(true);
-                    // Eliminar setTimeout y reiniciar directamente el estado
+
                     setResetInputs(false);
                 });
             } else {
