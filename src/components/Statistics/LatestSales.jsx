@@ -48,7 +48,7 @@ const LatestSales = () => {
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-white mb-5">Últimos Pedidos Confirmados</h2>
                 <Link to="/AdminOrderHistory">
-                    <button className="btn">Ver Pedidos</button>
+                    <button className="btn bg-primary"><p className='text-white'>Ver Pedidos</p></button>
                 </Link>
             </div>
             <table className="min-w-full text-left text-lg text-gray-600">

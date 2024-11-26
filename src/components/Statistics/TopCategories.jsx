@@ -90,11 +90,12 @@ const TopCategories = () => {
                 display: false,
             },
             tooltip: {
+                enabled: true,
                 callbacks: {
                     label: (context) => {
                         const label = context.label || '';
                         const value = context.raw || 0;
-                        return `${label}: ${value} ventas`; // Personalizar el tooltip
+                        return `${label}: ${value} ventas`; 
                     },
                 },
             },
