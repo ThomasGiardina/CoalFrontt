@@ -219,14 +219,14 @@ const OrderTable = () => {
                             className={`tab tab-bordered ${activeTab === 'Todas' ? 'tab-active text-primary' : ''}`}
                             onClick={() => setActiveTab('Todas')}
                         >
-                            Todas
+                            Todos
                         </a>
                         <a
                             role="tab"
                             className={`tab tab-bordered ${activeTab === 'Completos' ? 'tab-active text-primary' : ''}`}
                             onClick={() => setActiveTab('Completos')}
                         >
-                            Completos
+                            Confirmados
                         </a>
                         <a
                             role="tab"
