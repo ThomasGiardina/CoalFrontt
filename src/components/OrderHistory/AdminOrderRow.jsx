@@ -1,18 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import Badges from './Badges';
 import { useSelector } from "react-redux";
-import 'react-datepicker/dist/react-datepicker.css';
 import Swal from "sweetalert2";
 
 
 const AdminOrderRow = ({ 
     order, 
-    isSelecting, 
+    isSelecting,
+    isRowSelected, 
     menuOpenId, 
     setMenuOpenId, 
     onSendMessage, 
     onCancel, 
-    onConfirm 
+    onConfirm,
+    handleSelectRow
 }) => {
     const rowRef = useRef(null);
     const token = useSelector((state) => state.auth.token);
@@ -154,7 +155,7 @@ const AdminOrderRow = ({
                     <input
                         type="checkbox"
                         className="checkbox checkbox-primary"
-                        checked={isRowSelected(order.id)}
+                        checked={isRowSelected(order.id)} 
                         onChange={() => handleSelectRow(order.id)}
                         onClick={(e) => e.stopPropagation()}
                     />
