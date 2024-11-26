@@ -32,7 +32,7 @@ const ContainerLogin = () => {
                     <DivLogin />
                     <BotonesLinksLogin />
                     <div className="flex justify-center mt-5 mb-5">
-                        <a>¿No tienes cuenta? <Link to="/Register" style={{ color: "#1E90FF" }}>Registrate</Link></a>
+                        <p>¿No tienes cuenta? <Link to="/Register" style={{ color: "#1E90FF" }}>Registrate</Link></p>
                     </div>
                 </div>
             </div>
