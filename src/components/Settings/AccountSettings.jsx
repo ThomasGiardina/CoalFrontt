@@ -7,7 +7,7 @@ import { logout } from "../../redux/slices/authSlice";
 
 const AccountSettings = () => {
     const dispatch = useDispatch();
-    const token = useSelector((state) => state.auth.token); // Obtener el token desde Redux
+    const token = useSelector((state) => state.auth.token); 
     const [formData, setFormData] = useState({
         id: "",
         username: "",
@@ -19,7 +19,7 @@ const AccountSettings = () => {
     const [originalEmail, setOriginalEmail] = useState("");
 
     useEffect(() => {
-        if (!token) return; // Si no hay token, no hacer nada
+        if (!token) return; 
 
         const fetchUserData = async () => {
             try {
@@ -36,7 +36,6 @@ const AccountSettings = () => {
                 }
 
                 const userData = await response.json();
-                console.log("Username obtenido:", userData.username);
 
                 setFormData({
                     id: userData.id,

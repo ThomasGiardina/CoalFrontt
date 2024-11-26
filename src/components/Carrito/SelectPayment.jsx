@@ -78,7 +78,6 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             if (selectedCardDetails) {
                 setPaymentType(selectedCardDetails.tipoPago);  
                 dispatch(setMetodoDePago(selectedCardDetails.tipoPago));
-                console.log("Tipo de pago seleccionado:", selectedCardDetails.tipoPago);
             }
         }
     };
@@ -99,7 +98,6 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             });
     
             if (response.ok) {
-                console.log('Método de pago guardado exitosamente.');
                 Swal.fire({
                     title: "¡Éxito!",
                     text: "La tarjeta fue creada con éxito.",
@@ -130,7 +128,6 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     
 
     const handleSaveNewCard = async (newCardData) => {
-        console.log("Guardando nueva tarjeta:", newCardData);
         await handleSaveMetodoPago(newCardData); 
         setIsModalOpen(false); 
     };

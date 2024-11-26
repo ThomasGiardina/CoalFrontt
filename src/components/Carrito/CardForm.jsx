@@ -13,10 +13,8 @@ const CardForm = ({ formValues, handleInputChange, cardType, handleCardTypeChang
             });
     
             if (response.ok) {
-                const savedCard = await response.json(); // Obtén la tarjeta guardada, incluyendo su ID
-                console.log("Tarjeta guardada con éxito:", savedCard);
+                const savedCard = await response.json(); 
     
-                // Actualiza el metodoDePagoId con el ID de la nueva tarjeta
                 dispatch(setMetodoDePagoId(savedCard.id));
     
                 Swal.fire("¡Éxito!", "La tarjeta fue creada con éxito.", "success");

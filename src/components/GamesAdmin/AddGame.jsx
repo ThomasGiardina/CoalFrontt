@@ -104,7 +104,6 @@ const AddGameButton = ({ addGame }) => {
             }
     
             const data = await response.json();
-            console.log('Videojuego creado: ', data);
     
             addGame(data);
             handleCloseModal();

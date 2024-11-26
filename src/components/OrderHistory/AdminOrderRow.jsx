@@ -57,7 +57,6 @@ const AdminOrderRow = ({
     
             if (response.ok) {
                 const updatedPedido = await response.json();
-                console.log(`Pedido actualizado a ${newStatus}:`, updatedPedido);
                 onConfirm && onConfirm(updatedPedido);
             } else {
                 console.error(`Error al cambiar el estado a ${newStatus}:`, response.statusText);

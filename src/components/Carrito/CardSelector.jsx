@@ -9,7 +9,6 @@ const CardSelector = ({ cards, selectedCard, handleCardChange }) => {
 
     const handleCardSelection = (e) => {
         const selectedCardId = e.target.value;
-        console.log("Tarjeta seleccionada:", selectedCardId);
         
         if (selectedCardId === "new") {
             setIsModalOpen(true); 

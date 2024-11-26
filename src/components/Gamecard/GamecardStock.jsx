@@ -65,7 +65,6 @@ const GameCardStock = ({ game, updateGame, removeGame }) => {
             }
     
             removeGame(game.id);
-            console.log('Juego eliminado correctamente');
         } catch (error) {
             console.error('Error al eliminar el juego:', error);
             alert(`No se pudo eliminar el juego: ${error.message}`);

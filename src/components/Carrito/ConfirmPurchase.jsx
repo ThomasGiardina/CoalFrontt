@@ -62,10 +62,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                 precio: item.precio
             }))
         };
-
-        console.log(requestData)
         
-    
         try {
             const response = await fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
                 method: "POST",

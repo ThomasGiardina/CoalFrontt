@@ -91,7 +91,6 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
             }
     
             const data = await response.json();
-            console.log('Videojuego actualizado: ', data);
     
             updateGame(data);
             closeModal();
