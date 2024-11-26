@@ -47,7 +47,7 @@ const VerCarrito = ({ onContinue }) => {
                 {cartItems && cartItems.length > 0 ? (
                     cartItems.map((item) => (
                         <GamecardCart
-                            key={item.id}
+                            key={`${item.id}-${item.cantidad}`}
                             item={item}
                             onUpdateQuantity={handleUpdateQuantity}
                             onDeleteItem={handleDeleteItem}

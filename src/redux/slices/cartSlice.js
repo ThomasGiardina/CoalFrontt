@@ -82,31 +82,23 @@ export const updateShippingAddress = createAsyncThunk(
 export const deleteItemFromCarrito = createAsyncThunk(
     'cart/deleteItemFromCarrito',
     async (itemId, { getState, dispatch, rejectWithValue }) => {
-        const { auth } = getState();
+        const { auth, cart } = getState();
         const token = auth.token;
+        const carritoId = cart.carritoId;
 
         if (!token) {
             return rejectWithValue('Token no disponible.');
         }
 
         try {
-            const response = await fetch(`http://localhost:4002/carritos/items/${itemId}`, {
+            const response = await fetch(`http://localhost:4002/carritos/${carritoId}/items/${itemId}`, {
                 method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             if (!response.ok) throw new Error('Error al eliminar el ítem del carrito.');
-
-            const updatedCartResponse = await fetch('http://localhost:4002/carritos/usuarios/carrito', {
-                method: 'GET',
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (!updatedCartResponse.ok) throw new Error('Error al obtener el carrito actualizado.');
-
-            const updatedCartData = await updatedCartResponse.json();
-
-            dispatch(setCartItems(updatedCartData.items || []));
 
             return itemId;
         } catch (error) {
@@ -114,6 +106,7 @@ export const deleteItemFromCarrito = createAsyncThunk(
         }
     }
 );
+
 
 export const updateCartItemAsync = createAsyncThunk(
     'cart/updateCartItem',
@@ -234,7 +227,6 @@ const cartSlice = createSlice({
             .addCase(addItemToCarrito.fulfilled, (state, action) => {
                 state.loading = false;
             
-                // Actualiza localmente el carrito en lugar de hacer un fetch adicional
                 const existingItemIndex = state.cartItems.findIndex(
                     (item) => item.id === action.payload.id
                 );
@@ -261,6 +253,17 @@ const cartSlice = createSlice({
             })
             .addCase(updateCartItemAsync.rejected, (state, action) => {
                 state.error = action.payload || 'Error al actualizar la cantidad.';
+            })
+            .addCase(deleteItemFromCarrito.fulfilled, (state, action) => {
+                const itemId = action.payload; 
+    
+                state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
+    
+                state.cantidadItems = state.cartItems.length;
+            })
+            .addCase(deleteItemFromCarrito.rejected, (state, action) => {
+                console.error("Error al eliminar el ítem:", action.payload);
+                state.error = action.payload || 'Error al eliminar el ítem.';
             });
     },
 });
