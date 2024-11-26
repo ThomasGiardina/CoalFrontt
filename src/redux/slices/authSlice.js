@@ -40,7 +40,6 @@ export const fetchUserCards = createAsyncThunk(
     'auth/fetchUserCards',
     async (_, { getState, rejectWithValue }) => {
         const token = getState().auth.token;
-        console.log('Token usado para fetchUserCards:', token);
         if (!token) {
             console.error('Token no disponible');
             return rejectWithValue('Token no disponible');
@@ -56,7 +55,6 @@ export const fetchUserCards = createAsyncThunk(
                 throw new Error('Error al obtener las tarjetas');
             }
             const data = await response.json();
-            console.log('Tarjetas obtenidas:', data);
             return data;
         } catch (error) {
             console.error('Error en fetchUserCards:', error.message);
