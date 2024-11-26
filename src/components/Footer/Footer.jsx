@@ -1,10 +1,12 @@
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
     return (
         <>
         <footer className="text-base-content">
             <div className="footer footer-center p-10 bg-background">
                 <nav className="grid grid-flow-col gap-6">
-                    <a className="btn btn-ghost btn-sm btn-circle">
+                    <a target='_blank' href='https://github.com/ThomasGiardina/CoalFrontt' className="btn btn-ghost btn-sm btn-circle">
                         <i className="fa-brands fa-github text-2xl"></i>
                     </a>
                     <a className="btn btn-ghost btn-sm btn-circle">
@@ -19,11 +21,11 @@ const Footer = () => {
                 </nav>
                 <nav>
                     <div className="flex flex-wrap justify-center gap-y-2 gap-x-6 text-lg">
-                        <a className="link link-hover">Contactanos</a>
+                        <Link to="/Support" className="link link-hover">Contactanos</Link>
                         <a className="link link-hover">Servicios</a>
                         <a className="link link-hover">Politicas de Privacidad</a>
                         <a className="link link-hover">Terminos y Condiciones</a>
-                        <a className="link link-hover">Acerca de Nosotros</a>
+                        <Link to="/About" className="link link-hover">Acerca de Nosotros</Link>
                     </div>
                 </nav>
             </div>
@@ -32,7 +34,7 @@ const Footer = () => {
                     <img alt="Logo" src="/logoCoalBlanco.png" className="w-8" />
                     <span>Coal</span>
                 </p>
-                <p>Copyright © 2024 - All rights reserved</p>
+                <p>Copyright © 2024 - Todos Los Derechos Reservados</p>
             </aside>
         </footer>
         </>
