@@ -107,7 +107,7 @@ const StoreNavbar = () => {
                             </Link>
                             {isAuthenticated && (
                                 <Link to="/Favorites" className="btn btn-ghost btn-sm">
-                                    <i className="fa-solid fa-star text-primary"></i>
+                                    <i className="fa-solid fa-heart text-primary"></i>
                                     Favoritos
                                 </Link>
                             )}

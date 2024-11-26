@@ -20,84 +20,84 @@ import Redirector from '../components/AppManagement/Redirector';
 import Favorites from './Favorites';
 import AdminRoute from '../components/AppManagement/AdminRoute';
 import UserRoute from '../components/AppManagement/UserRoute';
+import { Provider } from 'react-redux';
+import store from '../redux/store';
 
 function App() {
     return (
-        <Router>
-            <ScrollToTop />
-            <StoreNavbar />
-            <Redirector /> 
-            <Routes>
-                <Route path="/" element={<Homepage />} />
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/Store" element={<Store />} />
-                <Route path="/Details/:id" element={<Details />} />
-                <Route path="/About" element={<About />} />
-                <Route path="/Support" element={<Support />} />
-
-                {/* USER */}
-                <Route
-                    path="/Cart"
-                    element={
-                        <UserRoute>
-                            <Cart />
-                        </UserRoute>
-                    }
-                />
-                <Route
-                    path="/Settings"
-                    element={
-                        <UserRoute>
-                            <Settings />
-                        </UserRoute>
-                    }
-                />
-                <Route
-                    path="/UserOrderHistory"
-                    element={
-                        <UserRoute>
-                            <UserOrderHistory />
-                        </UserRoute>
-                    }
-                />
-                <Route 
-                    path="/Favorites" 
-                    element={
-                        <UserRoute>
-                            <Favorites />
-                        </UserRoute>
-                    } 
-                />
-
-                {/* ADMIN */}
-                <Route
-                    path="/GamesAdmin"
-                    element={
-                        <AdminRoute>
-                            <GamesAdmin />
-                        </AdminRoute>
-                    }
-                />
-                <Route
-                    path="/Statistics"
-                    element={
-                        <AdminRoute>
-                            <Statistics />
-                        </AdminRoute>
-                    }
-                />
-                <Route
-                    path="/AdminOrderHistory"
-                    element={
-                        <AdminRoute>
-                            <AdminOrderHistory />
-                        </AdminRoute>
-                    }
-                />
-            </Routes>
-            <Footer />
-        </Router>
+        <Provider store={store}>
+            <Router>
+                <ScrollToTop />
+                <StoreNavbar />
+                <Redirector /> 
+                <Routes>
+                    <Route path="/" element={<Homepage />} />
+                    <Route path="/Login" element={<Login />} />
+                    <Route path="/Register" element={<Register />} />
+                    <Route path="/Store" element={<Store />} />
+                    <Route path="/Details/:id" element={<Details />} />
+                    <Route path="/About" element={<About />} />
+                    <Route path="/Support" element={<Support />} />
+                    <Route
+                        path="/Cart"
+                        element={
+                            <UserRoute>
+                                <Cart />
+                            </UserRoute>
+                        }
+                    />
+                    <Route
+                        path="/Settings"
+                        element={
+                            <UserRoute>
+                                <Settings />
+                            </UserRoute>
+                        }
+                    />
+                    <Route
+                        path="/UserOrderHistory"
+                        element={
+                            <UserRoute>
+                                <UserOrderHistory />
+                            </UserRoute>
+                        }
+                    />
+                    <Route 
+                        path="/Favorites" 
+                        element={
+                            <UserRoute>
+                                <Favorites />
+                            </UserRoute>
+                        } 
+                    />
+                    <Route
+                        path="/GamesAdmin"
+                        element={
+                            <AdminRoute>
+                                <GamesAdmin />
+                            </AdminRoute>
+                        }
+                    />
+                    <Route
+                        path="/Statistics"
+                        element={
+                            <AdminRoute>
+                                <Statistics />
+                            </AdminRoute>
+                        }
+                    />
+                    <Route
+                        path="/AdminOrderHistory"
+                        element={
+                            <AdminRoute>
+                                <AdminOrderHistory />
+                            </AdminRoute>
+                        }
+                    />
+                </Routes>
+                <Footer />
+            </Router>
+        </Provider>
     );
 }
 
