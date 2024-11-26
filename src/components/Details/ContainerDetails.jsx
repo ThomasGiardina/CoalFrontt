@@ -82,9 +82,9 @@ const ContainerDetails = () => {
                         alt={gameDetails.titulo}
                         className="w-[300px] h-[400px] object-cover shadow-lg"
                     />
-                    <p className="mt-4 text-white text-xl break-words">
+                    <div className="mt-4 text-white text-xl break-words">
                         <ReactMarkdown>{`**${gameDetails.titulo}**`}</ReactMarkdown>
-                    </p>
+                    </div>
 
                     <div className="flex items-center mt-3 flex-wrap">
                         <p className="mr-3 text-sm text-gray-300">Reseña General:</p>
