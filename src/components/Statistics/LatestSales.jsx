@@ -55,7 +55,7 @@ const LatestSales = () => {
                 <thead className="border-b text-white">
                     <tr>
                         <th className="py-3 px-4">#</th>
-                        <th className="py-3 px-4">Producto</th>
+                        <th className="py-3 px-4">Productos</th>
                         <th className="py-3 px-4">Fecha</th>
                         <th className="py-3 px-4">Estado</th>
                         <th className="py-3 px-4">Precio Total</th>
@@ -66,9 +66,15 @@ const LatestSales = () => {
                         <tr key={sale.id} className="border-b text-lg">
                             <td className="py-4 px-4 text-gray-300">{index + 1}</td>
                             <td className="py-4 px-4 text-gray-300">
-                                {sale.items.slice(0, 3).map(item => (
-                                    <p key={item.titulo}>{item.titulo} x{item.cantidad}</p>
-                                ))}
+                                <div className="flex flex-col justify-center items-start min-h-[80px]">
+                                    {sale.items.slice(0, 3).map(item => (
+                                        <p key={item.titulo}>{item.titulo} x{item.cantidad}</p>
+                                    ))}
+                                    {sale.items.length < 3 &&
+                                        Array.from({ length: 3 - sale.items.length }).map((_, i) => (
+                                            <p key={`empty-${i}`}>&nbsp;</p>
+                                        ))}
+                                </div>
                             </td>
                             <td className="py-4 px-4 text-gray-300">
                                 {new Date(sale.fecha).toLocaleDateString()}
@@ -81,7 +87,6 @@ const LatestSales = () => {
             </table>
         </div>
     );
-    
 };
 
 export default LatestSales;
