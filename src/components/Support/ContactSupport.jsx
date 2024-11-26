@@ -69,7 +69,7 @@ const ContactSupport = () => {
                 Formulario de Contacto
             </motion.h1>
             <motion.p
-                className="text-lg text-white mb-6 relative z-10"
+                className="text-lg text-white    mb-6 relative z-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 1 }}
