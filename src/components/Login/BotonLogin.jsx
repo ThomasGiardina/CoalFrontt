@@ -21,7 +21,6 @@ const BotonLogin = ({ email, password }) => {
             }
 
             const data = await response.json();
-            console.log('Inicio de sesión exitoso:', data);
 
             const profileImageResponse = await fetch(`http://localhost:4002/api/usuario/imagen/${data.user_id}`, {
                 method: 'GET',
@@ -42,8 +41,6 @@ const BotonLogin = ({ email, password }) => {
                 userId: data.user_id,
                 profileImage: profileImage,
             }));
-
-            console.log('Token guardado en Redux:', data.access_token);
 
             if (data.role === 'ADMIN') {
                 navigate('/GamesAdmin');
