@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';

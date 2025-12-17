@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 
 const ITEMS_PER_PAGE = 6; 

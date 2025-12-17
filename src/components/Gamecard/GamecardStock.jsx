@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { FaXbox, FaPlaystation, FaTrash } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const SearchBar = ({ placeholder, onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');

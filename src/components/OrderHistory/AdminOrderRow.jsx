@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Badges from './Badges';
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";

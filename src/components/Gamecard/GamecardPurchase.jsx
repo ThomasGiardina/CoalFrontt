@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 
 const GamecardPurchase = ({ game }) => {

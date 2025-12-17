@@ -1,4 +1,3 @@
-import React from 'react';
 import Badges from './Badges';
 
 const UserOrderRow = ({ order }) => {

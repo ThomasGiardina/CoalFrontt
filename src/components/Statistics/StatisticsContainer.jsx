@@ -1,4 +1,3 @@
-import React from 'react';
 import TotalRevenue from './TotalRevenue';
 import TopProducts from './TopProducts';
 import TopCategories from './TopCategories';

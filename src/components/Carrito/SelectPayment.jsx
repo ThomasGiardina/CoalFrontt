@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateShippingAddress, setMetodoDePago, setDireccionEnvio, setRetiroEnLocal } from "../../redux/slices/cartSlice";
 import { fetchUserCards } from "../../redux/slices/authSlice"; 
-import CardForm from './CardForm';
 import AddressForm from './AddressForm';
 import ModalPayment from "../Settings/ModalPayment";
 import Swal from "sweetalert2";

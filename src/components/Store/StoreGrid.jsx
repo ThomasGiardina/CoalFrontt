@@ -1,5 +1,5 @@
 // src/components/Store/StoreGrid.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 import Pagination from '../Pagination/Pagination';
 import Gamefilter from './gamefilter';

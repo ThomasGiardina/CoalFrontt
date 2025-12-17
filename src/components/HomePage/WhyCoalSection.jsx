@@ -1,4 +1,3 @@
-import React from 'react';
 import sponsor1Image from '../../assets/sponsor1.jpg';
 import sponsor2Image from '../../assets/sponsor2.jpg';
 import sponsor3Image from '../../assets/sponsor3.jpg';

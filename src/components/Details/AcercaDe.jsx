@@ -1,5 +1,5 @@
-import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import PropTypes from 'prop-types';
 
 const AcercaDe = ({ descripcion }) => {
     return (
@@ -12,6 +12,10 @@ const AcercaDe = ({ descripcion }) => {
         </div>
     )
 
-}
+};
+
+AcercaDe.propTypes = {
+    descripcion: PropTypes.string,
+};
 
 export default AcercaDe;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InputsNewPassword from './InputsNewPassword';
 import Swal from 'sweetalert2';
 import Modal from 'react-modal';

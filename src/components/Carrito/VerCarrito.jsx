@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCarrito, setCartItems, updateCartItem, removeCartItem } from "../../redux/slices/cartSlice"; 
 import GamecardCart from "../Gamecard/GamecardCart";

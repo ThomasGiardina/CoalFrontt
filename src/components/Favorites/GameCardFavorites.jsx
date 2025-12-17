@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";

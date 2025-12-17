@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ModalPayment from './ModalPayment';
 import Swal from 'sweetalert2';  
 import 'sweetalert2/dist/sweetalert2.min.css';  

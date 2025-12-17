@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import xboxImage from '../../assets/xbox.jpg';
 import playstationImage from '../../assets/playstation.jpg';

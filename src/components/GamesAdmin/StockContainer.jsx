@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import GameCardStock from "../Gamecard/GamecardStock";
 import Pagination from "../Pagination/Pagination";
 import AddGameButton from "./AddGame";
