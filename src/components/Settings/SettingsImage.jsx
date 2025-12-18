@@ -96,20 +96,20 @@ const SettingsImage = () => {
     };
 
     return (
-        <div className="relative h-[200px] w-[650px] rounded-xl flex flex-col items-center justify-center bg-neutral">
+        <div className="relative min-h-[150px] sm:h-[180px] lg:h-[200px] w-full max-w-[650px] rounded-xl flex flex-col items-center justify-center bg-neutral p-4 sm:p-6">
             <div className="relative">
                 <img
                     alt="Imagen de usuario"
                     src={profileImage || "https://www.vecteezy.com/free-vector/default-user"}
-                    className="w-24 h-24 mb-3 rounded-full cursor-pointer"
+                    className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mb-2 sm:mb-3 rounded-full cursor-pointer object-cover"
                     onClick={() => document.getElementById("imageInput").click()}
                 />
                 <i
-                    className="fa-solid fa-pen text-white cursor-pointer absolute bottom-1 right-1 bg-gray-800 p-1 rounded-full"
+                    className="fa-solid fa-pen text-white cursor-pointer absolute bottom-0 sm:bottom-1 right-0 sm:right-1 bg-gray-800 p-1 sm:p-1.5 rounded-full text-xs sm:text-sm"
                     onClick={() => document.getElementById("imageInput").click()}
                 ></i>
             </div>
-            <p className="font-bold text-white mt-3">{username}</p>
+            <p className="font-bold text-white mt-2 sm:mt-3 text-sm sm:text-base lg:text-lg break-words text-center px-2">{username}</p>
             <input
                 type="file"
                 id="imageInput"

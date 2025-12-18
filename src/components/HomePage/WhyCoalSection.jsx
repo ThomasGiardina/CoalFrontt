@@ -29,24 +29,37 @@ const WhyCoalSection = () => {
     ];
 
     return (
-        <div className="w-full flex flex-col items-center p-6 rounded-lg mt-20 border border-gray-300">
-            <h2 className="text-3xl font-bold text-black mb-6">¿Por qué Coal?</h2>
-            <div className="w-full flex flex-wrap justify-center">
+        <div className="w-full py-12 sm:py-16 lg:py-20">
+            {/* ¿Por qué Coal? Section */}
+            <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">¿Por qué Coal?</h2>
+                <div className="w-20 h-1 bg-orange-500 mx-auto"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16">
                 {features.map((feature, index) => (
-                    <div key={index} className="w-full md:w-1/2 lg:w-1/4 p-4">
-                        <div className="bg-orange-500 p-6 rounded-lg text-center">    
-                            <h3 className="text-xl font-bold text-black mb-2">{feature.title}</h3>
-                            <p className="text-black">{feature.description}</p>
+                    <div key={index} className="group">
+                        <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-6 sm:p-8 rounded-xl text-center h-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">    
+                            <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">{feature.title}</h3>
+                            <p className="text-white text-sm sm:text-base leading-relaxed">{feature.description}</p>
                         </div>
                     </div>
                 ))}
             </div>
-            <div className="w-full mt-10 text-center">
-                <h3 className="text-2xl font-bold text-black mb-4">Confían en nosotros</h3>
-                <div className="w-full flex justify-center mb-20">
+
+            {/* Sponsors Section */}
+            <div className="mt-12 sm:mt-16 text-center">
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-8 sm:mb-12">Confían en nosotros</h3>
+                <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto">
                     {sponsors.map((sponsor, index) => (
-                        <div key={index} className="console-box w-40 h-40 mx-12">
-                            <img src={sponsor.logo} alt={sponsor.name} className="w-full h-full object-cover rounded-lg transition-transform transform hover:scale-110" />
+                        <div key={index} className="group">
+                            <div className="bg-white/10 backdrop-blur-sm p-3 sm:p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 aspect-square flex items-center justify-center">
+                                <img 
+                                    src={sponsor.logo} 
+                                    alt={sponsor.name} 
+                                    className="w-full h-full object-contain rounded-lg transition-transform transform group-hover:scale-110" 
+                                />
+                            </div>
                         </div>
                     ))}
                 </div>

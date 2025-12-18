@@ -74,37 +74,37 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
     };
 
     return (
-        <div className="text-white p-8 rounded-lg w-[1400px] mx-auto">
-            <h1 className="text-4xl font-bold mb-6 text-center">¡Gracias por tu compra!</h1>
+        <div className="text-white p-4 sm:p-6 lg:p-8 rounded-lg w-full max-w-[1400px] mx-auto">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-center">¡Gracias por tu compra!</h1>
 
             {!showTraditionalInvoice && (
                 <>
-                    <div className="bg-neutral p-6 rounded-lg shadow-md mb-8">
-                        <h2 className="text-2xl font-semibold mb-4">Factura de Pedido</h2>
-                        <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Número de Pedido:</span>
-                            <span className="text-white">{orderId}</span>
+                    <div className="bg-neutral p-4 sm:p-6 rounded-lg shadow-md mb-6 sm:mb-8">
+                        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Factura de Pedido</h2>
+                        <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
+                            <span className="text-gray-400 text-sm sm:text-base">Número de Pedido:</span>
+                            <span className="text-white text-sm sm:text-base break-all">{orderId}</span>
                         </div>
-                        <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Fecha:</span>
-                            <span className="text-white">{orderDate.toLocaleDateString()}</span>
+                        <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
+                            <span className="text-gray-400 text-sm sm:text-base">Fecha:</span>
+                            <span className="text-white text-sm sm:text-base">{orderDate.toLocaleDateString()}</span>
                         </div>
-                        <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Método de Pago:</span>
-                            <span className="text-green-400">{payment}</span> 
+                        <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
+                            <span className="text-gray-400 text-sm sm:text-base">Método de Pago:</span>
+                            <span className="text-green-400 text-sm sm:text-base">{payment}</span> 
                         </div>
                         {shippingMethod === "envio" && parsedShippingAddress && (
-                            <div className="flex justify-between mb-3">
-                                <span className="text-gray-400">Dirección de Envío:</span>
-                                <span className="text-white">
+                            <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
+                                <span className="text-gray-400 text-sm sm:text-base">Dirección de Envío:</span>
+                                <span className="text-white text-sm sm:text-base break-words text-right sm:text-left">
                                     {`${parsedShippingAddress.direccion || ""}, ${parsedShippingAddress.localidad || ""}, ${parsedShippingAddress.codigoPostal || ""}, Tel: ${parsedShippingAddress.telefono || ""}`}
                                 </span>
                             </div>
                         )}
                     </div>
 
-                    <div className="bg-neutral p-6 rounded-lg shadow-md mb-8">
-                        <h2 className="text-2xl font-semibold mb-4">Resumen de Compra</h2>
+                    <div className="bg-neutral p-4 sm:p-6 rounded-lg shadow-md mb-6 sm:mb-8">
+                        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Resumen de Compra</h2>
                         <div className="mb-6">
                             {cartItems.map((item) => (
                                 <div key={item.id} className="flex justify-between mb-3">
@@ -155,22 +155,22 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
                 </div>
             )}
 
-            <div className="mt-8 text-center">
+            <div className="mt-6 sm:mt-8 text-center flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <button 
-                    className="btn bg-primary text-white mt-6 py-2 px-4 rounded-md"
+                    className="btn bg-primary text-white py-2 px-4 rounded-md text-sm sm:text-base"
                     onClick={() => setShowTraditionalInvoice(!showTraditionalInvoice)}
                 >
                     {showTraditionalInvoice ? "Volver a Resumen" : "Ver Factura"}
                 </button>
                 {showTraditionalInvoice && (
                     <button 
-                        className="btn bg-neutral text-white mt-6 py-2 px-4 rounded-md ml-4"
+                        className="btn bg-neutral text-white py-2 px-4 rounded-md text-sm sm:text-base"
                         onClick={downloadInvoiceAsPDF} 
                     >
                         Descargar Factura
                     </button>
                 )}
-                <Link to="/Store" className="btn bg-primary text-white mt-6 py-2 px-4 ml-3 rounded-md">
+                <Link to="/Store" className="btn bg-primary text-white py-2 px-4 rounded-md text-sm sm:text-base">
                     Volver a la Tienda
                 </Link>
             </div>

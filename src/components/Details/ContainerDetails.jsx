@@ -66,8 +66,8 @@ const ContainerDetails = () => {
     const containerHeight = rightContentRef.current ? rightContentRef.current.offsetHeight : "auto";
 
     return (
-        <div className="min-h-screen w-10/12 flex flex-col items-center bg-background">
-            <div className="w-full max-w-[92%] flex flex-col lg:flex-row justify-between mt-10 gap-10">
+        <div className="min-h-screen w-full flex flex-col items-center bg-background px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-[92%] flex flex-col lg:flex-row justify-between mt-6 sm:mt-10 gap-6 sm:gap-10">
                 <div className="lg:w-[75%] w-full h-auto">
                     <CarrouselDetails
                         containerHeight="700px" 
@@ -76,43 +76,43 @@ const ContainerDetails = () => {
                         carruselImagen3={gameDetails.carruselImagen3}
                     />
                 </div>
-                <div className="w-[330px] mt-10 lg:mt-0 px-4" ref={rightContentRef}> 
+                <div className="w-full lg:w-[330px] mt-6 sm:mt-10 lg:mt-0 px-2 sm:px-4" ref={rightContentRef}> 
                     <img
                         src={`data:image/jpeg;base64,${gameDetails.foto}`}
                         alt={gameDetails.titulo}
-                        className="w-[300px] h-[400px] object-cover shadow-lg"
+                        className="w-full max-w-[300px] h-auto sm:h-[400px] object-cover shadow-lg mx-auto lg:mx-0"
                     />
-                    <div className="mt-4 text-white text-xl break-words">
+                    <div className="mt-4 text-white text-lg sm:text-xl break-words">
                         <ReactMarkdown>{`**${gameDetails.titulo}**`}</ReactMarkdown>
                     </div>
 
                     <div className="flex items-center mt-3 flex-wrap">
-                        <p className="mr-3 text-sm text-gray-300">Reseña General:</p>
+                        <p className="mr-3 text-xs sm:text-sm text-gray-300">Reseña General:</p>
                         <Calificacion />
                     </div>
 
                     <div className="flex items-center mt-3 flex-wrap">
-                        <p className="mr-3 text-sm text-gray-300">Fecha de Lanzamiento:</p>
-                        <p className="text-white">{gameDetails.fechaLanzamiento}</p>
+                        <p className="mr-3 text-xs sm:text-sm text-gray-300">Fecha de Lanzamiento:</p>
+                        <p className="text-white text-sm sm:text-base">{gameDetails.fechaLanzamiento}</p>
                     </div>
 
                     <div className="flex items-center mt-3 flex-wrap">
-                        <p className="mr-3 text-sm text-gray-300">Equipo Desarrollador:</p>
-                        <p className="text-white break-words">{gameDetails.desarrolladora}</p> 
+                        <p className="mr-3 text-xs sm:text-sm text-gray-300">Equipo Desarrollador:</p>
+                        <p className="text-white text-sm sm:text-base break-words">{gameDetails.desarrolladora}</p> 
                     </div>
 
                     <div className="mt-3">
-                        <p className="mr-3 text-sm text-gray-300">Categorías:</p>
+                        <p className="mr-3 text-xs sm:text-sm text-gray-300">Categorías:</p>
                         <div className="flex flex-wrap gap-2 mt-2">
                             {categories.map((category, index) => (
-                                <span key={index} className="badge badge-secondary break-words">
+                                <span key={index} className="badge badge-secondary break-words text-xs">
                                     {category}
                                 </span>
                             ))}
                         </div>
                     </div>
 
-                    <div className="flex mt-10">
+                    <div className="flex mt-6 sm:mt-10">
                         <ModalAgregarCarrito 
                             gameDetails={gameDetails} 
                             carritoId={carritoId} 
@@ -122,21 +122,21 @@ const ContainerDetails = () => {
                 </div>
             </div>
     
-            <div className="w-full max-w-[92%] mt-10">
+            <div className="w-full max-w-[92%] mt-6 sm:mt-10">
                 <DividerDetails />
             </div>
     
-            <div className="w-full max-w-[92%] mt-10">
-                <div className="rounded-md bg-neutral p-6  mx-auto">
+            <div className="w-full max-w-[92%] mt-6 sm:mt-10">
+                <div className="rounded-md bg-neutral p-4 sm:p-6 mx-auto">
                     <AcercaDe descripcion={gameDetails.descripcion} />
                 </div>
             </div>
     
-            <div className="w-full max-w-[92%] mt-5">
+            <div className="w-full max-w-[92%] mt-4 sm:mt-5">
                 <DividerDetails />
             </div>
 
-            <div className="w-full max-w-[92%] mt-5">
+            <div className="w-full max-w-[92%] mt-4 sm:mt-5">
                 <GameCarrousel gameId={gameDetails?.id} />
             </div>
         </div>

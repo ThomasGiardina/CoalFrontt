@@ -52,9 +52,9 @@ const ChangePassword = () => {
     };
 
     return (
-        <div className="h-[550px] w-[650px] rounded-xl flex flex-col mt-14 bg-neutral">
-            <h1 className="font-bold text-3xl ml-5 mt-5">Cambiar Contraseña</h1>
-            <p className="mt-5 ml-5">Aquí puedes establecer una nueva contraseña</p>
+        <div className="min-h-[550px] h-auto w-full max-w-[650px] rounded-xl flex flex-col mt-8 sm:mt-14 bg-neutral p-4 sm:p-6">
+            <h1 className="font-bold text-2xl sm:text-3xl mb-3 sm:mb-5">Cambiar Contraseña</h1>
+            <p className="text-sm sm:text-base mb-4 sm:mb-5">Aquí puedes establecer una nueva contraseña</p>
             <InputsNewPassword onPasswordChange={handlePasswordChange} resetInputs={resetInputs} />
         </div>
     );

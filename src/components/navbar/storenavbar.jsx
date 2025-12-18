@@ -57,64 +57,99 @@ const StoreNavbar = () => {
 
     return (
         <div>
-            <nav className="bg-background h-auto top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center">
-                <div className="flex items-center text-4xl">
+            <nav className="bg-background h-auto top-0 left-0 w-full z-50 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+                <div className="flex items-center text-2xl sm:text-3xl lg:text-4xl">
                     <Link 
                         to={!isAuthenticated ? "/" : role === 'ADMIN' ? "/GamesAdmin" : "/Store"} 
                         className="flex items-center"
                     >
-                        <img alt="Logo" src="/logoCoalBlanco.png" className="w-14" />
-                        <span className="ml-2 text-white font-bold">Coal</span>
+                        <img alt="Logo" src="/logoCoalBlanco.png" className="w-10 sm:w-12 lg:w-14" />
+                        <span className="ml-2 text-white font-bold hidden sm:inline">Coal</span>
                     </Link>
-                    {isAuthenticated && role === 'ADMIN' ? (
-                        <>
-                            <Link to="/GamesAdmin" className="btn btn-ghost btn-sm ml-8">
-                                <i className="fa-solid fa-gamepad text-primary"></i>
-                                Admin de Juegos
-                            </Link>
-                            <Link to="/Statistics" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-chart-bar text-primary"></i>
-                                Estadísticas
-                            </Link>
-                            <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fas fa-file-signature text-primary"></i>
-                                Pedidos
-                            </Link>
-                            <Link to="/Store" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-store text-primary"></i>
-                                Tienda
-                            </Link>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/Store" className="btn btn-ghost btn-sm ml-8">
-                                <i className="fa-solid fa-store text-primary"></i>
-                                Tienda
-                            </Link>
-                            {isAuthenticated && (
-                                <Link to="/UserOrderHistory" className="btn btn-ghost btn-sm">
-                                    <i className="fa-solid fas fa-file-contract text-primary"></i>
-                                    Pedidos
+                    {/* Desktop Menu */}
+                    <div className="hidden lg:flex items-center">
+                        {isAuthenticated && role === 'ADMIN' ? (
+                            <>
+                                <Link to="/GamesAdmin" className="btn btn-ghost btn-sm ml-4 lg:ml-8">
+                                    <i className="fa-solid fa-gamepad text-primary"></i>
+                                    <span className="hidden xl:inline">Admin de Juegos</span>
                                 </Link>
-                            )}
-                            <Link to="/About" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-info-circle text-primary"></i>
-                                Acerca de
-                            </Link>
-                            <Link to="/Support" className="btn btn-ghost btn-sm">
-                                <i className="fa-solid fa-headset text-primary"></i>
-                                Soporte
-                            </Link>
-                            {isAuthenticated && (
-                                <Link to="/Favorites" className="btn btn-ghost btn-sm">
-                                    <i className="fa-solid fa-heart text-primary"></i>
-                                    Favoritos
+                                <Link to="/Statistics" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fa-chart-bar text-primary"></i>
+                                    <span className="hidden xl:inline">Estadísticas</span>
                                 </Link>
-                            )}
-                        </>
-                    )}
+                                <Link to="/AdminOrderHistory" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fas fa-file-signature text-primary"></i>
+                                    <span className="hidden xl:inline">Pedidos</span>
+                                </Link>
+                                <Link to="/Store" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fa-store text-primary"></i>
+                                    <span className="hidden xl:inline">Tienda</span>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/Store" className="btn btn-ghost btn-sm ml-4 lg:ml-8">
+                                    <i className="fa-solid fa-store text-primary"></i>
+                                    <span className="hidden xl:inline">Tienda</span>
+                                </Link>
+                                {isAuthenticated && (
+                                    <Link to="/UserOrderHistory" className="btn btn-ghost btn-sm">
+                                        <i className="fa-solid fas fa-file-contract text-primary"></i>
+                                        <span className="hidden xl:inline">Pedidos</span>
+                                    </Link>
+                                )}
+                                <Link to="/About" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fa-info-circle text-primary"></i>
+                                    <span className="hidden xl:inline">Acerca de</span>
+                                </Link>
+                                <Link to="/Support" className="btn btn-ghost btn-sm">
+                                    <i className="fa-solid fa-headset text-primary"></i>
+                                    <span className="hidden xl:inline">Soporte</span>
+                                </Link>
+                                {isAuthenticated && (
+                                    <Link to="/Favorites" className="btn btn-ghost btn-sm">
+                                        <i className="fa-solid fa-heart text-primary"></i>
+                                        <span className="hidden xl:inline">Favoritos</span>
+                                    </Link>
+                                )}
+                            </>
+                        )}
+                    </div>
                 </div>
-                <div className="relative flex items-center gap-4">
+                {/* Mobile Menu Button */}
+                <div className="lg:hidden relative z-[60]">
+                    <div className="dropdown dropdown-end">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle relative z-[60]">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </div>
+                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[60] mt-3 w-52 p-2 shadow-lg">
+                            {isAuthenticated && role === 'ADMIN' ? (
+                                <>
+                                    <li><Link to="/GamesAdmin" className="text-white"><i className="fa-solid fa-gamepad text-primary"></i> Admin de Juegos</Link></li>
+                                    <li><Link to="/Statistics" className="text-white"><i className="fa-solid fa-chart-bar text-primary"></i> Estadísticas</Link></li>
+                                    <li><Link to="/AdminOrderHistory" className="text-white"><i className="fa-solid fas fa-file-signature text-primary"></i> Pedidos</Link></li>
+                                    <li><Link to="/Store" className="text-white"><i className="fa-solid fa-store text-primary"></i> Tienda</Link></li>
+                                </>
+                            ) : (
+                                <>
+                                    <li><Link to="/Store" className="text-white"><i className="fa-solid fa-store text-primary"></i> Tienda</Link></li>
+                                    {isAuthenticated && (
+                                        <li><Link to="/UserOrderHistory" className="text-white"><i className="fa-solid fas fa-file-contract text-primary"></i> Pedidos</Link></li>
+                                    )}
+                                    <li><Link to="/About" className="text-white"><i className="fa-solid fa-info-circle text-primary"></i> Acerca de</Link></li>
+                                    <li><Link to="/Support" className="text-white"><i className="fa-solid fa-headset text-primary"></i> Soporte</Link></li>
+                                    {isAuthenticated && (
+                                        <li><Link to="/Favorites" className="text-white"><i className="fa-solid fa-heart text-primary"></i> Favoritos</Link></li>
+                                    )}
+                                </>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+                <div className="relative flex items-center gap-2 sm:gap-4">
                     {isAuthenticated ? (
                         <>
                             {role !== 'ADMIN' && (
@@ -155,19 +190,19 @@ const StoreNavbar = () => {
                                 </div>
                             )}
                             {role === 'ADMIN' && (
-                                <span className="text-white text-2xl font-bold ml-4">ADMIN</span> 
+                                <span className="text-white text-lg sm:text-xl lg:text-2xl font-bold ml-2 sm:ml-4 hidden sm:inline">ADMIN</span> 
                             )}
                             <Profilepicture />
                         </>
                     ) : (
                         <>
-                            <Link to="/Register" className="btn btn-primary btn-md">
+                            <Link to="/Register" className="btn btn-primary btn-sm sm:btn-md">
                                 <i className="fa-solid fa-rocket"></i>
-                                Registrarse
+                                <span className="hidden sm:inline">Registrarse</span>
                             </Link>
-                            <Link to="/Login" className="btn btn-primary btn-md">
+                            <Link to="/Login" className="btn btn-primary btn-sm sm:btn-md">
                                 <i className="fa-solid fa-right-to-bracket"></i>
-                                Iniciar Sesión
+                                <span className="hidden sm:inline">Iniciar Sesión</span>
                             </Link>
                         </>
                     )}

@@ -57,11 +57,11 @@ const ContactSupport = () => {
     };
 
     return (
-        <div id="contact-section" className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-2 space-y-12">
+        <div id="contact-section" className="relative w-full flex flex-col items-center bg-background p-4 sm:p-6 lg:p-12 rounded-lg mt-2 space-y-6 sm:space-y-8 lg:space-y-12">
             <div className="absolute top-0 left-0 w-1/4 h-48 bg-accent rounded-br-full opacity-30 z-0"></div>
             <div className="absolute top-0 right-0 w-1/4 h-32 bg-primary rounded-bl-full opacity-40 z-0"></div>
             <motion.h1 
-                className="text-5xl font-bold text-primary mb-2 relative z-10"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-2 relative z-10 text-center px-4"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
@@ -69,7 +69,7 @@ const ContactSupport = () => {
                 Formulario de Contacto
             </motion.h1>
             <motion.p
-                className="text-lg text-white    mb-6 relative z-10"
+                className="text-base sm:text-lg text-white mb-4 sm:mb-6 relative z-10 text-center px-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 1 }}
@@ -82,7 +82,7 @@ const ContactSupport = () => {
                 onSubmit={handleSubmit}
             >
                 {({ isSubmitting, setFieldValue }) => (
-                    <Form className="w-full max-w-lg bg-background p-8 rounded-lg shadow-md relative z-10">
+                    <Form className="w-full max-w-lg bg-background p-4 sm:p-6 lg:p-8 rounded-lg shadow-md relative z-10 mx-4">
                         <div className="mb-4">
                             <label className="block text-gray-200 text-lg font-bold mb-2" htmlFor="name">
                                 Nombre y Apellido

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Storegrid from '../components/Store/StoreGrid';
 import Carrousel from '../components/Store/Carrousel';
 
@@ -17,7 +17,7 @@ const Store = () => {
     }, []);
 
     return (
-        <div>
+        <div className="w-full">
             <Carrousel/>
             <Storegrid games={games} />
         </div>

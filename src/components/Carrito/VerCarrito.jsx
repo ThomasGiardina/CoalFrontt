@@ -42,8 +42,8 @@ const VerCarrito = ({ onContinue }) => {
     };
 
     return (
-        <div className="flex justify-between h-screen">
-            <div className="w-[800px] mb-7">
+        <div className="flex flex-col lg:flex-row justify-between gap-6 min-h-screen">
+            <div className="w-full lg:w-[800px] mb-4 lg:mb-7">
                 {cartItems && cartItems.length > 0 ? (
                     cartItems.map((item) => (
                         <GamecardCart
@@ -54,26 +54,26 @@ const VerCarrito = ({ onContinue }) => {
                         />
                     ))
                 ) : (
-                    <p className="text-white">El carrito está vacío.</p>
+                    <p className="text-white text-center lg:text-left">El carrito está vacío.</p>
                 )}
             </div>
-            <div className="bg-neutral w-[500px] h-[300px] p-6 rounded-lg shadow-lg">
-                <h1 className="text-3xl font-semibold text-white mb-4 text-center">Confirmar Compra</h1>
+            <div className="bg-neutral w-full lg:w-[500px] h-auto lg:h-[300px] p-4 sm:p-6 rounded-lg shadow-lg sticky top-4 lg:sticky z-10">
+                <h1 className="text-2xl sm:text-3xl font-semibold text-white mb-4 text-center">Confirmar Compra</h1>
 
                 <div className="flex flex-col space-y-3 text-white">
                     <div className="flex justify-between">
-                        <h2 className="text-xl font-medium">Total Estimado:</h2>
-                        <p className="text-xl">${total.toFixed(2)}</p>
+                        <h2 className="text-base sm:text-lg lg:text-xl font-medium">Total Estimado:</h2>
+                        <p className="text-base sm:text-lg lg:text-xl">${total.toFixed(2)}</p>
                     </div>
                     <div className="flex justify-between">
-                        <h2 className="text-xl font-medium">Cantidad Total de Productos:</h2>
-                        <p className="text-xl">{totalItemsCount}</p>
+                        <h2 className="text-base sm:text-lg lg:text-xl font-medium">Cantidad Total:</h2>
+                        <p className="text-base sm:text-lg lg:text-xl">{totalItemsCount}</p>
                     </div>
                 </div>
 
-                <div className="mt-8 flex justify-center">
+                <div className="mt-6 sm:mt-8 flex justify-center">
                     <button
-                        className={`text-white font-semibold py-3 px-6 w-full rounded-md shadow-lg transition duration-200 
+                        className={`text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 w-full rounded-md shadow-lg transition duration-200 text-sm sm:text-base
                         ${cartItems.length === 0 ? "bg-gray-500 opacity-50 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"}`}
                         onClick={onContinue}
                         disabled={cartItems.length === 0}

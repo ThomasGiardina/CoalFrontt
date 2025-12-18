@@ -75,11 +75,11 @@ const PaymentSettings = () => {
 
     return (
         <>
-            <div className="h-[800px] w-[650px] rounded-xl flex flex-col bg-neutral">
-                <h1 className="flex items-start ml-5 mt-5 text-3xl text-white">Métodos de Pago</h1>
-                <p className="flex items-start ml-5 mt-5 text-white">Aquí puedes agregar y cambiar tus métodos de pago</p>
+            <div className="min-h-[800px] h-auto w-full max-w-[650px] rounded-xl flex flex-col bg-neutral p-4 sm:p-6">
+                <h1 className="flex items-start text-2xl sm:text-3xl text-white mb-3 sm:mb-5">Métodos de Pago</h1>
+                <p className="flex items-start text-sm sm:text-base text-white mb-4 sm:mb-5">Aquí puedes agregar y cambiar tus métodos de pago</p>
                 
-                <div className="flex flex-col justify-start mt-4 overflow-y-auto h-[555px] pt-5">
+                <div className="flex flex-col justify-start mt-4 overflow-y-auto min-h-[400px] max-h-[555px] pt-5">
                     {metodosPago.length > 0 ? (
                         metodosPago.map((metodo, index) => (
                             <PaymentCard 
@@ -94,9 +94,9 @@ const PaymentSettings = () => {
                     )}
                 </div>
                 
-                <div className="flex justify-end mt-5  mr-5">
+                <div className="flex justify-end mt-4 sm:mt-5">
                     <button 
-                        className="btn btn-primary w-[200px] text-white rounded-md p-2"
+                        className="btn btn-primary w-full sm:w-[200px] text-white rounded-md p-2 text-sm sm:text-base"
                         onClick={() => setModalOpen(true)}
                     >
                         Agregar Método

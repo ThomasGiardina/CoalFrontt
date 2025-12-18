@@ -209,11 +209,11 @@ const OrderTable = () => {
     };       
 
     return (
-        <div className="mt-2">
+        <div className="mt-2 px-4 sm:px-6 lg:px-0">
             <OrderStats orders={orders} />
-            <div className="flex justify-between items-center mb-4 mt-10">
-                <div className="flex space-x-4">
-                    <div role="tablist" className="tabs tabs-lifted text-lg">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 mt-6 sm:mt-10 gap-4">
+                <div className="flex flex-wrap space-x-2 sm:space-x-4">
+                    <div role="tablist" className="tabs tabs-lifted text-sm sm:text-base lg:text-lg">
                         <a
                             role="tab"
                             className={`tab tab-bordered ${activeTab === 'Todas' ? 'tab-active text-primary' : ''}`}
@@ -244,7 +244,7 @@ const OrderTable = () => {
                         </a>
                     </div>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full lg:w-auto">
                     <div className="relative">
                         <DatePicker
                             selected={startDate}
@@ -254,8 +254,8 @@ const OrderTable = () => {
                             selectsRange
                             isClearable
                             customInput={
-                                <button className="btn btn-circle btn-outline btn-primary">
-                                    <i className="fas fa-calendar-alt text-lg"></i>
+                                <button className="btn btn-circle btn-outline btn-primary btn-sm sm:btn-md">
+                                    <i className="fas fa-calendar-alt text-sm sm:text-lg"></i>
                                 </button>
                             }
                             calendarClassName="bg-neutral text-white"
@@ -264,12 +264,12 @@ const OrderTable = () => {
                     <input
                         type="text"
                         placeholder="Buscar órdenes..."
-                        className="px-4 py-2 bg-neutral text-text border border-neutral-300 rounded-lg focus:outline-none focus:border-primary"
+                        className="px-3 sm:px-4 py-2 bg-neutral text-text border border-neutral-300 rounded-lg focus:outline-none focus:border-primary text-sm sm:text-base flex-1 lg:flex-none min-w-[200px]"
                         value={searchTerm}
                         onChange={handleSearch}
                     />
                     <button
-                        className={`btn w-32 ${
+                        className={`btn btn-sm sm:btn-md w-28 sm:w-32 ${
                             selectedRows.length > 0 
                                 ? 'btn-success'
                                 : isSelecting 
@@ -287,24 +287,26 @@ const OrderTable = () => {
                             }
                         }}
                     >
-                        {selectedRows.length > 0 
-                            ? 'Exportar'
-                            : isSelecting 
-                            ? 'Cancelar'
-                            : 'Seleccionar'
-                        }
+                        <span className="text-xs sm:text-sm">
+                            {selectedRows.length > 0 
+                                ? 'Exportar'
+                                : isSelecting 
+                                ? 'Cancelar'
+                                : 'Seleccionar'
+                            }
+                        </span>
                     </button>
                 </div>
             </div>
-            <div className="overflow-x-visible relative">
-                <table className="table w-full bg-neutral text-text table-auto">
+            <div className="overflow-x-auto relative">
+                <table className="table w-full bg-neutral text-text table-auto min-w-[800px]">
                     <thead>
                         <tr className="text-primary">
                             {isSelecting && (
-                                <th className="text-center">
+                                <th className="text-center text-xs sm:text-sm">
                                     <input
                                         type="checkbox"
-                                        className="checkbox checkbox-primary"
+                                        className="checkbox checkbox-primary checkbox-sm sm:checkbox-md"
                                         onChange={handleSelectAll}
                                         checked={
                                             selectedRows.length === filteredOrders().length && selectedRows.length > 0
@@ -312,15 +314,15 @@ const OrderTable = () => {
                                     />
                                 </th>
                             )}
-                            <th className="text-center">Pedido</th>
-                            <th className="text-center">Fecha</th>
-                            <th className="text-center">Cliente</th>
-                            <th className="text-center">Pago</th>
-                            <th className="text-center">Total</th>
-                            <th className="text-center">Artículos</th>
-                            <th className="text-center">Entrega</th>
-                            <th className="text-center">Estado</th>
-                            <th className="text-center">Acciones</th>
+                            <th className="text-center text-xs sm:text-sm">Pedido</th>
+                            <th className="text-center text-xs sm:text-sm">Fecha</th>
+                            <th className="text-center text-xs sm:text-sm">Cliente</th>
+                            <th className="text-center text-xs sm:text-sm">Pago</th>
+                            <th className="text-center text-xs sm:text-sm">Total</th>
+                            <th className="text-center text-xs sm:text-sm">Artículos</th>
+                            <th className="text-center text-xs sm:text-sm">Entrega</th>
+                            <th className="text-center text-xs sm:text-sm">Estado</th>
+                            <th className="text-center text-xs sm:text-sm">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

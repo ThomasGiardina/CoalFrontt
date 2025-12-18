@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 const AboutContent = () => {
     return (
-        <div className="relative w-full flex flex-col items-center bg-background p-8 lg:p-12 rounded-lg mt-2 space-y-12">
+        <div className="relative w-full flex flex-col items-center bg-background p-4 sm:p-6 lg:p-12 rounded-lg mt-2 space-y-6 sm:space-y-8 lg:space-y-12">
 
             <div className="absolute top-0 left-0 w-1/4 h-48 bg-accent rounded-br-full opacity-30 z-0"></div>
             <div className="absolute top-0 right-0 w-1/4 h-32 bg-primary rounded-bl-full opacity-40 z-0"></div>
 
             <motion.h2 
-                className="text-5xl font-bold text-primary mb-6 relative z-10"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-4 sm:mb-6 relative z-10 text-center px-4"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}>
@@ -18,7 +18,7 @@ const AboutContent = () => {
             </motion.h2>
 
             <motion.p 
-                className="text-white mb-4 text-lg max-w-4xl text-center leading-relaxed relative z-10"
+                className="text-white mb-4 text-base sm:text-lg max-w-4xl text-center leading-relaxed relative z-10 px-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 1 }}>
@@ -60,9 +60,9 @@ const AboutContent = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 1 }}>
                 
-                <h3 className="text-4xl font-bold text-white mb-6">Preguntas Frecuentes (FAQ)</h3>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6 text-center">Preguntas Frecuentes (FAQ)</h3>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-white text-lg leading-relaxed max-w-5xl">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 text-white text-base sm:text-lg leading-relaxed max-w-5xl px-4">
                     <div>
                         <p className="mb-2 font-bold">1. ¿Cómo puedo comprar un videojuego físico en la tienda?</p>
                         <p>Es muy fácil. Regístrate en nuestra página, selecciona los videojuegos que te interesen y sigue el proceso de compra. Podrás elegir el método de envío al finalizar.</p>

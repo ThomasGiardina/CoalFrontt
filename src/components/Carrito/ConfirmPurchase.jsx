@@ -92,9 +92,9 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     };
 
     return (
-        <div className="flex flex-col text-white min-h-screen w-[1400px] p-8 rounded-lg max-w-7xl mx-auto">
-            <div className="w-full h-auto flex space-x-8">
-                <div className="w-2/3 bg-neutral p-6 rounded-lg">
+        <div className="flex flex-col text-white min-h-screen w-full max-w-[1400px] p-4 sm:p-6 lg:p-8 rounded-lg mx-auto">
+            <div className="w-full h-auto flex flex-col lg:flex-row gap-6 lg:gap-8">
+                <div className="w-full lg:w-2/3 bg-neutral p-4 sm:p-6 rounded-lg">
                     {cartItems.length > 0 ? (
                         cartItems.map(item => (
                             <GamecardPurchase key={item.id} game={item} />
@@ -146,13 +146,13 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                     </div>
                 </div>
 
-                <div className="w-1/3 h-[200px] bg-neutral p-4 rounded-lg shadow-md flex flex-col justify-between items-center">
-                    <h2 className="text-lg font-semibold text-white mb-2 text-center">CONFIRMAR COMPRA</h2>
-                    <p className="text-gray-400 text-center mb-4">
+                <div className="w-full lg:w-1/3 h-auto lg:h-[200px] bg-neutral p-4 sm:p-6 rounded-lg shadow-md flex flex-col justify-between items-center">
+                    <h2 className="text-base sm:text-lg font-semibold text-white mb-2 text-center">CONFIRMAR COMPRA</h2>
+                    <p className="text-gray-400 text-center mb-4 text-sm sm:text-base">
                         Una vez confirmada la compra, no podrás volver atrás.
                     </p>
                     <button 
-                        className={`bg-primary text-white py-2 px-6 rounded-md transition duration-200 w-full ${!termsAccepted ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`bg-primary text-white py-2 sm:py-3 px-4 sm:px-6 rounded-md transition duration-200 w-full text-sm sm:text-base ${!termsAccepted ? "opacity-50 cursor-not-allowed" : ""}`}
                         disabled={!termsAccepted}
                         onClick={handlePurchase}
                     >

@@ -161,11 +161,11 @@ const AccountSettings = () => {
     };
 
     return (
-        <div className="h-[550px] w-[650px] rounded-xl flex flex-col bg-neutral">
-            <h1 className="flex items-start ml-5 mt-5 text-3xl text-white">
+        <div className="min-h-[550px] h-auto w-full max-w-[650px] rounded-xl flex flex-col bg-neutral p-4 sm:p-6">
+            <h1 className="flex items-start text-2xl sm:text-3xl text-white mb-3 sm:mb-5">
                 Configuraciones de Usuario
             </h1>
-            <p className="flex items-start ml-5 mt-5 text-white">
+            <p className="flex items-start text-sm sm:text-base text-white mb-4 sm:mb-5">
                 Aquí puedes cambiar la información de tu cuenta
             </p>
             <InputsAccount formData={formData} handleInputChange={handleInputChange} />

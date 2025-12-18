@@ -30,10 +30,10 @@ const NewContainerCart = () => {
     };
 
     return (
-        <div className="flex flex-col text-white min-h-screen w-[1400px] p-8">
-            <h1 className="text-3xl font-semibold text-white mb-4 text-start">Carrito de Compra</h1>
+        <div className="flex flex-col text-white min-h-screen w-full max-w-[1400px] p-4 sm:p-6 lg:p-8 mx-auto">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-white mb-4 text-start">Carrito de Compra</h1>
 
-            <ul className="steps mb-10 mt-5">
+            <ul className="steps steps-vertical sm:steps-horizontal mb-6 sm:mb-10 mt-4 sm:mt-5 text-xs sm:text-sm md:text-base">
                 <li className={`step ${currentStep >= 1 ? "step-primary" : ""}`}>Ver Carrito</li>
                 <li className={`step ${currentStep >= 2 ? "step-primary" : ""}`}>Seleccionar Forma de Pago</li>
                 <li className={`step ${currentStep >= 3 ? "step-primary" : ""}`}>Confirmar Compra</li>

@@ -69,18 +69,20 @@ const TopProducts = () => {
                         key={index}
                         className="flex items-center justify-between p-4 bg-accent rounded-lg mb-3"
                     >
-                        <div className="flex items-center">
-                            <img
-                                src={product.fotoUrl || 'https://via.placeholder.com/50x50.png?text=No+Image'}
-                                alt={product.titulo}
-                                className="w-12 h-12 rounded-md mr-4"
-                            />
-                            <div>
-                                <p className="font-semibold">{product.titulo}</p>
+                        <div className="flex items-center min-w-0 flex-1">
+                            <div className="flex-shrink-0">
+                                <img
+                                    src={product.fotoUrl || 'https://via.placeholder.com/50x50.png?text=No+Image'}
+                                    alt={product.titulo}
+                                    className="w-12 h-12 rounded-md object-cover"
+                                />
+                            </div>
+                            <div className="ml-4 min-w-0 flex-1">
+                                <p className="font-semibold truncate">{product.titulo}</p>
                                 <p className="text-sm text-white">{product.ventas} Ventas</p>
                             </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex-shrink-0 ml-4">
                             {getPlatformIcon(product.plataforma)} 
                         </div>
                     </li>

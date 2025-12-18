@@ -17,26 +17,28 @@ const ContainerRegister = () => {
     });
 
     return (
-        <div className="h-[700px] w-[1275px] rounded-lg flex bg-neutral">
-            <div className="my-5 ml-5 mr-24">
+        <div className="min-h-[600px] w-full max-w-[1275px] rounded-lg flex flex-col lg:flex-row bg-neutral mx-auto">
+            <div className="hidden lg:block my-5 ml-5 mr-6 lg:mr-24">
                 <CarruselLogin />
             </div>
-            <div className="flex flex-col my-20">
-                <h1 className="text-6xl mb-10">Crear Cuenta</h1>
+            <div className="flex flex-col justify-center my-6 sm:my-8 lg:my-20 px-6 sm:px-8 lg:px-0 w-full lg:w-auto max-w-[500px] lg:max-w-none mx-auto lg:mx-0">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4 sm:mb-6 lg:mb-10 text-white font-bold">Crear Cuenta</h1>
                 <InputsRegister setFormData={setFormData} formData={formData} />
-                <div className="mt-5 flex items-center">
-                    <Check />
-                    <span className="ml-3">Acepto los Términos y Condiciones</span>
+                <div className="mt-3 sm:mt-4 flex items-start sm:items-center">
+                    <div className="flex-shrink-0">
+                        <Check />
+                    </div>
+                    <span className="ml-3 text-white text-xs sm:text-sm leading-tight">Acepto los Términos y Condiciones</span>
                 </div>
                 <BotonRegister formData={formData} />
                 <div className="mt-3">
                     <DivLogin />
                 </div>
                 <BotonesLinksRegister />
-                <div className="flex justify-center mt-5">
-                    <span>
+                <div className="flex justify-center mt-3 sm:mt-4 mb-3 sm:mb-4">
+                    <span className="text-white text-sm sm:text-base text-center">
                         ¿Ya tienes cuenta?{' '}
-                        <Link to="/Login" style={{ color: '#1E90FF' }}>
+                        <Link to="/Login" className="text-blue-500 hover:text-blue-400 transition">
                             Iniciar sesión
                         </Link>
                     </span>

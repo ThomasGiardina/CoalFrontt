@@ -29,12 +29,12 @@ const Footer = () => {
                     </div>
                 </nav>
             </div>
-            <aside className="bg-background py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
-                <p className="text-xl flex items-center gap-2">
-                    <img alt="Logo" src="/logoCoalBlanco.png" className="w-8" />
+            <aside className="bg-background py-4 px-4 sm:px-8 w-full flex flex-col sm:flex-row gap-2 flex-wrap justify-between items-center text-xs sm:text-sm">
+                <p className="text-lg sm:text-xl flex items-center gap-2">
+                    <img alt="Logo" src="/logoCoalBlanco.png" className="w-6 sm:w-8" />
                     <span>Coal</span>
                 </p>
-                <p>Copyright © 2024 - Todos Los Derechos Reservados</p>
+                <p className="text-center sm:text-left">Copyright © 2024 - Todos Los Derechos Reservados</p>
             </aside>
         </footer>
         </>

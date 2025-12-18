@@ -2,13 +2,13 @@
 const AddressForm = ({ formValues, handleInputChange, shippingOption, handleShippingOptionChange }) => {
     return (
         <div>
-            <h2 className="text-2xl font-semibold mb-4">Método de Entrega</h2>
-            <div className="mb-6">
-                <label className="block mb-2">Selecciona una opción de entrega</label>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4">Método de Entrega</h2>
+            <div className="mb-4 sm:mb-6">
+                <label className="block mb-2 text-sm sm:text-base">Selecciona una opción de entrega</label>
                 <select
                     value={shippingOption}
                     onChange={handleShippingOptionChange}
-                    className="bg-gray-700 p-3 w-full rounded-md"
+                    className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                 >
                     <option value="" disabled>Selecciona tipo de entrega</option>
                     <option value="envio">Envío a Domicilio</option>
@@ -17,44 +17,44 @@ const AddressForm = ({ formValues, handleInputChange, shippingOption, handleShip
             </div>
 
             {shippingOption === "envio" && (
-                <div className="mt-6">
-                    <label className="block mb-2">Dirección</label>
+                <div className="mt-4 sm:mt-6">
+                    <label className="block mb-2 text-sm sm:text-base">Dirección</label>
                     <input
                         type="text"
                         name="address"
                         value={formValues.address}
                         onChange={handleInputChange}
-                        className="bg-gray-700 p-3 w-full rounded-md"
+                        className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                         placeholder="Dirección"
                     />
 
-                    <label className="block mb-2 mt-4">Ciudad</label>
+                    <label className="block mb-2 mt-3 sm:mt-4 text-sm sm:text-base">Ciudad</label>
                     <input
                         type="text"
                         name="city"
                         value={formValues.city}
                         onChange={handleInputChange}
-                        className="bg-gray-700 p-3 w-full rounded-md"
+                        className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                         placeholder="Ciudad"
                     />
 
-                    <label className="block mb-2 mt-4">Código Postal</label>
+                    <label className="block mb-2 mt-3 sm:mt-4 text-sm sm:text-base">Código Postal</label>
                     <input
                         type="text"
                         name="postalCode"
                         value={formValues.postalCode}
                         onChange={handleInputChange}
-                        className="bg-gray-700 p-3 w-full rounded-md"
+                        className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                         placeholder="Código Postal"
                     />
 
-                    <label className="block mb-2 mt-4">Teléfono</label>
+                    <label className="block mb-2 mt-3 sm:mt-4 text-sm sm:text-base">Teléfono</label>
                     <input
                         type="text"
                         name="phone"
                         value={formValues.phone}
                         onChange={handleInputChange}
-                        className="bg-gray-700 p-3 w-full rounded-md"
+                        className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                         placeholder="Teléfono"
                     />
                 </div>

@@ -44,22 +44,22 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
 
     return (
         <div>
-            <div className="h-[120px] w-[600px] rounded-lg p-5 ml-6 mb-6" style={{ backgroundColor: "#2d2d2d", color: "white" }}>
-                <div className="flex justify-between">
-                    <h1 className="text-lg font-bold">{nombrePropietario}</h1>
-                    <span className="text-sm font-bold">{tipoPago}</span>
+            <div className="h-auto min-h-[120px] w-full rounded-lg p-4 lg:p-6 mb-6 mx-auto" style={{ backgroundColor: "#2d2d2d", color: "white" }}>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                    <h1 className="text-lg lg:text-xl font-bold break-words">{nombrePropietario}</h1>
+                    <span className="text-sm lg:text-base font-bold">{tipoPago}</span>
                 </div>
-                <div className="flex justify-between items-end h-full">
-                    <div className="text-lg font-mono tracking-widest mb-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="text-base lg:text-xl font-mono tracking-widest break-all sm:break-normal flex-1">
                         {tipoPago !== 'EFECTIVO' ? maskCardNumber(numeroTarjeta) : "Pago en Efectivo"}
                     </div>
-                    <div className="flex items-center space-x-4 mb-5">
+                    <div className="flex items-center space-x-4 self-end sm:self-auto">
                         <i
-                            className="fa-solid fa-pen text-white cursor-pointer"
+                            className="fa-solid fa-pen text-white cursor-pointer text-lg hover:text-primary transition"
                             onClick={() => setIsModalOpen(true)}  
                         ></i>
                         <i
-                            className="fa-solid fa-trash text-red-500 cursor-pointer"
+                            className="fa-solid fa-trash text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
                             onClick={handleDelete}  
                         ></i>
                     </div>

@@ -25,26 +25,26 @@ const OrderStats = ({ orders }) => {
     }, [orders]);
 
     return (
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div className="stat bg-neutral text-text rounded-lg shadow-lg">
-                <div className="stat-title text-primary">Total de Pedidos</div>
-                <div className="stat-value text-text">{stats.totalOrders}</div>
-                <div className="stat-desc text-text">+25.2% en la última semana</div>
+                <div className="stat-title text-primary text-xs sm:text-sm">Total de Pedidos</div>
+                <div className="stat-value text-text text-lg sm:text-2xl lg:text-3xl">{stats.totalOrders}</div>
+                <div className="stat-desc text-text text-xs sm:text-sm">+25.2% en la última semana</div>
             </div>
             <div className="stat bg-neutral text-text rounded-lg shadow-lg">
-                <div className="stat-title text-primary">Artículos por Pedido</div>
-                <div className="stat-value text-text">{stats.itemsPerOrder}</div>
-                <div className="stat-desc text-text">+18.2% en la última semana</div>
+                <div className="stat-title text-primary text-xs sm:text-sm">Artículos por Pedido</div>
+                <div className="stat-value text-text text-lg sm:text-2xl lg:text-3xl">{stats.itemsPerOrder}</div>
+                <div className="stat-desc text-text text-xs sm:text-sm">+18.2% en la última semana</div>
             </div>
             <div className="stat bg-neutral text-text rounded-lg shadow-lg">
-                <div className="stat-title text-primary">Pedidos Pendientes</div>
-                <div className="stat-value text-text">{stats.pendingOrders}</div>
-                <div className="stat-desc text-text">-1.2% en la última semana</div>
+                <div className="stat-title text-primary text-xs sm:text-sm">Pedidos Pendientes</div>
+                <div className="stat-value text-text text-lg sm:text-2xl lg:text-3xl">{stats.pendingOrders}</div>
+                <div className="stat-desc text-text text-xs sm:text-sm">-1.2% en la última semana</div>
             </div>
             <div className="stat bg-neutral text-text rounded-lg shadow-lg">
-                <div className="stat-title text-primary">Pedidos Completados</div>
-                <div className="stat-value text-text">{stats.completedOrders}</div>
-                <div className="stat-desc text-text">+12.2% en la última semana</div>
+                <div className="stat-title text-primary text-xs sm:text-sm">Pedidos Completados</div>
+                <div className="stat-value text-text text-lg sm:text-2xl lg:text-3xl">{stats.completedOrders}</div>
+                <div className="stat-desc text-text text-xs sm:text-sm">+12.2% en la última semana</div>
             </div>
         </div>
     );

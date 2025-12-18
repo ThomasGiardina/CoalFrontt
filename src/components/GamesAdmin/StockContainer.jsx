@@ -83,10 +83,10 @@ const StockContainer = () => {
     };
 
     return (
-        <div className="mt-10 min-h-screen">
-            <div className="sticky top-0 h-36 w-full flex justify-between items-center px-10 z-10" style={{backgroundColor:"#0F1012"}}> 
-                <p className="font-bold text-4xl text-primary">Stock de Juegos</p>
-                <div className="flex space-x-4">
+        <div className="mt-6 sm:mt-10 min-h-screen px-4 sm:px-6 lg:px-0">
+            <div className="sticky top-0 h-auto sm:h-36 w-full flex flex-col sm:flex-row justify-between items-center py-4 sm:py-0 px-4 sm:px-6 lg:px-10 z-10 gap-4 sm:gap-0" style={{backgroundColor:"#0F1012"}}> 
+                <p className="font-bold text-2xl sm:text-3xl lg:text-4xl text-primary">Stock de Juegos</p>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                     <Searchbar
                         placeholder="Buscar Juegos..." 
                         onSearch={handleSearch} 
@@ -107,7 +107,7 @@ const StockContainer = () => {
                         <p className="text-center text-xl mt-10">No hay juegos cargados, Agrega para ver contenido.</p>
                     ) : (
                         <>
-                            <div className="w-full space-y-4 px-20  mt-6 ">
+                            <div className="w-full space-y-4 px-4 sm:px-8 lg:px-20 mt-6">
                                 {selectedGames.map((game) => (
                                     <GameCardStock 
                                         key={game.id} 

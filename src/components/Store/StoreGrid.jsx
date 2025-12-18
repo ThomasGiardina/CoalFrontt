@@ -1,4 +1,3 @@
-// src/components/Store/StoreGrid.jsx
 import { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 import Pagination from '../Pagination/Pagination';
@@ -42,13 +41,13 @@ const Storegrid = ({ games }) => {
     }, [games]);
 
     return (
-        <div className="flex">
-            <div className="w-[400px] mr-6 ml-10">
+        <div className="flex flex-col lg:flex-row px-4 sm:px-6 lg:px-0">
+            <div className="w-full lg:w-[400px] mb-6 lg:mb-0 lg:mr-6 lg:ml-4 xl:ml-10">
                 <Gamefilter games={games} setFilter={setFilteredGames} setSearchTerm={setSearchTerm} />
             </div>
 
-            <div className="flex-1 mr-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="flex-1 lg:mr-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
                     {selectedGames.length > 0 ? (
                         selectedGames.map((game) => (
                             <GameCard 
@@ -61,16 +60,18 @@ const Storegrid = ({ games }) => {
                             />
                         ))
                     ) : (
-                        <p>No hay juegos disponibles.</p>
+                        <p className="col-span-full text-center text-white">No hay juegos disponibles.</p>
                     )}
                 </div>
 
                 {selectedGames.length > 0 && (
-                    <Pagination 
-                        currentPage={currentPage} 
-                        totalPages={totalPages} 
-                        onPageChange={handlePageChange}  
-                    />
+                    <div className="mt-6">
+                        <Pagination 
+                            currentPage={currentPage} 
+                            totalPages={totalPages} 
+                            onPageChange={handlePageChange}  
+                        />
+                    </div>
                 )}
             </div>
         </div>

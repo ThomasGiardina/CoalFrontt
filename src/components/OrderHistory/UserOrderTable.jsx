@@ -87,12 +87,12 @@ const UserOrderTable = () => {
     const totalPages = Math.ceil(orders.length / ordersPerPage);
 
     return (
-        <div>
-            <div className="flex justify-between items-center mb-2">
-                <p className="text-2xl font-bold text-neutral-300 ml-5 mt-10">
+        <div className="px-4 sm:px-6 lg:px-0">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 sm:mb-2 gap-4">
+                <p className="text-xl sm:text-2xl font-bold text-neutral-300 mt-6 sm:mt-10">
                     {orders.length} Productos
                 </p>
-                <div className="flex space-x-4 items-center">
+                <div className="flex flex-wrap space-x-2 sm:space-x-4 items-center w-full lg:w-auto">
                 <div className="relative">
                     <DatePicker
                         selected={startDate}
@@ -108,8 +108,8 @@ const UserOrderTable = () => {
                         selectsRange
                         isClearable
                         customInput={
-                            <button className="btn btn-circle btn-outline btn-primary">
-                                <i className="fas fa-calendar-alt text-lg"></i>
+                            <button className="btn btn-circle btn-outline btn-primary btn-sm sm:btn-md">
+                                <i className="fas fa-calendar-alt text-sm sm:text-lg"></i>
                             </button>
                         }
                         calendarClassName="bg-neutral text-white"
@@ -118,7 +118,7 @@ const UserOrderTable = () => {
                     <input
                         type="text"
                         placeholder="Buscar pedidos..."
-                        className="px-4 py-2 bg-neutral text-text border border-neutral-300 rounded-lg focus:outline-none focus:border-primary"
+                        className="px-3 sm:px-4 py-2 bg-neutral text-text border border-neutral-300 rounded-lg focus:outline-none focus:border-primary text-sm sm:text-base flex-1 lg:flex-none min-w-[200px]"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -126,16 +126,16 @@ const UserOrderTable = () => {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="table w-full bg-neutral text-text table-auto">
+                <table className="table w-full bg-neutral text-text table-auto min-w-[600px]">
                     <thead>
                         <tr className="text-primary">
-                            <th className="text-center">Pedido</th>
-                            <th className="text-center">Fecha</th>
-                            <th className="text-center">Pago</th>
-                            <th className="text-center">Total</th>
-                            <th className="text-center">Artículos</th>
-                            <th className="text-center">Entrega</th>
-                            <th className="text-center">Estado</th>
+                            <th className="text-center text-xs sm:text-sm">Pedido</th>
+                            <th className="text-center text-xs sm:text-sm">Fecha</th>
+                            <th className="text-center text-xs sm:text-sm">Pago</th>
+                            <th className="text-center text-xs sm:text-sm">Total</th>
+                            <th className="text-center text-xs sm:text-sm">Artículos</th>
+                            <th className="text-center text-xs sm:text-sm">Entrega</th>
+                            <th className="text-center text-xs sm:text-sm">Estado</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -31,39 +31,39 @@ const InputsNewPassword = ({ onPasswordChange, resetInputs }) => {
     };
 
     return (
-        <div className="max-w-4xl p-8">
-            <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
+        <div className="max-w-4xl p-4 sm:p-6 lg:p-8">
+            <form className="grid grid-cols-1 gap-4 sm:gap-6" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
-                    <label className="font-bold mb-2">Contraseña Actual</label>
+                    <label className="font-bold mb-2 text-sm sm:text-base">Contraseña Actual</label>
                     <input
                         type="password"
                         placeholder="Contraseña Actual"
-                        className="p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
+                        className="p-2 sm:p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black text-sm sm:text-base"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label className="font-bold mb-2">Contraseña Nueva</label>
+                    <label className="font-bold mb-2 text-sm sm:text-base">Contraseña Nueva</label>
                     <input
                         type="password"
                         placeholder="Contraseña Nueva"
-                        className="p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
+                        className="p-2 sm:p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black text-sm sm:text-base"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label className="font-bold mb-2">Repite Contraseña Nueva</label>
+                    <label className="font-bold mb-2 text-sm sm:text-base">Repite Contraseña Nueva</label>
                     <input
                         type="password"
                         placeholder="Repite Contraseña"
-                        className="p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
+                        className="p-2 sm:p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black text-sm sm:text-base"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit" className="btn w-full btn-primary text-white rounded-md p-2 mt-5">
+                <button type="submit" className="btn w-full btn-primary text-white rounded-md p-2 sm:p-3 mt-4 sm:mt-5 text-sm sm:text-base">
                     Guardar Cambios
                 </button>
             </form>

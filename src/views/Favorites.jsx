@@ -1,4 +1,3 @@
-import React from 'react';
 import FavoritesContainer from "../components/Favorites/FavoritesContainer";
 
 const Favorites = () => {

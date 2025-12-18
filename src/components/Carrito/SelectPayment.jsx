@@ -213,15 +213,15 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     
 
     return (
-        <div className="text-white p-6 rounded-lg bg-gray-800">
-            <h2 className="text-2xl font-semibold mb-4">Seleccionar Método de Pago</h2>
+        <div className="text-white p-4 sm:p-6 rounded-lg bg-gray-800 w-full">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4">Seleccionar Método de Pago</h2>
 
-            <div className="mb-6">
-                <label className="block mb-2">Método de Pago</label>
+            <div className="mb-4 sm:mb-6">
+                <label className="block mb-2 text-sm sm:text-base">Método de Pago</label>
                 <select
                     value={paymentMethod} 
                     onChange={(e) => handlePaymentMethodChange(e.target.value)}
-                    className="bg-gray-700 p-3 w-full rounded-md"
+                    className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                 >
                     <option value="" disabled>Selecciona un método</option>
                     <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
@@ -230,12 +230,12 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             </div>
 
             {paymentMethod === "Tarjeta de Crédito/Débito" && (
-                <div className="mb-6">
-                    <label className="block mb-2">Selecciona tu tarjeta</label>
+                <div className="mb-4 sm:mb-6">
+                    <label className="block mb-2 text-sm sm:text-base">Selecciona tu tarjeta</label>
                     <select
                         value={selectedCard}
                         onChange={handleCardSelection}
-                        className="bg-gray-700 p-3 w-full rounded-md"
+                        className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                     >
                         <option value="">Seleccione una tarjeta</option>
                         {cards.map((card) => (
@@ -264,15 +264,15 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                 handleShippingOptionChange={handleShippingOptionChange}
             />
 
-            <div className="flex justify-between mt-6">
+            <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 mt-4 sm:mt-6">
                 <button
-                    className="btn text-white py-2 px-4 rounded-md"
+                    className="btn text-white py-2 px-4 rounded-md text-sm sm:text-base w-full sm:w-auto"
                     onClick={onBack}
                 >
                     Atrás
                 </button>
                 <button
-                    className={`btn bg-secondary text-white py-2 px-4 rounded-md ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`btn bg-secondary text-white py-2 px-4 rounded-md text-sm sm:text-base w-full sm:w-auto ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}
                     onClick={handleConfirm}
                     disabled={!isFormValid()}
                 >

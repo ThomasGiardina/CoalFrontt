@@ -76,23 +76,23 @@ const Gamefilter = ({ games, setFilter }) => {
     };
 
     return (
-        <div className="bg-neutral p-6 rounded-xl w-[400px] h-[1010px] flex flex-col space-y-6">
+        <div className="bg-neutral p-4 sm:p-6 rounded-xl w-full lg:w-[400px] lg:h-[1010px] flex flex-col space-y-4 sm:space-y-6">
             <SearchBar
                 placeholder="Buscar por título o plataforma..."
                 onSearch={handleSearchChange} 
             />
             <div className="w-full flex-grow">
-                <h2 className="text-white font-bold mb-4 text-xl">Categorías</h2>
-                <ul className="space-y-3 w-full">
+                <h2 className="text-white font-bold mb-3 sm:mb-4 text-lg sm:text-xl">Categorías</h2>
+                <ul className="space-y-2 sm:space-y-3 w-full">
                     {categories.map((category) => (
-                        <li key={category} className="flex items-center space-x-4 mr-4">
+                        <li key={category} className="flex items-center space-x-2 sm:space-x-4">
                             <input
                                 type="checkbox"
-                                className="checkbox checkbox-lg checkbox-primary mr-2"
+                                className="checkbox checkbox-sm sm:checkbox-lg checkbox-primary"
                                 checked={filters[category]}
                                 onChange={() => setFilters({ ...filters, [category]: !filters[category] })}
                             />
-                            <span className="text-gray-300 text-xl mr-2">
+                            <span className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl">
                                 {category.charAt(0) + category.slice(1).toLowerCase()}
                             </span>
                         </li>
@@ -101,37 +101,37 @@ const Gamefilter = ({ games, setFilter }) => {
             </div>
     
             <div className="w-full flex-grow">
-                <h2 className="text-white font-bold mb-4 text-xl">Plataformas</h2>
-                <ul className="space-y-3 w-full">
+                <h2 className="text-white font-bold mb-3 sm:mb-4 text-lg sm:text-xl">Plataformas</h2>
+                <ul className="space-y-2 sm:space-y-3 w-full">
                     {platforms.map((platform) => (
-                        <li key={platform} className="flex items-center space-x-4 mr-4">
+                        <li key={platform} className="flex items-center space-x-2 sm:space-x-4">
                             <input
                                 type="checkbox"
-                                className="checkbox checkbox-lg checkbox-primary mr-2"
+                                className="checkbox checkbox-sm sm:checkbox-lg checkbox-primary"
                                 checked={filters[platform]}
                                 onChange={() => setFilters({ ...filters, [platform]: !filters[platform] })}
                             />
-                            <span className="text-gray-300 text-xl mr-2">{platform.replace('_', ' ')}</span>
+                            <span className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl">{platform.replace('_', ' ')}</span>
                         </li>
                     ))}
                 </ul>
             </div>
     
             <div className="w-full flex-grow">
-                <h2 className="text-white font-bold mb-4 text-xl">Rango de Precios</h2>
+                <h2 className="text-white font-bold mb-3 sm:mb-4 text-lg sm:text-xl">Rango de Precios</h2>
                 <input
                     type="range"
                     min="0"
                     max={maxPrice}
                     value={filters.price}
-                    className="range range-lg range-primary w-full"
+                    className="range range-sm sm:range-lg range-primary w-full"
                     onChange={handlePriceChange}
                 />
-                <p className="text-primary mt-4 text-xl">${filters.price}</p>
+                <p className="text-primary mt-2 sm:mt-4 text-base sm:text-lg lg:text-xl">${filters.price}</p>
             </div>
     
             <div className="w-full flex-grow">
-                <button onClick={resetFilters} className="btn btn-outline btn-primary w-full h-14 text-xl rounded-lg">
+                <button onClick={resetFilters} className="btn btn-outline btn-primary w-full h-12 sm:h-14 text-base sm:text-lg lg:text-xl rounded-lg">
                     Resetear Filtros
                 </button>
             </div>

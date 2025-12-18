@@ -5,14 +5,12 @@ import LatestSales from './LatestSales';
 
 const StatisticsContainer = () => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-3  p-12 min-h-screen w-[1800px]">
-            <div className="lg:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-6 lg:p-12 min-h-screen w-full max-w-[1800px] mx-auto">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6 lg:space-y-8">
                 <TotalRevenue />
-                <div className="h-full">
-                    <LatestSales />
-                </div>
+                <LatestSales />
             </div>
-            <div className="lg:row-span-2 space-y-8">
+            <div className="lg:row-span-2 space-y-4 sm:space-y-6 lg:space-y-8">
                 <div className="w-full max-w-sm mx-auto">
                     <TopCategories />
                 </div>

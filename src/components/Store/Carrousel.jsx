@@ -51,7 +51,7 @@ const Carrousel = () => {
     }, [currentIndex]); 
 
     return (
-        <div className="relative w-full h-[700px] mx-auto mb-10 overflow-hidden bg-gray-900 text-white">
+        <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] mx-auto mb-6 sm:mb-10 overflow-hidden bg-gray-900 text-white">
         {slides.map((slide, index) => (
             <div
             key={index}
@@ -64,16 +64,16 @@ const Carrousel = () => {
                 alt={slide.title}
                 className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-center p-4">
-                <h2 className="text-4xl font-bold mb-2">{slide.title}</h2>
-                <p className="text-xl mb-6">{slide.subtitle}</p>
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-center p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{slide.title}</h2>
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6">{slide.subtitle}</p>
             </div>
             </div>
         ))}
 
         <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-5xl"
+            className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
             aria-label="Previous slide"
         >
             ❮
@@ -81,13 +81,13 @@ const Carrousel = () => {
 
         <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-5xl"
+            className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-500 transition-colors text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
             aria-label="Next slide"
         >
             ❯
         </button>
 
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {slides.map((_, index) => (
             <button
                 key={index}
