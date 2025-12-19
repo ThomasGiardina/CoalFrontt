@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useNavigate } from "react-router-dom";
-import { fetchCarrito, addItemToCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice';
+import { addItemToCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice';
 import "../../index.css";
 
 const ModalAgregarCarrito = ({ gameDetails }) => {
@@ -15,13 +14,6 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
     const { cartItems, carritoId } = useSelector((state) => state.cart);
 
     const isOutOfStock = gameDetails.stock <= 0;
-
-    useEffect(() => {
-        if (isAuthenticated && cartItems.length === 0) {
-            dispatch(fetchCarrito());
-        }
-    }, [isAuthenticated, dispatch, cartItems.length]);
-    
 
     const handleButtonClick = async () => {
         if (!isAuthenticated) {
@@ -42,7 +34,7 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
             return;
         }
 
-        const existingItem = cartItems.find((item) => item.videojuego?.id === gameDetails.id);
+        const existingItem = cartItems.find((item) => item.videojuego?.id === gameDetails.id || item.id === gameDetails.id);
         const quantityInCart = existingItem ? existingItem.cantidad : 0;
         const totalQuantity = quantityInCart + 1;
 
@@ -63,14 +55,9 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
 
         try {
             if (existingItem) {
-                dispatch(addCartItem({
-                    id: newItem.id,
-                    cantidad: 1,
-                    titulo: gameDetails.titulo,
-                    precio: gameDetails.precio,
-                    foto: gameDetails.foto,
-                    plataforma: gameDetails.plataforma,
-                    stock: gameDetails.stock,
+                await dispatch(updateCartItemAsync({
+                    id: existingItem.id,
+                    cantidad: totalQuantity
                 }));
                 MySwal.fire({
                     title: 'Cantidad Actualizada!',
@@ -139,8 +126,8 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
             </div>
             <button
                 className={`join-item w-[180px] h-[48px] flex justify-center items-center rounded-r-lg 
-                    ${isOutOfStock 
-                        ? 'bg-red-500 text-neutral cursor-not-allowed'  
+                    ${isOutOfStock
+                        ? 'bg-red-500 text-neutral cursor-not-allowed'
                         : 'bg-success text-neutral hover:bg-success/80 border border-black'}`}
                 onClick={handleButtonClick}
                 disabled={isOutOfStock}

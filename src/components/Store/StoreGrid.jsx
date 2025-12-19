@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import GameCard from '../Gamecard/gamecard';
 import Pagination from '../Pagination/Pagination';
 import Gamefilter from './gamefilter';
-import {useDispatch } from "react-redux";
-import { fetchCarrito } from "../../redux/slices/cartSlice";
+
 
 const ITEMS_PER_PAGE = 15;
 
@@ -11,7 +10,7 @@ const Storegrid = ({ games }) => {
     const [filteredGames, setFilteredGames] = useState(games);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
-    const dispatch = useDispatch();
+
 
     const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -24,16 +23,15 @@ const Storegrid = ({ games }) => {
     };
 
     useEffect(() => {
-        dispatch(fetchCarrito());
         const filtered = games.filter(game => {
-            const matchesSearchTerm = 
-                game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            const matchesSearchTerm =
+                game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 game.plataforma.toLowerCase().includes(searchTerm.toLowerCase());
-    
-            return matchesSearchTerm; 
+
+            return matchesSearchTerm;
         });
-    
-        setFilteredGames(filtered); 
+
+        setFilteredGames(filtered);
     }, [games, searchTerm]);
 
     useEffect(() => {
@@ -50,10 +48,10 @@ const Storegrid = ({ games }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
                     {selectedGames.length > 0 ? (
                         selectedGames.map((game) => (
-                            <GameCard 
-                                key={game.id} 
-                                title={game.titulo} 
-                                imageUrl={game.foto}  
+                            <GameCard
+                                key={game.id}
+                                title={game.titulo}
+                                imageUrl={game.foto}
                                 price={game.precio}
                                 platform={game.plataforma}
                                 id={game.id}
@@ -66,10 +64,10 @@ const Storegrid = ({ games }) => {
 
                 {selectedGames.length > 0 && (
                     <div className="mt-6">
-                        <Pagination 
-                            currentPage={currentPage} 
-                            totalPages={totalPages} 
-                            onPageChange={handlePageChange}  
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
                         />
                     </div>
                 )}

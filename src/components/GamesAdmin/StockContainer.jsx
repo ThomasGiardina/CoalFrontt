@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchGames, addGame as addGameToStore, updateGame as updateGameInStore, removeGame as removeGameFromStore } from '../../redux/slices/gamesSlice';
 import GameCardStock from "../Gamecard/GamecardStock";
 import Pagination from "../Pagination/Pagination";
 import AddGameButton from "./AddGame";
@@ -7,69 +9,40 @@ import Searchbar from "../Searchbar/searchbar"
 const ITEMS_PER_PAGE = 8;
 
 const StockContainer = () => {
-    const [allGames, setAllGames] = useState([]); 
-    const [filteredGames, setFilteredGames] = useState([]); 
+    const dispatch = useDispatch();
+    const { items: allGames, loading, error } = useSelector((state) => state.games);
+    const [filteredGames, setFilteredGames] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetchGames();
-    }, []);
+        dispatch(fetchGames());
+    }, [dispatch]);
 
-    const fetchGames = () => {
-        setLoading(true);
-        fetch("http://localhost:4002/videojuegos")  
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Error al obtener los datos");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (Array.isArray(data)) {
-                    setAllGames(data); 
-                    setFilteredGames(data); 
-                } else {
-                    throw new Error("Los datos no son un array");
-                }
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                setError(error.message);
-                setLoading(false);
-            });
-    };
+    useEffect(() => {
+        setFilteredGames(allGames);
+    }, [allGames]);
 
     const addGame = (newGame) => {
-        setAllGames((prevGames) => [newGame, ...prevGames]);
-        setFilteredGames((prevGames) => [newGame, ...prevGames]); 
+        dispatch(addGameToStore(newGame));
     };
 
     const updateGameInList = (updatedGame) => {
-        setAllGames((prevGames) =>
-            prevGames.map((game) => (game.id === updatedGame.id ? updatedGame : game))
-        );
-        setFilteredGames((prevGames) =>
-            prevGames.map((game) => (game.id === updatedGame.id ? updatedGame : game))
-        ); 
+        dispatch(updateGameInStore(updatedGame));
     };
 
     const removeGameFromList = (gameId) => {
-        setAllGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
-        setFilteredGames((prevGames) => prevGames.filter((game) => game.id !== gameId)); 
+        dispatch(removeGameFromStore(gameId));
     };
 
     const handleSearch = (term) => {
-        setSearchTerm(term);  
+        setSearchTerm(term);
         const filtered = allGames.filter((game) =>
             game.titulo.toLowerCase().includes(term.toLowerCase()) ||
             game.plataforma.toLowerCase().includes(term.toLowerCase())
         );
-        setFilteredGames(filtered); 
-        setCurrentPage(1); 
+        setFilteredGames(filtered);
+        setCurrentPage(1);
     };
 
     const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
@@ -84,23 +57,23 @@ const StockContainer = () => {
 
     return (
         <div className="mt-6 sm:mt-10 min-h-screen px-4 sm:px-6 lg:px-0">
-            <div className="sticky top-0 h-auto sm:h-36 w-full flex flex-col sm:flex-row justify-between items-center py-4 sm:py-0 px-4 sm:px-6 lg:px-10 z-10 gap-4 sm:gap-0" style={{backgroundColor:"#0F1012"}}> 
+            <div className="sticky top-0 h-auto sm:h-36 w-full flex flex-col sm:flex-row justify-between items-center py-4 sm:py-0 px-4 sm:px-6 lg:px-10 z-10 gap-4 sm:gap-0" style={{ backgroundColor: "#0F1012" }}>
                 <p className="font-bold text-2xl sm:text-3xl lg:text-4xl text-primary">Stock de Juegos</p>
                 <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                     <Searchbar
-                        placeholder="Buscar Juegos..." 
-                        onSearch={handleSearch} 
+                        placeholder="Buscar Juegos..."
+                        onSearch={handleSearch}
                     />
-                    <AddGameButton addGame={addGame} /> 
+                    <AddGameButton addGame={addGame} />
                 </div>
             </div>
-    
+
             {loading ? (
                 <div className='justify-center flex'>
                     <span className="loading loading-dots loading-lg"></span>
                 </div>
             ) : error ? (
-                <p>Error: {error}</p>  
+                <p>Error: {error}</p>
             ) : (
                 <>
                     {filteredGames.length === 0 ? (
@@ -109,20 +82,20 @@ const StockContainer = () => {
                         <>
                             <div className="w-full space-y-4 px-4 sm:px-8 lg:px-20 mt-6">
                                 {selectedGames.map((game) => (
-                                    <GameCardStock 
-                                        key={game.id} 
+                                    <GameCardStock
+                                        key={game.id}
                                         game={game}
                                         updateGame={updateGameInList}
-                                        removeGame={removeGameFromList}  
+                                        removeGame={removeGameFromList}
                                     />
                                 ))}
                             </div>
-    
+
                             {totalPages > 1 && (
-                                <Pagination 
-                                    currentPage={currentPage} 
-                                    totalPages={totalPages} 
-                                    onPageChange={handlePageChange}  
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={handlePageChange}
                                 />
                             )}
                         </>

@@ -1,24 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Storegrid from '../components/Store/StoreGrid';
 import Carrousel from '../components/Store/Carrousel';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGames } from '../redux/slices/gamesSlice';
 
 const Store = () => {
-    const [games, setGames] = useState([]); 
+    const dispatch = useDispatch();
+    const { items: games, loading } = useSelector((state) => state.games);
 
     useEffect(() => {
-        fetch("http://localhost:4002/videojuegos")
-            .then((response) => response.json())
-            .then((data) => {
-                setGames(Array.isArray(data) ? data : []);
-            })
-            .catch((error) => {
-                console.error("Error al cargar los juegos:", error);
-            });
-    }, []);
+        if (games.length === 0) dispatch(fetchGames());
+    }, [dispatch, games.length]);
 
     return (
         <div className="w-full">
-            <Carrousel/>
+            <Carrousel />
             <Storegrid games={games} />
         </div>
     );

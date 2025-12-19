@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchGames } from '../../redux/slices/gamesSlice';
 import GameCard from '../Gamecard/gamecard';
 
-const ITEMS_PER_PAGE = 6; 
+const ITEMS_PER_PAGE = 6;
 
 const GameCarrousel = ({ gameId }) => {
+    const dispatch = useDispatch();
+    const { items: games } = useSelector((state) => state.games);
     const [shuffledGames, setShuffledGames] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:4002/videojuegos")
-            .then((response) => response.json())
-            .then((data) => {
-                if (Array.isArray(data) && data.length > 0) {
-                    const shuffled = [...data].sort(() => Math.random() - 0.5);
-                    setShuffledGames(shuffled);
-                }
-            })
-            .catch((error) => {
-                console.error("Error al cargar los juegos:", error);
-            });
-    }, []);
+        if (games.length === 0) {
+            dispatch(fetchGames());
+        }
+    }, [dispatch, games.length]);
+
+    useEffect(() => {
+        if (games.length > 0) {
+            const shuffled = [...games].sort(() => Math.random() - 0.5);
+            setShuffledGames(shuffled);
+        }
+    }, [games]);
 
     const totalPages = Math.ceil(shuffledGames.length / ITEMS_PER_PAGE);
 
@@ -36,9 +39,9 @@ const GameCarrousel = ({ gameId }) => {
     };
 
     const startIndex = currentPage * ITEMS_PER_PAGE;
-    
+
     const filteredGames = gameId
-        ? shuffledGames.filter((game) => parseInt(game.id) !== parseInt(gameId)) 
+        ? shuffledGames.filter((game) => parseInt(game.id) !== parseInt(gameId))
         : shuffledGames;
 
     const selectedGames = filteredGames.slice(startIndex, startIndex + ITEMS_PER_PAGE);

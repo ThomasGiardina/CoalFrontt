@@ -1,48 +1,35 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCarrito, addItemToCarrito } from '../../redux/slices/cartSlice';
+import { fetchGameById, clearCurrentGame } from '../../redux/slices/gamesSlice';
 import AcercaDe from './AcercaDe';
 import Calificacion from './Calificacion';
 import DividerDetails from './DividerDetails';
 import ModalAgregarCarrito from './ModalAgregarCarrito';
 import CarrouselDetails from './CarruselDetails';
-import ReactMarkdown from 'react-markdown'; 
+import ReactMarkdown from 'react-markdown';
 import GameCarrousel from './GameCarrousel';
 
 const ContainerDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [gameDetails, setGameDetails] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const rightContentRef = useRef(null);
+
     const carritoId = useSelector((state) => state.cart.carritoId);
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    const token = useSelector((state) => state.auth.token); 
-    
-    const rightContentRef = useRef(null); 
+    const { currentGame: gameDetails, loading, error } = useSelector((state) => state.games);
 
     useEffect(() => {
         if (isAuthenticated && !carritoId) {
-            dispatch(fetchCarrito(token));
+            dispatch(fetchCarrito());
         }
+        dispatch(fetchGameById(id));
 
-        fetch(`http://localhost:4002/videojuegos/${id}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Error al obtener los detalles del juego');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setGameDetails(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setError(error.message);
-                setLoading(false);
-            });
-    }, [id, isAuthenticated, carritoId, dispatch, token]);
+        return () => {
+            dispatch(clearCurrentGame());
+        };
+    }, [id, isAuthenticated, carritoId, dispatch]);
 
     const handleAddToCart = () => {
         if (!carritoId) {
@@ -55,11 +42,12 @@ const ContainerDetails = () => {
             cantidad: 1,
         };
 
-        dispatch(addItemToCarrito({ carritoId, item, token }));
+        dispatch(addItemToCarrito({ carritoId, videojuegoId: gameDetails.id, cantidad: 1 }));
     };
 
     if (loading) return <p>Cargando detalles...</p>;
     if (error) return <p>Error: {error}</p>;
+    if (!gameDetails) return <p>Cargando...</p>;
 
     const categories = gameDetails?.categorias || [];
 
@@ -70,13 +58,13 @@ const ContainerDetails = () => {
             <div className="w-full max-w-[92%] flex flex-col lg:flex-row justify-between mt-6 sm:mt-10 gap-6 sm:gap-10">
                 <div className="lg:w-[75%] w-full h-auto">
                     <CarrouselDetails
-                        containerHeight="700px" 
+                        containerHeight="700px"
                         carruselImagen1={gameDetails.carruselImagen1}
                         carruselImagen2={gameDetails.carruselImagen2}
                         carruselImagen3={gameDetails.carruselImagen3}
                     />
                 </div>
-                <div className="w-full lg:w-[330px] mt-6 sm:mt-10 lg:mt-0 px-2 sm:px-4" ref={rightContentRef}> 
+                <div className="w-full lg:w-[330px] mt-6 sm:mt-10 lg:mt-0 px-2 sm:px-4" ref={rightContentRef}>
                     <img
                         src={`data:image/jpeg;base64,${gameDetails.foto}`}
                         alt={gameDetails.titulo}
@@ -98,7 +86,7 @@ const ContainerDetails = () => {
 
                     <div className="flex items-center mt-3 flex-wrap">
                         <p className="mr-3 text-xs sm:text-sm text-gray-300">Equipo Desarrollador:</p>
-                        <p className="text-white text-sm sm:text-base break-words">{gameDetails.desarrolladora}</p> 
+                        <p className="text-white text-sm sm:text-base break-words">{gameDetails.desarrolladora}</p>
                     </div>
 
                     <div className="mt-3">
@@ -113,25 +101,25 @@ const ContainerDetails = () => {
                     </div>
 
                     <div className="flex mt-6 sm:mt-10">
-                        <ModalAgregarCarrito 
-                            gameDetails={gameDetails} 
-                            carritoId={carritoId} 
+                        <ModalAgregarCarrito
+                            gameDetails={gameDetails}
+                            carritoId={carritoId}
                             onAddToCarrito={handleAddToCart}
                         />
                     </div>
                 </div>
             </div>
-    
+
             <div className="w-full max-w-[92%] mt-6 sm:mt-10">
                 <DividerDetails />
             </div>
-    
+
             <div className="w-full max-w-[92%] mt-6 sm:mt-10">
                 <div className="rounded-md bg-neutral p-4 sm:p-6 mx-auto">
                     <AcercaDe descripcion={gameDetails.descripcion} />
                 </div>
             </div>
-    
+
             <div className="w-full max-w-[92%] mt-4 sm:mt-5">
                 <DividerDetails />
             </div>
@@ -141,8 +129,8 @@ const ContainerDetails = () => {
             </div>
         </div>
     );
-    
-    
+
+
 };
 
 export default ContainerDetails;
