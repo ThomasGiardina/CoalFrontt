@@ -1,12 +1,33 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/slices/authSlice';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const BotonLogin = ({ email, password }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const MySwal = withReactContent(Swal);
 
     const handleLogin = async () => {
+        // Validación de campos vacíos
+        if (!email || !password) {
+            MySwal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Por favor, completa todos los campos.',
+                showConfirmButton: false,
+                timer: 3000,
+                background: '#1D1F23',
+                customClass: {
+                    popup: 'custom-toast',
+                    title: 'text-white',
+                },
+            });
+            return;
+        }
+
         try {
             const response = await fetch('http://localhost:4002/api/v1/auth/authenticate', {
                 method: 'POST',
@@ -17,7 +38,31 @@ const BotonLogin = ({ email, password }) => {
             });
 
             if (!response.ok) {
-                throw new Error('Error al iniciar sesión');
+                const status = response.status;
+                let errorMessage = 'Error al iniciar sesión';
+
+                if (status === 403 || status === 401) {
+                    errorMessage = 'Correo o contraseña incorrectos';
+                } else if (status === 404) {
+                    errorMessage = 'Usuario no encontrado';
+                } else if (status >= 500) {
+                    errorMessage = 'Error del servidor. Intenta más tarde';
+                }
+
+                MySwal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: errorMessage,
+                    showConfirmButton: false,
+                    timer: 4000,
+                    background: '#1D1F23',
+                    customClass: {
+                        popup: 'custom-toast',
+                        title: 'text-white',
+                    },
+                });
+                return;
             }
 
             const data = await response.json();
@@ -42,6 +87,20 @@ const BotonLogin = ({ email, password }) => {
                 profileImage: profileImage,
             }));
 
+            MySwal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: '¡Bienvenido!',
+                showConfirmButton: false,
+                timer: 2000,
+                background: '#1D1F23',
+                customClass: {
+                    popup: 'custom-toast',
+                    title: 'text-white',
+                },
+            });
+
             if (data.role === 'ADMIN') {
                 navigate('/GamesAdmin');
             } else {
@@ -50,6 +109,19 @@ const BotonLogin = ({ email, password }) => {
 
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
+            MySwal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Error de conexión. Verifica tu internet.',
+                showConfirmButton: false,
+                timer: 4000,
+                background: '#1D1F23',
+                customClass: {
+                    popup: 'custom-toast',
+                    title: 'text-white',
+                },
+            });
         }
     };
 

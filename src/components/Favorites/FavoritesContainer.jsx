@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchFavorites, addFavorite, removeFavorite } from '../../redux/slices/favoritesSlice';
+import { fetchFavorites, removeFavorite } from '../../redux/slices/favoritesSlice';
 import GameCardFavorites from './GameCardFavorites';
 
 const FavoritesContainer = () => {
@@ -16,16 +16,8 @@ const FavoritesContainer = () => {
         dispatch(fetchFavorites(token));
     }, [dispatch, token, usuarioId]);
 
-    const handleAddFavorite = (videojuegoId) => {
-        dispatch(addFavorite({ usuarioId, videojuegoId, token })).then(() => {
-            dispatch(fetchFavorites(token));
-        });
-    };
-
     const handleRemoveFavorite = (videojuegoId) => {
-        dispatch(removeFavorite({ usuarioId, videojuegoId, token })).then(() => {
-            dispatch(fetchFavorites(token));
-        });
+        dispatch(removeFavorite({ usuarioId, videojuegoId, token }));
     };
 
     if (loading) {
@@ -47,7 +39,6 @@ const FavoritesContainer = () => {
                         <GameCardFavorites
                             key={game.id}
                             game={game}
-                            addGame={handleAddFavorite}
                             removeGame={handleRemoveFavorite}
                         />
                     ))}

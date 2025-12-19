@@ -81,7 +81,7 @@ export const removeFavorite = createAsyncThunk(
 
 export const toggleFavorite = createAsyncThunk(
     'favorites/toggleFavorite',
-    async ({ usuarioId, videojuegoId, token }, { dispatch, rejectWithValue }) => {
+    async ({ usuarioId, videojuegoId, token }, { rejectWithValue }) => {
         if (!usuarioId || !token) {
             return rejectWithValue('Token o usuarioId no definidos.');
         }
@@ -101,13 +101,13 @@ export const toggleFavorite = createAsyncThunk(
                 throw new Error(`Error al alternar favoritos: ${response.statusText}`);
             }
 
-            await dispatch(fetchFavorites(token));
             return videojuegoId;
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 );
+
 
 
 
