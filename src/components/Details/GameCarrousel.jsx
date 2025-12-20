@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchGames } from '../../redux/slices/gamesSlice';
-import GameCard from '../Gamecard/gamecard';
+import GameCard from '../Gamecard/Gamecard';
 
 const ITEMS_PER_PAGE = 6;
 

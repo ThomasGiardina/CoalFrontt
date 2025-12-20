@@ -1,23 +1,35 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FaArrowRight } from 'react-icons/fa';
 
-const Homehero = (Homehero) => {
+const Homehero = () => {
     return (
-        <div className="w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center lg:text-left">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
-                    Explora, Juega y Conquista
-                </h1>
-                <p className="py-4 sm:py-6 text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed">
-                    Los mejores videojuegos, al mejor precio. Encuentra tus favoritos y descubre nuevas aventuras hoy mismo.
-                </p>
-                <div className="flex justify-center lg:justify-start mt-6">
-                    <Link 
-                        to="/Store" 
-                        className="btn btn-primary text-white h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold hover:scale-105 transition-transform"
-                    >
-                        Explorar Tienda
-                    </Link>
+        <div className="w-full max-w-xl px-4">
+            <span className="text-primary text-sm font-semibold tracking-wider uppercase">Tu tienda de confianza</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 mb-4 leading-tight">
+                Descubrí tu próximo <span className="text-primary">juego favorito</span>
+            </h1>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-6">
+                Miles de juegos para todas las plataformas. Precios competitivos, entrega inmediata y soporte 24/7.
+            </p>
+            <div className="flex flex-wrap gap-6 mb-6 py-4 border-y border-base-200">
+                <div>
+                    <span className="text-2xl sm:text-3xl font-bold text-white">500+</span>
+                    <p className="text-gray-500 text-sm">Juegos</p>
                 </div>
+                <div>
+                    <span className="text-2xl sm:text-3xl font-bold text-white">4</span>
+                    <p className="text-gray-500 text-sm">Plataformas</p>
+                </div>
+                <div>
+                    <span className="text-2xl sm:text-3xl font-bold text-white">24/7</span>
+                    <p className="text-gray-500 text-sm">Soporte</p>
+                </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+                <Link to="/Store" className="btn btn-primary text-white gap-2">
+                    Explorar Tienda <FaArrowRight />
+                </Link>
+                <Link to="/About" className="btn btn-ghost">Conocer más</Link>
             </div>
         </div>
     )

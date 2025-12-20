@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import SearchBar from '../Searchbar/searchbar';
 
-const Gamefilter = ({ games, setFilter }) => {
-    const categories = [
-        'ACCION', 'AVENTURA', 'RPG', 'SIMULACION', 'DEPORTES',
-        'ESTRATEGIA', 'PUZZLE', 'TERROR', 'VR', 'EDUCATIVO',
-    ];
+const CATEGORIES = [
+    'ACCION', 'AVENTURA', 'RPG', 'SIMULACION', 'DEPORTES',
+    'ESTRATEGIA', 'PUZZLE', 'TERROR', 'VR', 'EDUCATIVO',
+];
 
-    const platforms = ['XBOX', 'PC', 'NINTENDO_SWITCH', 'PLAY_STATION'];
-    const [maxPrice, setMaxPrice] = useState(20000); 
+const PLATFORMS = ['XBOX', 'PC', 'NINTENDO_SWITCH', 'PLAY_STATION'];
+
+const Gamefilter = ({ games, setFilter }) => {
+    const [maxPrice, setMaxPrice] = useState(20000);
     const [filters, setFilters] = useState({
         ACCION: false, AVENTURA: false, RPG: false, SIMULACION: false,
         DEPORTES: false, ESTRATEGIA: false, PUZZLE: false, TERROR: false,
@@ -31,29 +32,22 @@ const Gamefilter = ({ games, setFilter }) => {
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const filter = queryParams.get('filter');
-        if (filter && platforms.includes(filter)) {
+        if (filter && PLATFORMS.includes(filter)) {
             setFilters(prevFilters => ({ ...prevFilters, [filter]: true }));
         }
-    }, [location.search, platforms]);
+    }, [location.search]);
 
     useEffect(() => {
         const filtered = games.filter(game => {
             const matchSearchTerm = game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    game.plataforma.toLowerCase().includes(searchTerm.toLowerCase());
-    
-            const matchCategory = categories.some(category => filters[category] && game.categorias.includes(category));
-            const matchPlatform = platforms.some(platform => filters[platform] && game.plataforma === platform);
+                game.plataforma.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchCategory = CATEGORIES.some(category => filters[category] && game.categorias.includes(category));
+            const matchPlatform = PLATFORMS.some(platform => filters[platform] && game.plataforma === platform);
             const matchPrice = game.precio <= filters.price;
-    
-            const noCategorySelected = categories.every(category => !filters[category]);
-            const noPlatformSelected = platforms.every(platform => !filters[platform]);
-    
-            return matchSearchTerm &&
-                    (noCategorySelected || matchCategory) &&
-                    (noPlatformSelected || matchPlatform) &&
-                    matchPrice;
+            const noCategorySelected = CATEGORIES.every(category => !filters[category]);
+            const noPlatformSelected = PLATFORMS.every(platform => !filters[platform]);
+            return matchSearchTerm && (noCategorySelected || matchCategory) && (noPlatformSelected || matchPlatform) && matchPrice;
         });
-    
         setFilter(filtered);
     }, [filters, games, searchTerm, setFilter]);
 
@@ -62,7 +56,7 @@ const Gamefilter = ({ games, setFilter }) => {
     };
 
     const handleSearchChange = (term) => {
-        setSearchTerm(term); 
+        setSearchTerm(term);
     };
 
     const resetFilters = () => {
@@ -72,66 +66,70 @@ const Gamefilter = ({ games, setFilter }) => {
             VR: false, EDUCATIVO: false, XBOX: false, PC: false,
             NINTENDO_SWITCH: false, PLAY_STATION: false, price: maxPrice,
         });
-        setSearchTerm(''); 
+        setSearchTerm('');
     };
 
     return (
-        <div className="bg-neutral p-4 sm:p-6 rounded-xl w-full lg:w-[400px] lg:h-[1010px] flex flex-col space-y-4 sm:space-y-6">
-            <SearchBar
-                placeholder="Buscar por título o plataforma..."
-                onSearch={handleSearchChange} 
-            />
-            <div className="w-full flex-grow">
-                <h2 className="text-white font-bold mb-3 sm:mb-4 text-lg sm:text-xl">Categorías</h2>
-                <ul className="space-y-2 sm:space-y-3 w-full">
-                    {categories.map((category) => (
-                        <li key={category} className="flex items-center space-x-2 sm:space-x-4">
-                            <input
-                                type="checkbox"
-                                className="checkbox checkbox-sm sm:checkbox-lg checkbox-primary"
-                                checked={filters[category]}
-                                onChange={() => setFilters({ ...filters, [category]: !filters[category] })}
-                            />
-                            <span className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl">
-                                {category.charAt(0) + category.slice(1).toLowerCase()}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-    
-            <div className="w-full flex-grow">
-                <h2 className="text-white font-bold mb-3 sm:mb-4 text-lg sm:text-xl">Plataformas</h2>
-                <ul className="space-y-2 sm:space-y-3 w-full">
-                    {platforms.map((platform) => (
-                        <li key={platform} className="flex items-center space-x-2 sm:space-x-4">
-                            <input
-                                type="checkbox"
-                                className="checkbox checkbox-sm sm:checkbox-lg checkbox-primary"
-                                checked={filters[platform]}
-                                onChange={() => setFilters({ ...filters, [platform]: !filters[platform] })}
-                            />
-                            <span className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl">{platform.replace('_', ' ')}</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-    
-            <div className="w-full flex-grow">
-                <h2 className="text-white font-bold mb-3 sm:mb-4 text-lg sm:text-xl">Rango de Precios</h2>
-                <input
-                    type="range"
-                    min="0"
-                    max={maxPrice}
-                    value={filters.price}
-                    className="range range-sm sm:range-lg range-primary w-full"
-                    onChange={handlePriceChange}
-                />
-                <p className="text-primary mt-2 sm:mt-4 text-base sm:text-lg lg:text-xl">${filters.price}</p>
-            </div>
-    
-            <div className="w-full flex-grow">
-                <button onClick={resetFilters} className="btn btn-outline btn-primary w-full h-12 sm:h-14 text-base sm:text-lg lg:text-xl rounded-lg">
+        <div className="card bg-neutral shadow-lg">
+            <div className="card-body p-4 lg:p-5 gap-5">
+                <SearchBar placeholder="Buscar juegos..." onSearch={handleSearchChange} />
+
+                <div>
+                    <h2 className="text-white font-bold mb-3 text-sm lg:text-base">Categorías</h2>
+                    <div className="grid grid-cols-1 gap-2">
+                        {CATEGORIES.map((category) => (
+                            <label key={category} className="flex items-center gap-3 cursor-pointer hover:bg-base-300 p-1.5 rounded-lg transition-colors">
+                                <input
+                                    type="checkbox"
+                                    className="checkbox checkbox-sm checkbox-primary"
+                                    checked={filters[category]}
+                                    onChange={() => setFilters({ ...filters, [category]: !filters[category] })}
+                                />
+                                <span className="text-gray-300 text-sm">{category.charAt(0) + category.slice(1).toLowerCase()}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="divider my-0"></div>
+
+                <div>
+                    <h2 className="text-white font-bold mb-3 text-sm lg:text-base">Plataformas</h2>
+                    <div className="grid grid-cols-1 gap-2">
+                        {PLATFORMS.map((platform) => (
+                            <label key={platform} className="flex items-center gap-3 cursor-pointer hover:bg-base-300 p-1.5 rounded-lg transition-colors">
+                                <input
+                                    type="checkbox"
+                                    className="checkbox checkbox-sm checkbox-primary"
+                                    checked={filters[platform]}
+                                    onChange={() => setFilters({ ...filters, [platform]: !filters[platform] })}
+                                />
+                                <span className="text-gray-300 text-sm">{platform.replace('_', ' ')}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="divider my-0"></div>
+
+                <div>
+                    <h2 className="text-white font-bold mb-3 text-sm lg:text-base">Precio máximo</h2>
+                    <input
+                        type="range"
+                        min="0"
+                        max={maxPrice}
+                        value={filters.price}
+                        className="range range-sm range-primary w-full"
+                        onChange={handlePriceChange}
+                    />
+                    <div className="flex justify-between mt-2">
+                        <span className="text-gray-400 text-xs">$0</span>
+                        <span className="text-primary font-bold text-sm">${filters.price}</span>
+                        <span className="text-gray-400 text-xs">${maxPrice}</span>
+                    </div>
+                </div>
+
+                <button onClick={resetFilters} className="btn btn-outline btn-primary btn-sm w-full mt-2">
                     Resetear Filtros
                 </button>
             </div>

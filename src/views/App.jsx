@@ -20,6 +20,7 @@ import Redirector from '../components/AppManagement/Redirector';
 import Favorites from './Favorites';
 import AdminRoute from '../components/AppManagement/AdminRoute';
 import UserRoute from '../components/AppManagement/UserRoute';
+import GiftCardsView from '../components/GiftCards/GiftCardsView';
 
 function App() {
     return (
@@ -35,62 +36,14 @@ function App() {
                 <Route path="/Details/:id" element={<Details />} />
                 <Route path="/About" element={<About />} />
                 <Route path="/Support" element={<Support />} />
-                <Route
-                    path="/Cart"
-                    element={
-                        <UserRoute>
-                            <Cart />
-                        </UserRoute>
-                    }
-                />
-                <Route
-                    path="/Settings"
-                    element={
-                        <UserRoute>
-                            <Settings />
-                        </UserRoute>
-                    }
-                />
-                <Route
-                    path="/UserOrderHistory"
-                    element={
-                        <UserRoute>
-                            <UserOrderHistory />
-                        </UserRoute>
-                    }
-                />
-                <Route
-                    path="/Favorites"
-                    element={
-                        <UserRoute>
-                            <Favorites />
-                        </UserRoute>
-                    }
-                />
-                <Route
-                    path="/GamesAdmin"
-                    element={
-                        <AdminRoute>
-                            <GamesAdmin />
-                        </AdminRoute>
-                    }
-                />
-                <Route
-                    path="/Statistics"
-                    element={
-                        <AdminRoute>
-                            <Statistics />
-                        </AdminRoute>
-                    }
-                />
-                <Route
-                    path="/AdminOrderHistory"
-                    element={
-                        <AdminRoute>
-                            <AdminOrderHistory />
-                        </AdminRoute>
-                    }
-                />
+                <Route path="/GiftCards" element={<GiftCardsView />} />
+                <Route path="/Cart" element={<UserRoute><Cart /></UserRoute>} />
+                <Route path="/Settings" element={<UserRoute><Settings /></UserRoute>} />
+                <Route path="/UserOrderHistory" element={<UserRoute><UserOrderHistory /></UserRoute>} />
+                <Route path="/Favorites" element={<UserRoute><Favorites /></UserRoute>} />
+                <Route path="/GamesAdmin" element={<AdminRoute><GamesAdmin /></AdminRoute>} />
+                <Route path="/Statistics" element={<AdminRoute><Statistics /></AdminRoute>} />
+                <Route path="/AdminOrderHistory" element={<AdminRoute><AdminOrderHistory /></AdminRoute>} />
             </Routes>
             <Footer />
         </Router>

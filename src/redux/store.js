@@ -3,6 +3,7 @@ import favoritesReducer from './slices/favoritesSlice';
 import authReducer from './slices/authSlice';
 import cartReducer from './slices/cartSlice';
 import gamesReducer from './slices/gamesSlice';
+import statisticsReducer from './slices/statisticsSlice';
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         auth: authReducer,
         cart: cartReducer,
         games: gamesReducer,
+        statistics: statisticsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

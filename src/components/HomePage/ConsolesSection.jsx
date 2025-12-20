@@ -1,44 +1,40 @@
 import { Link } from 'react-router-dom';
-import xboxImage from '../../assets/xbox.jpg';
-import playstationImage from '../../assets/playstation.jpg';
-import nintendoImage from '../../assets/nintendo.jpg';
-import pcImage from '../../assets/pc.jpg';
+import { FaXbox, FaPlaystation, FaDesktop, FaArrowRight } from 'react-icons/fa';
+import { SiNintendoswitch } from 'react-icons/si';
 
 function ConsolesSection() {
-    const consoles = [
-        { name: 'XBOX', image: xboxImage, filter: 'XBOX' },
-        { name: 'PlayStation', image: playstationImage, filter: 'PLAY_STATION' },
-        { name: 'Nintendo Switch', image: nintendoImage, filter: 'NINTENDO_SWITCH' },
-        { name: 'PC', image: pcImage, filter: 'PC' },
+    const platforms = [
+        { name: 'Xbox', filter: 'XBOX', icon: FaXbox, color: 'text-green-500', gradient: 'from-green-500/20 to-transparent', games: '120+' },
+        { name: 'PlayStation', filter: 'PLAY_STATION', icon: FaPlaystation, color: 'text-blue-500', gradient: 'from-blue-500/20 to-transparent', games: '150+' },
+        { name: 'Switch', filter: 'NINTENDO_SWITCH', icon: SiNintendoswitch, color: 'text-red-500', gradient: 'from-red-500/20 to-transparent', games: '80+' },
+        { name: 'PC', filter: 'PC', icon: FaDesktop, color: 'text-purple-400', gradient: 'from-purple-400/20 to-transparent', games: '200+' },
     ];
 
     return (
-        <div className="w-full py-12 sm:py-16 lg:py-20">
-            <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Elegí tu aventura</h2>
-                <div className="w-20 h-1 bg-orange-500 mx-auto"></div>
+        <section className="py-16 sm:py-20">
+            <div className="text-center mb-10">
+                <span className="text-primary text-sm font-semibold tracking-wider uppercase">Plataformas</span>
+                <h2 className="text-3xl sm:text-4xl font-bold text-white mt-2">Elegí tu plataforma</h2>
             </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
-                {consoles.map((console) => (
-                    <Link 
-                        key={console.filter}
-                        to={{ pathname: "/store", search: `?filter=${console.filter}` }} 
-                        className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 aspect-square"
-                    >
-                        <img 
-                            src={console.image} 
-                            alt={console.name} 
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
-                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 text-center">
-                            <h3 className="text-white font-bold text-sm sm:text-base lg:text-lg drop-shadow-lg">{console.name}</h3>
-                        </div>
-                    </Link>
-                ))}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {platforms.map((platform) => {
+                    const IconComponent = platform.icon;
+                    return (
+                        <Link key={platform.filter} to={{ pathname: "/Store", search: `?filter=${platform.filter}` }} className={`relative overflow-hidden rounded-2xl bg-neutral border border-base-200 hover:border-primary/40 p-6 sm:p-8 text-center group transition-all duration-300 hover:shadow-xl`}>
+                            <div className={`absolute inset-0 bg-gradient-to-b ${platform.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                            <div className="relative z-10">
+                                <IconComponent className={`text-4xl sm:text-5xl ${platform.color} mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`} />
+                                <h3 className="text-lg sm:text-xl font-bold text-white mb-1">{platform.name}</h3>
+                                <p className="text-gray-400 text-sm">{platform.games} juegos</p>
+                                <div className="mt-4 flex items-center justify-center gap-1 text-primary text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Ver juegos <FaArrowRight className="text-xs" />
+                                </div>
+                            </div>
+                        </Link>
+                    );
+                })}
             </div>
-        </div>
+        </section>
     );
 }
 

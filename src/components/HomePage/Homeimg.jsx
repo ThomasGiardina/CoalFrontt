@@ -1,28 +1,20 @@
 import { useEffect, useState } from 'react';
-import homeImage from '../../assets/Homepng.png'; 
+import homeGif from '../../assets/homhero2.gif';
 
 const ImageComponent = () => {
     const [isLoaded, setIsLoaded] = useState(false);
+
     useEffect(() => {
-        setTimeout(() => {
-            setIsLoaded(true);
-        }, 200);
+        setTimeout(() => setIsLoaded(true), 200);
     }, []);
 
     return (
         <div className="relative transition-all duration-1000 ease-in-out flex justify-center items-center w-full">
-            <div className={`relative transition-all duration-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
-                <img
-                    src={homeImage}
-                    alt="Personaje"
-                    className="h-[250px] w-[250px] sm:h-[350px] sm:w-[350px] md:h-[500px] md:w-[500px] lg:h-[700px] lg:w-[700px] xl:h-[800px] xl:w-[800px] object-contain brightness-[1.8] saturate-[1.2] transition-transform duration-300 ease-in-out"
-                    style={{
-                        filter: 'drop-shadow(0 -5px 50px rgba(255, 69, 0, 1)) drop-shadow(0 5px 10px rgba(255, 69, 0, 1))',
-                        maskImage: 'linear-gradient(to bottom, black, transparent)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)' 
-                    }}
-                />
-                <div className="absolute inset-0 pointer-events-none"></div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] lg:w-[380px] lg:h-[380px] rounded-full blur-[80px]" style={{ background: 'radial-gradient(circle, rgba(255,107,0,0.3) 0%, rgba(255,107,0,0.1) 50%, transparent 70%)' }}></div>
+            </div>
+            <div className={`relative transition-all duration-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+                <img src={homeGif} alt="Gaming Hero" className="w-[220px] sm:w-[300px] md:w-[380px] lg:w-[450px] object-contain" style={{ filter: 'drop-shadow(0 0 40px rgba(255, 107, 0, 0.2)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4))', maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }} />
             </div>
         </div>
     );
