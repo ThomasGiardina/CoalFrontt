@@ -112,7 +112,7 @@ const GiftCardsView = () => {
 
     return (
         <div className="min-h-screen bg-base-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-6">
                     <Link to="/Store" className="btn btn-ghost btn-sm gap-2">
                         <FaArrowLeft /> Volver a la tienda

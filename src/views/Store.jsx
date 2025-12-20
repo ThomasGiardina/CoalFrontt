@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import Storegrid from '../components/Store/StoreGrid';
-import Carrousel from '../components/Store/Carrousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGames } from '../redux/slices/gamesSlice';
 
@@ -14,7 +13,6 @@ const Store = () => {
 
     return (
         <div className="w-full">
-            <Carrousel />
             <Storegrid games={games} />
         </div>
     );

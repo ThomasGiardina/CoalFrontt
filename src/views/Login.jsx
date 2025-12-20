@@ -8,10 +8,10 @@ function App() {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url('/portada.png')`,
-          filter: 'brightness(50%) blur(3px)' 
+          filter: 'brightness(50%) blur(3px)'
         }}
       ></div>
-      <div className="relative z-10 mb-8 w-full px-4">
+      <div className="relative z-10 w-full max-w-[1400px] px-4 flex items-center justify-center">
         <ContainerLogin />
       </div>
     </div>

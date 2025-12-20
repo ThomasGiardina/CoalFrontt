@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBestSellers } from '../../redux/slices/statisticsSlice';
@@ -20,16 +20,16 @@ const BestSellersSection = () => {
 
     useEffect(() => {
         if (bestSellers.length > 0) {
-            // Use best sellers from backend, limited to 5
-            const limited = bestSellers.slice(0, 5);
+            // Use best sellers from backend, limited to 6
+            const limited = bestSellers.slice(0, 6);
             setDisplayGames(limited.map((game, index) => ({
                 ...game,
                 isFromApi: true,
                 rank: index + 1
             })));
         } else if (allGames.length > 0) {
-            // Fallback: 5 random games if no best sellers
-            const shuffled = [...allGames].sort(() => Math.random() - 0.5).slice(0, 5);
+            // Fallback: 6 random games if no best sellers
+            const shuffled = [...allGames].sort(() => Math.random() - 0.5).slice(0, 6);
             setDisplayGames(shuffled.map((game, index) => ({
                 titulo: game.titulo,
                 foto: `data:image/jpeg;base64,${game.foto}`,
@@ -60,7 +60,7 @@ const BestSellersSection = () => {
                 <FaTrophy className="text-primary text-xl" />
                 <h2 className="text-xl font-bold text-white">Más Vendidos</h2>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {displayGames.map((game, index) => (
                     <Link
                         key={game.id || index}

@@ -24,7 +24,7 @@ const StoreNavbar = () => {
 
     return (
         <div className="w-full bg-base-100 sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="navbar min-h-[64px]">
                     <div className="navbar-start gap-2">
                         <Link to={!isAuthenticated ? "/" : role === 'ADMIN' ? "/GamesAdmin" : "/Store"} className="btn btn-ghost gap-2 px-2">

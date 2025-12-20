@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchGames } from '../../redux/slices/gamesSlice';
@@ -9,8 +9,11 @@ import { FaXbox, FaPlaystation } from "react-icons/fa";
 const FeaturedGamesRow = () => {
     const dispatch = useDispatch();
     const { items: games } = useSelector((state) => state.games);
-    const [scrollPosition, setScrollPosition] = useState(0);
     const [featuredGames, setFeaturedGames] = useState([]);
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [maxScroll, setMaxScroll] = useState(0);
+    const containerRef = useRef(null);
+    const contentRef = useRef(null);
 
     useEffect(() => {
         if (games.length === 0) dispatch(fetchGames());
@@ -23,8 +26,27 @@ const FeaturedGamesRow = () => {
         }
     }, [games]);
 
-    const scrollLeft = () => setScrollPosition(Math.max(0, scrollPosition - 300));
-    const scrollRight = () => setScrollPosition(scrollPosition + 300);
+    // Calculate max scroll when content loads
+    useEffect(() => {
+        const calculateMaxScroll = () => {
+            if (containerRef.current && contentRef.current) {
+                const containerWidth = containerRef.current.offsetWidth;
+                const contentWidth = contentRef.current.scrollWidth;
+                setMaxScroll(Math.max(0, contentWidth - containerWidth));
+            }
+        };
+        calculateMaxScroll();
+        window.addEventListener('resize', calculateMaxScroll);
+        return () => window.removeEventListener('resize', calculateMaxScroll);
+    }, [featuredGames]);
+
+    const scrollLeft = () => {
+        setScrollPosition(Math.max(0, scrollPosition - 300));
+    };
+
+    const scrollRight = () => {
+        setScrollPosition(Math.min(maxScroll, scrollPosition + 300));
+    };
 
     const getPlatformIcon = (p) => {
         switch (p) {
@@ -38,19 +60,40 @@ const FeaturedGamesRow = () => {
 
     if (featuredGames.length === 0) return null;
 
+    const canScrollLeft = scrollPosition > 0;
+    const canScrollRight = scrollPosition < maxScroll;
+
     return (
         <div className="mb-8">
+            {/* Header with arrows on top */}
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-white">Te puede interesar</h2>
                 <div className="flex gap-2">
-                    <button onClick={scrollLeft} className="btn btn-circle btn-xs btn-ghost"><FaChevronLeft /></button>
-                    <button onClick={scrollRight} className="btn btn-circle btn-xs btn-ghost"><FaChevronRight /></button>
+                    <button
+                        onClick={scrollLeft}
+                        disabled={!canScrollLeft}
+                        className={`btn btn-circle btn-xs btn-ghost ${!canScrollLeft ? 'opacity-30' : ''}`}
+                    >
+                        <FaChevronLeft />
+                    </button>
+                    <button
+                        onClick={scrollRight}
+                        disabled={!canScrollRight}
+                        className={`btn btn-circle btn-xs btn-ghost ${!canScrollRight ? 'opacity-30' : ''}`}
+                    >
+                        <FaChevronRight />
+                    </button>
                 </div>
             </div>
-            <div className="overflow-hidden">
-                <div className="flex gap-4 transition-transform duration-300" style={{ transform: `translateX(-${scrollPosition}px)` }}>
+
+            <div ref={containerRef} className="overflow-hidden">
+                <div
+                    ref={contentRef}
+                    className="flex gap-4 transition-transform duration-300"
+                    style={{ transform: `translateX(-${scrollPosition}px)` }}
+                >
                     {featuredGames.map((game) => (
-                        <Link key={game.id} to={`/Details/${game.id}`} className="flex-shrink-0 w-40 group">
+                        <Link key={game.id} to={`/Details/${game.id}`} className="flex-shrink-0 w-48 group">
                             <div className="card bg-neutral border border-base-200 hover:border-primary/40 overflow-hidden transition-all duration-300">
                                 <figure className="relative aspect-[3/4] overflow-hidden">
                                     <img src={`data:image/jpeg;base64,${game.foto}`} alt={game.titulo} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

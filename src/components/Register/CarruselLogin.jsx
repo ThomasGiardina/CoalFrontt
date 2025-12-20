@@ -4,34 +4,29 @@ const CarruselLogin = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const images = [
-        '/src/assets/log1.jpg',  
-        '/src/assets/log2.jpg', 
-        '/src/assets/log3.jpg'  
+        '/src/assets/log1.jpg',
+        '/src/assets/log2.jpg',
+        '/src/assets/log3.jpg'
     ];
 
     const goToNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     };
 
-    const goToPrev = () => {
-        setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? images.length - 1 : prevIndex - 1
-        );
-    };
-
     useEffect(() => {
-        const interval = setInterval(goToNext, 4000); 
-    
-        return () => clearInterval(interval); 
+        const interval = setInterval(goToNext, 4000);
+
+        return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="relative w-[520px] h-[660px]"> 
-            <div className="carousel rounded-box w-full h-full overflow-hidden">
+        <div className="relative w-full max-w-[450px] aspect-[3/4] rounded-lg overflow-hidden">
+            <div className="carousel w-full h-full">
                 <div className="carousel-item w-full h-full">
                     <img
                         src={images[currentIndex]}
-                        className="object-cover w-full h-full transition-transform duration-500 ease-in-out transform hover:scale-105" 
+                        className="object-cover w-full h-full transition-transform duration-500 ease-in-out transform hover:scale-105"
+                        alt="Game artwork"
                     />
                 </div>
             </div>
@@ -39,7 +34,7 @@ const CarruselLogin = () => {
                 {images.map((_, index) => (
                     <div
                         key={index}
-                        className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-stone-950' : 'bg-gray-500'}`}
+                        className={`h-2 w-2 rounded-full transition-colors ${currentIndex === index ? 'bg-primary' : 'bg-gray-500'}`}
                     ></div>
                 ))}
             </div>
