@@ -21,24 +21,51 @@ const PLATFORMS = [
     { label: 'PLAY STATION', value: 'PLAY_STATION' }
 ];
 
+const normalize = (str) => (str || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/_/g, ' ')
+    .toUpperCase()
+    .trim();
+
+const isGiftCard = (g) => {
+    const title = (g?.titulo || '').toLowerCase();
+    const platform = (g?.plataforma || '').toLowerCase();
+    return Boolean(g?.giftCard || g?.gift_card || platform === 'coal' || title.includes('tarjeta'));
+};
+
 const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedPlatform, setSelectedPlatform] = useState('');
+    const [maxPrice, setMaxPrice] = useState(11000);
     const [priceRange, setPriceRange] = useState(11000);
 
     useEffect(() => {
-        let filteredGames = [...games];
+        // Calcular precio máximo dinámico en base a los juegos no giftcard
+        const nonGift = games.filter((g) => !isGiftCard(g));
+        const computedMax = Math.max(0, ...nonGift.map((g) => Number(g.precio) || 0));
+        const finalMax = computedMax > 0 ? computedMax : 11000;
+        setMaxPrice(finalMax);
+        setPriceRange(finalMax);
+    }, [games]);
+
+    useEffect(() => {
+        let filteredGames = games.filter((g) => !isGiftCard(g));
+
         if (selectedCategory) {
+            const selCat = normalize(selectedCategory);
             filteredGames = filteredGames.filter((game) =>
-                game.categoria?.toUpperCase() === selectedCategory.toUpperCase()
+                normalize(game.categoria) === selCat
             );
         }
         if (selectedPlatform) {
+            const selPlat = normalize(selectedPlatform);
             filteredGames = filteredGames.filter((game) =>
-                game.plataforma?.toUpperCase() === selectedPlatform.toUpperCase()
+                normalize(game.plataforma) === selPlat
             );
         }
-        filteredGames = filteredGames.filter((game) => parseInt(game.precio) <= priceRange);
+
+        filteredGames = filteredGames.filter((game) => (Number(game.precio) || 0) <= priceRange);
         setFilter(filteredGames);
     }, [selectedCategory, selectedPlatform, priceRange, games, setFilter]);
 
@@ -57,7 +84,7 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
     const handleResetFilters = () => {
         setSelectedCategory('');
         setSelectedPlatform('');
-        setPriceRange(11000);
+        setPriceRange(maxPrice);
         setSearchTerm('');
     };
 
@@ -103,7 +130,7 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
                     <input
                         type="range"
                         min={0}
-                        max={11000}
+                        max={maxPrice}
                         value={priceRange}
                         onChange={(e) => setPriceRange(Number(e.target.value))}
                         className="range range-primary range-sm w-full"
@@ -111,7 +138,7 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
                     <div className="flex justify-between text-sm text-gray-400 mt-2">
                         <span>$0</span>
                         <span className="text-primary font-bold">${priceRange}</span>
-                        <span>$11000</span>
+                        <span>${maxPrice}</span>
                     </div>
                 </div>
 
