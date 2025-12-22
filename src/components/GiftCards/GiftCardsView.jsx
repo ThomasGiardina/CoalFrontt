@@ -1,13 +1,62 @@
 import { Link } from 'react-router-dom';
 import { FaGift, FaShoppingCart, FaCheck, FaArrowLeft } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { addCartItem } from '../../redux/slices/cartSlice';
+import { addItemToCarrito, fetchCarrito } from '../../redux/slices/cartSlice';
+import { useEffect, useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
-import Giftcard20 from '../../assets/Giftcard20.png';
-import Giftcard50 from '../../assets/Giftcard50.png';
-import Giftcard100 from '../../assets/Giftcard100.png';
+import Giftcard20 from '../../assets/tarjeta20.png';
+import Giftcard50 from '../../assets/tarjeta50.png';
+import Giftcard100 from '../../assets/tarjeta100.png';
+import BackgroundImage from '../../assets/fondito.jpg';
 
 const GiftCardRow = ({ card, isReversed, onAddToCart }) => {
+    if (card.price === 20 || card.price === 50 || card.price === 100) {
+        const isReversedLayout = card.price === 50;
+        
+        return (
+            <div className="card bg-neutral border border-base-200 hover:border-primary/40 transition-all duration-300 overflow-hidden relative">
+                <div className="absolute inset-0">
+                    <img 
+                        src={BackgroundImage} 
+                        alt="Background" 
+                        className="w-full h-full object-cover object-center"
+                    />
+                    <div className="absolute inset-0 bg-black/75"></div>
+                    <div className={`absolute inset-0 ${isReversedLayout ? 'bg-gradient-to-l from-black/70 via-black/50 to-transparent' : 'bg-gradient-to-r from-black/70 via-black/50 to-transparent'}`}></div>
+                </div>
+                
+                <div className={`relative flex flex-col ${isReversedLayout ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center`}>
+                    <div className="w-full lg:w-2/5 p-6 lg:p-8 flex items-center justify-center">
+                        <img
+                            src={card.image}
+                            alt={card.name}
+                            className="w-56 sm:w-64 lg:w-72 h-auto object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+                        />
+                    </div>
+                    <div className={`w-full lg:w-3/5 p-6 lg:p-8 z-10 ${isReversedLayout ? 'pl-16 sm:pl-20 lg:pl-28' : ''}`}>
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="badge bg-orange-500 border-orange-500 text-white gap-1"><FaGift /> Tarjeta Digital</span>
+                        </div>
+                        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2">{card.name}</h3>
+                        <p className="text-gray-200 mb-4">{card.description}</p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {card.features.map((feature, i) => (
+                                <span key={i} className="badge badge-ghost bg-white/10 text-white gap-1">
+                                    <FaCheck className="text-orange-500 text-xs" /> {feature}
+                                </span>
+                            ))}
+                        </div>
+                        <div className="flex items-center justify-start mt-6">
+                            <button onClick={() => onAddToCart(card)} className="btn bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-none gap-2">
+                                <FaShoppingCart /> Agregar al carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className={`card bg-neutral border border-base-200 hover:border-primary/40 transition-all duration-300 overflow-hidden`}>
             <div className={`flex flex-col ${isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center`}>
@@ -45,7 +94,36 @@ const GiftCardRow = ({ card, isReversed, onAddToCart }) => {
 
 const GiftCardsView = () => {
     const dispatch = useDispatch();
-    const { isAuthenticated } = useSelector((state) => state.auth);
+    const { isAuthenticated, token } = useSelector((state) => state.auth);
+    const carritoId = useSelector((state) => state.cart.carritoId);
+    const [giftCardProducts, setGiftCardProducts] = useState([]);
+
+    const loadGiftCards = useCallback(async () => {
+        try {
+            const resp = await fetch('http://localhost:4002/videojuegos', {
+                headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                const list = Array.isArray(data)
+                    ? data.filter(v =>
+                        v.giftCard === true ||
+                        v.gift_card === true ||
+                        ((v.titulo || '').toLowerCase().includes('tarjeta coal'))
+                    )
+                    : [];
+                setGiftCardProducts(list);
+                return list;
+            }
+        } catch (e) {
+            // silencioso
+        }
+        return [];
+    }, [token]);
+
+    useEffect(() => {
+        loadGiftCards();
+    }, [loadGiftCards]);
 
     const giftCards = [
         {
@@ -74,7 +152,7 @@ const GiftCardsView = () => {
         },
     ];
 
-    const handleAddToCart = (card) => {
+    const handleAddToCart = async (card) => {
         if (!isAuthenticated) {
             Swal.fire({
                 title: 'Inicia sesión',
@@ -87,15 +165,43 @@ const GiftCardsView = () => {
             return;
         }
 
-        // Add gift card to cart (local state - backend doesn't support gift cards yet)
-        dispatch(addCartItem({
-            id: card.id,
-            titulo: card.name,
-            precio: card.price,
-            foto: null,
-            isGiftCard: true,
-            cantidad: 1
-        }));
+        // Asegurar tener carritoId
+        let cid = carritoId;
+        if (!cid) {
+            const res = await dispatch(fetchCarrito());
+            const payload = res.payload;
+            cid = payload?.id || cid;
+        }
+
+        // Resolver videojuegoId de la gift card (por precio aproximado o título). Si no hay lista, la refrescamos y reintentamos.
+        const findGiftCard = (list) => {
+            const target = Number(card.price);
+            return list.find(p => Math.abs(Number(p.precio) - target) < 0.001)
+                || list.find(p => (p.titulo || '').toLowerCase().includes(String(card.price)))
+                || list.find(p => p.giftCard === true || p.gift_card === true);
+        };
+
+        let videojuego = findGiftCard(giftCardProducts);
+
+        if (!videojuego) {
+            const refreshed = await loadGiftCards();
+            videojuego = findGiftCard(refreshed);
+        }
+
+        if (!videojuego) {
+            Swal.fire({
+                title: 'Ups',
+                text: 'No pudimos encontrar la tarjeta en el catálogo. Verificá que existan las gift cards en el backend y que tengan el precio correcto.',
+                icon: 'warning',
+                background: '#1D1F23',
+                color: '#fff'
+            });
+            return;
+        }
+
+        await dispatch(addItemToCarrito({ carritoId: cid, videojuegoId: videojuego.id, cantidad: 1 }));
+        // Refrescar el carrito desde el backend
+        await dispatch(fetchCarrito());
 
         Swal.fire({
             title: '¡Agregado!',

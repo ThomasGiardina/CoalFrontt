@@ -21,7 +21,8 @@ const FeaturedGamesRow = () => {
 
     useEffect(() => {
         if (games.length > 0) {
-            const shuffled = [...games].sort(() => Math.random() - 0.5).slice(0, 10);
+            const nonGift = games.filter(g => !(g?.giftCard || g?.gift_card || (g?.plataforma || '').toLowerCase() === 'coal' || (g?.titulo || '').toLowerCase().includes('tarjeta')));
+            const shuffled = [...nonGift].sort(() => Math.random() - 0.5).slice(0, 10);
             setFeaturedGames(shuffled);
         }
     }, [games]);

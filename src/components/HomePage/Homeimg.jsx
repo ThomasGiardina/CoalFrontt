@@ -10,11 +10,13 @@ const ImageComponent = () => {
 
     return (
         <div className="relative transition-all duration-1000 ease-in-out flex justify-center items-center w-full">
+            {/* Fondo azul oscuro */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] lg:w-[380px] lg:h-[380px] rounded-full blur-[80px]" style={{ background: 'radial-gradient(circle, rgba(255,107,0,0.3) 0%, rgba(255,107,0,0.1) 50%, transparent 70%)' }}></div>
+                <div className="w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[520px] lg:h-[520px] rounded-full blur-3xl" style={{ background: 'radial-gradient(circle, rgba(15, 30, 70, 0.6) 0%, rgba(10, 20, 50, 0.3) 50%, transparent 80%)' }}></div>
             </div>
+            
             <div className={`relative transition-all duration-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-                <img src={homeGif} alt="Gaming Hero" className="w-[220px] sm:w-[300px] md:w-[380px] lg:w-[450px] object-contain" style={{ filter: 'drop-shadow(0 0 40px rgba(255, 107, 0, 0.2)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4))', maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }} />
+                <img src={homeGif} alt="Gaming Hero" className="w-[280px] sm:w-[380px] md:w-[480px] lg:w-[580px] object-contain" style={{ filter: 'drop-shadow(0 0 40px rgba(255, 107, 0, 0.2)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4))', maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }} />
             </div>
         </div>
     );

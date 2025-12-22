@@ -16,7 +16,12 @@ const StoreBanner = () => {
 
     useEffect(() => {
         if (games.length > 0) {
-            const shuffled = [...games].sort(() => Math.random() - 0.5).slice(0, 4);
+            const filteredGames = games.filter((game) => {
+                const title = game.titulo?.toLowerCase() || '';
+                return !game.giftCard && !game.gift_card && game.plataforma !== 'COAL' && !title.includes('tarjeta');
+            });
+
+            const shuffled = [...filteredGames].sort(() => Math.random() - 0.5).slice(0, 4);
             setFeaturedGames(shuffled);
         }
     }, [games]);

@@ -1,8 +1,12 @@
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
+import tarjeta20 from '../../assets/tarjeta20.png';
+import tarjeta50 from '../../assets/tarjeta50.png';
+import tarjeta100 from '../../assets/tarjeta100.png';
 
 const GamecardPurchase = ({ game }) => {
     const getPlatformIcon = (platform) => {
-        switch (platform.toUpperCase()) {  
+        if (!platform) return null;
+        switch (String(platform).toUpperCase()) {  
             case 'XBOX':
                 return <i className="fab fa-xbox text-green-500 text-2xl"></i>;
             case 'PLAY_STATION':
@@ -16,7 +20,9 @@ const GamecardPurchase = ({ game }) => {
         }
     };
 
-    const platforms = Array.isArray(game.plataforma) ? game.plataforma : [game.plataforma];
+    const platforms = game && game.plataforma !== undefined
+        ? (Array.isArray(game.plataforma) ? game.plataforma : [game.plataforma])
+        : [];
 
     const formatPrice = (price) => {
         return price.toLocaleString('es-AR', {
@@ -25,7 +31,24 @@ const GamecardPurchase = ({ game }) => {
         });
     };
 
-    const fotoUrl = game.foto 
+    const getGiftCardImage = () => {
+        const title = game?.titulo?.toLowerCase() || '';
+        const isGift = game?.isGiftCard || game?.giftCard || game?.gift_card || title.includes('tarjeta') || title.includes('coal');
+        
+        if (!isGift) return null;
+        
+        const priceNum = Number(game?.precio);
+        if (Math.abs(priceNum - 20) < 0.01) return tarjeta20;
+        if (Math.abs(priceNum - 50) < 0.01) return tarjeta50;
+        if (Math.abs(priceNum - 100) < 0.01) return tarjeta100;
+        
+        return null;
+    };
+
+    const giftCardImage = getGiftCardImage();
+    const fotoUrl = giftCardImage
+        ? giftCardImage
+        : game && game.foto 
         ? `data:image/jpeg;base64,${game.foto}` 
         : '/ruta/a/imagen_por_defecto.png';
 
@@ -38,7 +61,7 @@ const GamecardPurchase = ({ game }) => {
                     className="w-20 h-20 object-cover rounded-lg mr-4"
                 />
                 <div>
-                    <h3 className="text-xl font-semibold text-white">{game.titulo}</h3>
+                    <h3 className="text-xl font-semibold text-white">{game?.titulo || 'Item'}</h3>
                     <div className="flex items-center space-x-2 mt-2">
                         {platforms.map((plataforma, index) => (
                             <span key={index}>{getPlatformIcon(plataforma)}</span>
@@ -47,8 +70,8 @@ const GamecardPurchase = ({ game }) => {
                 </div>
             </div>
             <div className="text-right"> 
-                <p className="text-xl font-semibold text-white">{formatPrice(game.precio)} ARS</p>
-                <p className="text-gray-400">Cantidad: {game.cantidad}</p>
+                <p className="text-xl font-semibold text-white">{formatPrice(game?.precio || 0)} ARS</p>
+                <p className="text-gray-400">Cantidad: {game?.cantidad || 1}</p>
             </div>
         </div>
     );

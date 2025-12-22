@@ -9,7 +9,7 @@ import FeaturedGamesRow from './FeaturedGamesRow';
 import GiftCardsSection from './GiftCardsSection';
 
 const Storegrid = ({ games }) => {
-    const [filteredGames, setFilteredGames] = useState(games);
+    const [filteredGames, setFilteredGames] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -23,15 +23,18 @@ const Storegrid = ({ games }) => {
         if (newPage >= 1 && newPage <= totalPages) setCurrentPage(newPage);
     };
 
+    const filterNonGift = (list) => list.filter(game => !(game?.giftCard || game?.gift_card || (game?.plataforma || '').toLowerCase() === 'coal' || (game?.titulo || '').toLowerCase().includes('tarjeta')));
+
     useEffect(() => {
-        const filtered = games.filter(game =>
-            game.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            game.plataforma.toLowerCase().includes(searchTerm.toLowerCase())
+        const base = filterNonGift(games);
+        const filtered = base.filter(game =>
+            (game.titulo || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (game.plataforma || '').toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredGames(filtered);
     }, [games, searchTerm]);
 
-    useEffect(() => { setFilteredGames(games); }, [games]);
+    useEffect(() => { setFilteredGames(filterNonGift(games)); }, [games]);
 
     return (
         <div className="min-h-screen bg-base-300">

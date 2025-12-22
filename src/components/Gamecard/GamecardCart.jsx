@@ -3,35 +3,64 @@ import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { useDispatch } from 'react-redux';
-import { deleteItemFromCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice';
+import { deleteItemFromCarrito, updateCartItemAsync, removeCartItem, updateCartItem } from '../../redux/slices/cartSlice';
+import tarjeta20 from '../../assets/tarjeta20.png';
+import tarjeta50 from '../../assets/tarjeta50.png';
+import tarjeta100 from '../../assets/tarjeta100.png';
 
 const GamecardCart = ({ item, onUpdateQuantity }) => {
     const dispatch = useDispatch();
-    const { id, titulo, precio, cantidad, foto, plataforma, stock } = item || {};
+    const { id, titulo, precio, cantidad, foto, plataforma, stock, isGiftCard } = item || {};
 
-    const fotoUrl = foto
+    const getGiftCardImage = () => {
+        const title = titulo?.toLowerCase() || '';
+        const isGift = isGiftCard || item.giftCard || item.gift_card || title.includes('tarjeta') || title.includes('coal');
+        
+        if (!isGift) return null;
+        
+        const priceNum = Number(precio);
+        if (Math.abs(priceNum - 20) < 0.01) return tarjeta20;
+        if (Math.abs(priceNum - 50) < 0.01) return tarjeta50;
+        if (Math.abs(priceNum - 100) < 0.01) return tarjeta100;
+        
+        return null;
+    };
+
+    const giftCardImage = getGiftCardImage();
+    const fotoUrl = giftCardImage 
+        ? giftCardImage
+        : foto
         ? `data:image/jpeg;base64,${foto}`
         : '/ruta/a/imagen_por_defecto.png';
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
-        if (nuevaCantidad <= stock) {
-            dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad }));
+        if (!isGiftCard) {
+            if (nuevaCantidad <= stock) {
+                dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad }));
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cantidad máxima alcanzada',
+                    text: `Solo hay ${stock} unidades disponibles.`,
+                    background: '#1D1F23',
+                    color: '#fff',
+                });
+            }
         } else {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Cantidad máxima alcanzada',
-                text: `Solo hay ${stock} unidades disponibles.`,
-                background: '#1D1F23',
-                color: '#fff',
-            });
+            // Gift cards solo existen localmente; actualizar en el store local
+            dispatch(updateCartItem({ id, cantidad: nuevaCantidad }));
         }
     };
 
     const disminuirCantidad = () => {
         if (cantidad > 1) {
             const nuevaCantidad = cantidad - 1;
-            dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad }));
+            if (!isGiftCard) {
+                dispatch(updateCartItemAsync({ id, cantidad: nuevaCantidad }));
+            } else {
+                dispatch(updateCartItem({ id, cantidad: nuevaCantidad }));
+            }
         }
     };
 
@@ -49,7 +78,11 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteItemFromCarrito(id));
+                if (!isGiftCard) {
+                    dispatch(deleteItemFromCarrito(id));
+                } else {
+                    dispatch(removeCartItem(id));
+                }
             }
         });
     };

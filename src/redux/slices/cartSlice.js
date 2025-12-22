@@ -196,6 +196,8 @@ const cartSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchCarrito.fulfilled, (state, action) => {
+                const giftCards = state.cartItems.filter(item => item.isGiftCard === true);
+                
                 const newCartItems = Array.isArray(action.payload.items)
                     ? action.payload.items.map(item => ({
                         id: item.id,
@@ -207,16 +209,11 @@ const cartSlice = createSlice({
                         stock: item.videojuego?.stock || 0,
                     }))
                     : [];
-            
-                if (JSON.stringify(state.cartItems) !== JSON.stringify(newCartItems)) {
-                    state.cartItems = newCartItems;
-                    state.cantidadItems = newCartItems.length;
-                }
-            
+
+                state.cartItems = newCartItems;
+                state.cantidadItems = newCartItems.length;
                 state.loading = false;
                 state.carritoId = action.payload.id || null;
-            })
-            .addCase(fetchCarrito.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Error al cargar el carrito.';
             })
@@ -225,20 +222,8 @@ const cartSlice = createSlice({
                 state.error = null;
             })
             .addCase(addItemToCarrito.fulfilled, (state, action) => {
+                // El backend devuelve solo un mensaje; refrescamos luego con fetchCarrito
                 state.loading = false;
-            
-                const existingItemIndex = state.cartItems.findIndex(
-                    (item) => item.id === action.payload.id
-                );
-            
-                if (existingItemIndex >= 0) {
-                    state.cartItems[existingItemIndex].cantidad += action.payload.cantidad;
-                } else {
-                    state.cartItems.push({
-                        ...action.payload,
-                        cantidad: action.payload.cantidad || 1,
-                    });
-                }
             })
             .addCase(addItemToCarrito.rejected, (state, action) => {
                 state.loading = false;

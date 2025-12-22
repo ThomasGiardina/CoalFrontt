@@ -3,13 +3,15 @@ import Badges from './Badges';
 const UserOrderRow = ({ order }) => {
     return (
         <tr className="hover:bg-neutral-focus">
-            <td className="text-center text-xs sm:text-sm">{order.id}</td>
+            <td className="text-center text-xs sm:text-sm">{order.id || order.pedidoId || '-'}</td>
             <td className="text-center text-xs sm:text-sm">
-                {new Date(order.fecha).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })}
+                {order.fecha
+                    ? new Date(order.fecha).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    })
+                    : '-'}
             </td>
             <td className="text-center text-xs sm:text-sm">
                 <Badges type="payment" value={order.tipoPago} />

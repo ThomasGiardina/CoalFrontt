@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBestSellers } from '../../redux/slices/statisticsSlice';
@@ -18,23 +18,32 @@ const BestSellersSection = () => {
         if (allGames.length === 0) dispatch(fetchGames());
     }, [dispatch, allGames.length]);
 
+    const filterNonGift = (list) => list.filter(g => !(g?.giftCard || g?.gift_card || (g?.plataforma || '').toLowerCase() === 'coal' || (g?.titulo || '').toLowerCase().includes('tarjeta')));
+
     useEffect(() => {
         if (bestSellers.length > 0) {
-            // Use best sellers from backend, limited to 6
-            const limited = bestSellers.slice(0, 6);
-            setDisplayGames(limited.map((game, index) => ({
-                ...game,
+            const limited = filterNonGift(bestSellers).slice(0, 6);
+            setDisplayGames(limited.map((g, index) => ({
+                // Normalizamos posibles nombres de campos que puede traer la API
+                id: g.id ?? g.producto_id ?? g.videojuego_id ?? g.game_id,
+                titulo: g.titulo ?? g.nombre ?? g.name,
+                plataforma: g.plataforma ?? g.platform,
+                ventas: g.ventas ?? g.totalVentas ?? g.cant_ventas ?? g.cantidad ?? g.total_sold ?? 0,
+                // Imagen: ya puede venir como URL o base64
+                foto: typeof g.foto === 'string'
+                    ? (g.foto.startsWith('http') || g.foto.startsWith('data:') ? g.foto : `data:image/jpeg;base64,${g.foto}`)
+                    : (g.fotoUrl ?? g.imagenUrl ?? undefined),
                 isFromApi: true,
-                rank: index + 1
+                rank: index + 1,
             })));
         } else if (allGames.length > 0) {
-            // Fallback: 6 random games if no best sellers
-            const shuffled = [...allGames].sort(() => Math.random() - 0.5).slice(0, 6);
+            const pool = filterNonGift(allGames);
+            const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 6);
             setDisplayGames(shuffled.map((game, index) => ({
                 titulo: game.titulo,
                 foto: `data:image/jpeg;base64,${game.foto}`,
                 plataforma: game.plataforma,
-                ventas: Math.floor(Math.random() * 500) + 100,
+                ventas: game.ventas,
                 id: game.id,
                 isFromApi: false,
                 rank: index + 1
@@ -85,7 +94,7 @@ const BestSellersSection = () => {
                             <div className="p-3">
                                 <h3 className="text-white text-sm font-medium line-clamp-1">{game.titulo}</h3>
                                 <div className="flex items-center gap-1 mt-1">
-                                    <span className="text-gray-400 text-xs">{game.ventas}+ vendidos</span>
+                                    <span className="text-gray-400 text-xs">Ventas: {(Number(game.ventas) || 0).toLocaleString('es-AR')}</span>
                                 </div>
                             </div>
                         </div>

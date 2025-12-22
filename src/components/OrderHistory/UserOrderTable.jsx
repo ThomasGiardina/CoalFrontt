@@ -30,24 +30,35 @@ const UserOrderTable = () => {
         setLoading(true);
         setError(null);
 
-        try {
-            const response = await fetch(`http://localhost:4002/api/pedidos/usuario/${userId}`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+        const endpoints = [
+            `http://localhost:4002/api/pedidos/usuario/${userId}`,
+            `http://localhost:4002/pedidos/usuario/${userId}`
+        ];
 
-            if (!response.ok) {
-                throw new Error('Error al obtener los pedidos');
+        for (const url of endpoints) {
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener los pedidos');
+                }
+
+                const data = await response.json();
+                setOrders(Array.isArray(data) ? data : []);
+                setLoading(false);
+                return;
+            } catch (err) {
+                // intentar siguiente endpoint
+                if (url === endpoints[endpoints.length - 1]) {
+                    setError(err.message || 'Error desconocido');
+                    setLoading(false);
+                }
             }
-
-            const data = await response.json();
-            setOrders(data);
-        } catch (err) {
-            setError(err.message || 'Error desconocido');
-        } finally {
-            setLoading(false);
         }
     };
 
