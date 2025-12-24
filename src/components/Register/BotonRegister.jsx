@@ -5,7 +5,7 @@ import { login } from '../../redux/slices/authSlice';
 
 const BotonRegister = ({ formData }) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const handleRegister = async () => {
         try {
@@ -28,7 +28,7 @@ const BotonRegister = ({ formData }) => {
                 const errorData = await response.json();
                 const errorMessage =
                     errorData.message === 'email_already_exists' ||
-                    errorData.message === 'username_already_exists'
+                        errorData.message === 'username_already_exists'
                         ? 'El username o email ya está en uso.'
                         : 'Error al crear la cuenta. Por favor, intenta nuevamente.';
 
@@ -71,7 +71,7 @@ const BotonRegister = ({ formData }) => {
     };
 
     return (
-        <button onClick={handleRegister} className="btn btn-active btn-primary mt-5">
+        <button onClick={handleRegister} className="btn btn-active btn-primary mt-5 w-full">
             Crear Cuenta
         </button>
     );

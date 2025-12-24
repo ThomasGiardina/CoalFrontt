@@ -32,7 +32,7 @@ const OrderTable = () => {
         const fetchOrders = async () => {
             setLoading(true);
             setError(null);
-    
+
             try {
                 const response = await fetch('http://localhost:4002/api/pedidos', {
                     method: 'GET',
@@ -40,11 +40,11 @@ const OrderTable = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Error al obtener los pedidos del backend');
                 }
-    
+
                 const data = await response.json();
                 setOrders(data);
             } catch (err) {
@@ -53,7 +53,7 @@ const OrderTable = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchOrders();
     }, [token]);
 
@@ -74,7 +74,7 @@ const OrderTable = () => {
         setIsModalOpen(false);
         setMessageContent('');
     };
-    
+
     const handleMessageChange = (e) => {
         setMessageContent(e.target.value);
     };
@@ -86,7 +86,7 @@ const OrderTable = () => {
             text: `Tu mensaje ha sido enviado al cliente del pedido #${selectedOrder.id}.`,
             showConfirmButton: true,
             confirmButtonText: 'OK',
-            background: '#1D1F23', 
+            background: '#1D1F23',
             customClass: {
                 popup: 'custom-toast',
                 title: 'text-primary',
@@ -95,7 +95,7 @@ const OrderTable = () => {
         });
         handleCloseModal();
     };
-    
+
     const handleCancelOrder = (updatedOrder) => {
         setOrders((prevOrders) =>
             prevOrders.map((order) =>
@@ -106,23 +106,23 @@ const OrderTable = () => {
 
     const handleDateRangeChange = (update) => {
         if (!Array.isArray(update)) {
-            setDateRange([update, update]); 
+            setDateRange([update, update]);
         } else {
-            setDateRange(update); 
+            setDateRange(update);
         }
         setActiveTab('Todas');
-        setCurrentPage(1); 
-    }; 
-    
+        setCurrentPage(1);
+    };
+
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
         setActiveTab('Todas');
         setCurrentPage(1);
-    };    
-    
+    };
+
     const filteredOrders = () => {
         let filtered = [...orders];
-    
+
         if (activeTab === 'Completos') {
             filtered = filtered.filter((order) => order.estadoPedido === 'CONFIRMADO');
         } else if (activeTab === 'Pendientes') {
@@ -130,7 +130,7 @@ const OrderTable = () => {
         } else if (activeTab === 'Cancelados') {
             filtered = filtered.filter((order) => order.estadoPedido === 'CANCELADO');
         }
-    
+
         if (searchTerm) {
             const search = searchTerm.toLowerCase();
             filtered = filtered.filter((order) => {
@@ -143,7 +143,7 @@ const OrderTable = () => {
                 );
             });
         }
-    
+
         filtered = filtered.filter((order) => {
             const orderDate = new Date(order.fecha);
             if (startDate && endDate) {
@@ -159,12 +159,12 @@ const OrderTable = () => {
             }
             return true;
         });
-    
+
         const startIndex = (currentPage - 1) * ordersPerPage;
         const endIndex = startIndex + ordersPerPage;
-    
+
         return filtered.slice(startIndex, endIndex);
-    };          
+    };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -180,7 +180,7 @@ const OrderTable = () => {
                 return [...prevSelectedRows, id];
             }
         });
-    };    
+    };
 
     const handleSelectAll = () => {
         const filtered = filteredOrders();
@@ -192,28 +192,28 @@ const OrderTable = () => {
     };
 
     const isRowSelected = (id) => selectedRows.includes(id);
-    
+
     const handleExport = () => {
         const selectedData = orders.filter((order) => selectedRows.includes(order.id));
-    
+
         const blob = new Blob([JSON.stringify(selectedData, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
-    
+
         const link = document.createElement('a');
         link.href = url;
         link.download = 'selected_orders.json';
         link.click();
-    
+
         setIsSelecting(false);
         setSelectedRows([]);
-    };       
+    };
 
     return (
-        <div className="mt-2 px-4 sm:px-6 lg:px-0">
+        <div className="mt-2">
             <OrderStats orders={orders} />
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 mt-6 sm:mt-10 gap-4">
-                <div className="flex flex-wrap space-x-2 sm:space-x-4">
-                    <div role="tablist" className="tabs tabs-lifted text-sm sm:text-base lg:text-lg">
+            <div className="flex flex-col gap-4 mb-4 mt-6">
+                <div>
+                    <div role="tablist" className="tabs tabs-lifted text-xs sm:text-sm">
                         <a
                             role="tab"
                             className={`tab tab-bordered ${activeTab === 'Todas' ? 'tab-active text-primary' : ''}`}
@@ -244,7 +244,7 @@ const OrderTable = () => {
                         </a>
                     </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full lg:w-auto">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                     <div className="relative">
                         <DatePicker
                             selected={startDate}
@@ -254,8 +254,8 @@ const OrderTable = () => {
                             selectsRange
                             isClearable
                             customInput={
-                                <button className="btn btn-circle btn-outline btn-primary btn-sm sm:btn-md">
-                                    <i className="fas fa-calendar-alt text-sm sm:text-lg"></i>
+                                <button className="btn btn-circle btn-outline btn-primary btn-sm">
+                                    <i className="fas fa-calendar-alt text-sm"></i>
                                 </button>
                             }
                             calendarClassName="bg-neutral text-white"
@@ -264,18 +264,17 @@ const OrderTable = () => {
                     <input
                         type="text"
                         placeholder="Buscar órdenes..."
-                        className="px-3 sm:px-4 py-2 bg-neutral text-text border border-neutral-300 rounded-lg focus:outline-none focus:border-primary text-sm sm:text-base flex-1 lg:flex-none min-w-[200px]"
+                        className="input input-bordered input-sm sm:input-md bg-neutral flex-1 min-w-[150px] max-w-[300px]"
                         value={searchTerm}
                         onChange={handleSearch}
                     />
                     <button
-                        className={`btn btn-sm sm:btn-md w-28 sm:w-32 ${
-                            selectedRows.length > 0 
-                                ? 'btn-success'
-                                : isSelecting 
+                        className={`btn btn-sm ${selectedRows.length > 0
+                            ? 'btn-success'
+                            : isSelecting
                                 ? 'btn-error'
                                 : 'btn-primary'
-                        }`}
+                            }`}
                         onClick={() => {
                             if (selectedRows.length > 0) {
                                 handleExport();
@@ -287,18 +286,16 @@ const OrderTable = () => {
                             }
                         }}
                     >
-                        <span className="text-xs sm:text-sm">
-                            {selectedRows.length > 0 
-                                ? 'Exportar'
-                                : isSelecting 
+                        {selectedRows.length > 0
+                            ? 'Exportar'
+                            : isSelecting
                                 ? 'Cancelar'
                                 : 'Seleccionar'
-                            }
-                        </span>
+                        }
                     </button>
                 </div>
             </div>
-            <div className="overflow-x-auto relative">
+            <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-lg">
                 <table className="table w-full bg-neutral text-text table-auto min-w-[800px]">
                     <thead>
                         <tr className="text-primary">

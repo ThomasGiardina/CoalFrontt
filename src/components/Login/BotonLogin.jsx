@@ -126,7 +126,7 @@ const BotonLogin = ({ email, password }) => {
     };
 
     return (
-        <button onClick={handleLogin} className="btn btn-active btn-primary mt-5">
+        <button onClick={handleLogin} className="btn btn-active btn-primary mt-5 w-full">
             Iniciar Sesión
         </button>
     );

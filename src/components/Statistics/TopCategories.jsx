@@ -95,7 +95,7 @@ const TopCategories = () => {
                     label: (context) => {
                         const label = context.label || '';
                         const value = context.raw || 0;
-                        return `${label}: ${value} ventas`; 
+                        return `${label}: ${value} ventas`;
                     },
                 },
             },
@@ -107,7 +107,7 @@ const TopCategories = () => {
     const currentYear = currentDate.getFullYear();
 
     return (
-        <div className="rounded-lg shadow-lg p-6 max-w-sm bg-neutral">
+        <div className="card bg-neutral border border-base-200 p-6">
             <h2 className="text-xl font-bold mb-4 text-white">Top Categorías</h2>
             <div className="relative mb-4 flex justify-center">
                 <Doughnut data={chartData} options={chartOptions} />

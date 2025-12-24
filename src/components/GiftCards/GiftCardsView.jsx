@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaGift, FaShoppingCart, FaCheck, FaArrowLeft } from 'react-icons/fa';
+import { FaGift, FaShoppingCart, FaCheck } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItemToCarrito, fetchCarrito } from '../../redux/slices/cartSlice';
 import { useEffect, useState, useCallback } from 'react';
@@ -12,19 +12,19 @@ import BackgroundImage from '../../assets/fondito.jpg';
 const GiftCardRow = ({ card, isReversed, onAddToCart }) => {
     if (card.price === 20 || card.price === 50 || card.price === 100) {
         const isReversedLayout = card.price === 50;
-        
+
         return (
             <div className="card bg-neutral border border-base-200 hover:border-primary/40 transition-all duration-300 overflow-hidden relative">
                 <div className="absolute inset-0">
-                    <img 
-                        src={BackgroundImage} 
-                        alt="Background" 
+                    <img
+                        src={BackgroundImage}
+                        alt="Background"
                         className="w-full h-full object-cover object-center"
                     />
                     <div className="absolute inset-0 bg-black/75"></div>
                     <div className={`absolute inset-0 ${isReversedLayout ? 'bg-gradient-to-l from-black/70 via-black/50 to-transparent' : 'bg-gradient-to-r from-black/70 via-black/50 to-transparent'}`}></div>
                 </div>
-                
+
                 <div className={`relative flex flex-col ${isReversedLayout ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center`}>
                     <div className="w-full lg:w-2/5 p-6 lg:p-8 flex items-center justify-center">
                         <img
@@ -33,20 +33,20 @@ const GiftCardRow = ({ card, isReversed, onAddToCart }) => {
                             className="w-56 sm:w-64 lg:w-72 h-auto object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
                         />
                     </div>
-                    <div className={`w-full lg:w-3/5 p-6 lg:p-8 z-10 ${isReversedLayout ? 'pl-16 sm:pl-20 lg:pl-28' : ''}`}>
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className={`w-full lg:w-3/5 p-6 lg:p-8 z-10 ${isReversedLayout ? 'lg:text-left lg:pl-20' : 'lg:text-right lg:pr-20'}`}>
+                        <div className={`flex items-center gap-2 mb-2 ${isReversedLayout ? 'lg:justify-start' : 'lg:justify-end'}`}>
                             <span className="badge bg-orange-500 border-orange-500 text-white gap-1"><FaGift /> Tarjeta Digital</span>
                         </div>
                         <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2">{card.name}</h3>
                         <p className="text-gray-200 mb-4">{card.description}</p>
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className={`flex flex-wrap gap-2 mb-4 ${isReversedLayout ? 'lg:justify-start' : 'lg:justify-end'}`}>
                             {card.features.map((feature, i) => (
                                 <span key={i} className="badge badge-ghost bg-white/10 text-white gap-1">
                                     <FaCheck className="text-orange-500 text-xs" /> {feature}
                                 </span>
                             ))}
                         </div>
-                        <div className="flex items-center justify-start mt-6">
+                        <div className={`flex items-center mt-6 ${isReversedLayout ? 'lg:justify-start' : 'lg:justify-end'}`}>
                             <button onClick={() => onAddToCart(card)} className="btn bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-none gap-2">
                                 <FaShoppingCart /> Agregar al carrito
                             </button>
@@ -219,12 +219,6 @@ const GiftCardsView = () => {
     return (
         <div className="min-h-screen bg-base-300">
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="mb-6">
-                    <Link to="/Store" className="btn btn-ghost btn-sm gap-2">
-                        <FaArrowLeft /> Volver a la tienda
-                    </Link>
-                </div>
-
                 <div className="text-center mb-10">
                     <div className="flex items-center justify-center gap-3 mb-3">
                         <FaGift className="text-primary text-3xl" />

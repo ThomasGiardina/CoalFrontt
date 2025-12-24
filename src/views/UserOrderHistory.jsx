@@ -1,4 +1,4 @@
-import UserOrderTable from '../components/OrderHistory/UserOrderTable'; 
+import UserOrderTable from '../components/OrderHistory/UserOrderTable';
 
 const UserOrderHistory = () => {
     const orders = [
@@ -8,7 +8,7 @@ const UserOrderHistory = () => {
     ];
 
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen container mx-auto px-4 sm:px-6 lg:px-8 pb-16">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mt-6 sm:mt-10 mb-4 sm:mb-6">Historial de Pedidos</h1>
             <UserOrderTable orders={orders} />
         </div>

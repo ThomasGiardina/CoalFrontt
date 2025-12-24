@@ -2,12 +2,16 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCarrito } from '../../redux/slices/cartSlice';
 import Profilepicture from './Profilepicture.jsx';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const StoreNavbar = () => {
     const dispatch = useDispatch();
     const { isAuthenticated, role } = useSelector((state) => state.auth);
     const { cartItems } = useSelector((state) => state.cart);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+    const closeMobileMenu = () => setMobileMenuOpen(false);
 
     const calculateCartSummary = () => {
         if (!cartItems || cartItems.length === 0) return { totalItems: 0, subtotal: 0 };
@@ -32,30 +36,33 @@ const StoreNavbar = () => {
                             <span className="font-bold text-white text-lg hidden sm:inline">Coal</span>
                         </Link>
                         <div className="dropdown lg:hidden">
-                            <div tabIndex={0} role="button" className="btn btn-ghost btn-sm btn-circle">
+                            <div role="button" className="btn btn-ghost btn-sm btn-circle" onClick={toggleMobileMenu}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
                             </div>
-                            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[60] mt-3 w-52 p-2 shadow-lg">
-                                {isAuthenticated && role === 'ADMIN' ? (
-                                    <>
-                                        <li><Link to="/GamesAdmin"><i className="fa-solid fa-gamepad text-primary text-sm"></i> Admin Juegos</Link></li>
-                                        <li><Link to="/Statistics"><i className="fa-solid fa-chart-bar text-primary text-sm"></i> Estadísticas</Link></li>
-                                        <li><Link to="/AdminOrderHistory"><i className="fa-solid fa-file-signature text-primary text-sm"></i> Pedidos</Link></li>
-                                        <li><Link to="/Store"><i className="fa-solid fa-store text-primary text-sm"></i> Tienda</Link></li>
-                                    </>
-                                ) : (
-                                    <>
-                                        <li><Link to="/Store"><i className="fa-solid fa-store text-primary text-sm"></i> Tienda</Link></li>
-                                        <li><Link to="/GiftCards"><i className="fa-solid fa-gift text-primary text-sm"></i> Tarjetas</Link></li>
-                                        {isAuthenticated && <li><Link to="/UserOrderHistory"><i className="fa-solid fa-file-contract text-primary text-sm"></i> Pedidos</Link></li>}
-                                        <li><Link to="/About"><i className="fa-solid fa-info-circle text-primary text-sm"></i> Acerca de</Link></li>
-                                        <li><Link to="/Support"><i className="fa-solid fa-headset text-primary text-sm"></i> Soporte</Link></li>
-                                        {isAuthenticated && <li><Link to="/Favorites"><i className="fa-solid fa-heart text-primary text-sm"></i> Favoritos</Link></li>}
-                                    </>
-                                )}
-                            </ul>
+                            {mobileMenuOpen && (
+                                <ul className="absolute left-0 top-full menu bg-base-100 rounded-box z-[60] mt-1 w-52 p-2 shadow-lg">
+                                    {isAuthenticated && role === 'ADMIN' ? (
+                                        <>
+                                            <li><Link to="/GamesAdmin" onClick={closeMobileMenu}><i className="fa-solid fa-gamepad text-primary text-sm"></i> Admin Juegos</Link></li>
+                                            <li><Link to="/GiftCardsAdmin" onClick={closeMobileMenu}><i className="fa-solid fa-gift text-primary text-sm"></i> Tarjetas</Link></li>
+                                            <li><Link to="/Statistics" onClick={closeMobileMenu}><i className="fa-solid fa-chart-bar text-primary text-sm"></i> Estadísticas</Link></li>
+                                            <li><Link to="/AdminOrderHistory" onClick={closeMobileMenu}><i className="fa-solid fa-file-signature text-primary text-sm"></i> Pedidos</Link></li>
+                                            <li><Link to="/Store" onClick={closeMobileMenu}><i className="fa-solid fa-store text-primary text-sm"></i> Tienda</Link></li>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <li><Link to="/Store" onClick={closeMobileMenu}><i className="fa-solid fa-store text-primary text-sm"></i> Tienda</Link></li>
+                                            <li><Link to="/GiftCards" onClick={closeMobileMenu}><i className="fa-solid fa-gift text-primary text-sm"></i> Tarjetas</Link></li>
+                                            {isAuthenticated && <li><Link to="/UserOrderHistory" onClick={closeMobileMenu}><i className="fa-solid fa-file-contract text-primary text-sm"></i> Pedidos</Link></li>}
+                                            <li><Link to="/About" onClick={closeMobileMenu}><i className="fa-solid fa-info-circle text-primary text-sm"></i> Acerca de</Link></li>
+                                            <li><Link to="/Support" onClick={closeMobileMenu}><i className="fa-solid fa-headset text-primary text-sm"></i> Soporte</Link></li>
+                                            {isAuthenticated && <li><Link to="/Favorites" onClick={closeMobileMenu}><i className="fa-solid fa-heart text-primary text-sm"></i> Favoritos</Link></li>}
+                                        </>
+                                    )}
+                                </ul>
+                            )}
                         </div>
                     </div>
 
@@ -64,6 +71,7 @@ const StoreNavbar = () => {
                             {isAuthenticated && role === 'ADMIN' ? (
                                 <>
                                     <li><Link to="/GamesAdmin" className="text-sm"><i className="fa-solid fa-gamepad text-primary text-xs"></i> Admin</Link></li>
+                                    <li><Link to="/GiftCardsAdmin" className="text-sm"><i className="fa-solid fa-gift text-primary text-xs"></i> Tarjetas</Link></li>
                                     <li><Link to="/Statistics" className="text-sm"><i className="fa-solid fa-chart-bar text-primary text-xs"></i> Stats</Link></li>
                                     <li><Link to="/AdminOrderHistory" className="text-sm"><i className="fa-solid fa-file-signature text-primary text-xs"></i> Pedidos</Link></li>
                                     <li><Link to="/Store" className="text-sm"><i className="fa-solid fa-store text-primary text-xs"></i> Tienda</Link></li>

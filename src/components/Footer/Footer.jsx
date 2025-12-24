@@ -5,20 +5,20 @@ const Footer = () => {
     return (
         <footer className="bg-neutral text-white border-t border-base-200">
             <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <div className="flex items-center gap-2 mb-4">
+                <div className="flex flex-col items-center gap-6 md:grid md:grid-cols-4 md:gap-8 md:items-start">
+                    <div className="text-center md:text-left">
+                        <div className="flex items-center gap-2 mb-4 justify-center md:justify-start">
                             <img alt="Coal" src="/logoCoalBlanco.png" className="w-8 h-8" />
                             <span className="text-xl font-semibold">Coal</span>
                         </div>
-                        <div className="flex items-center gap-4 text-xl">
+                        <div className="flex items-center gap-4 text-xl justify-center md:justify-start">
                             <a href="#" aria-label="Twitter" className="hover:text-primary transition-colors"><FaTwitter /></a>
                             <a href="#" aria-label="Facebook" className="hover:text-primary transition-colors"><FaFacebook /></a>
                             <a href="#" aria-label="Instagram" className="hover:text-primary transition-colors"><FaInstagram /></a>
                         </div>
                     </div>
 
-                    <div>
+                    <div className="hidden md:block text-center md:text-left">
                         <h4 className="font-semibold mb-3">Coal</h4>
                         <ul className="space-y-2 text-gray-300">
                             <li><Link to="/Store" className="hover:text-white">Tienda</Link></li>
@@ -26,14 +26,14 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    <div>
+                    <div className="hidden md:block text-center md:text-left">
                         <h4 className="font-semibold mb-3">Tarjeta de regalo</h4>
                         <ul className="space-y-2 text-gray-300">
                             <li><Link to="/GiftCards" className="hover:text-white">Tarjeta de regalo</Link></li>
                         </ul>
                     </div>
 
-                    <div>
+                    <div className="hidden md:block text-center md:text-left">
                         <h4 className="font-semibold mb-3">Ayuda</h4>
                         <ul className="space-y-2 text-gray-300">
                             <li><Link to="/Support" className="hover:text-white">Soporte</Link></li>

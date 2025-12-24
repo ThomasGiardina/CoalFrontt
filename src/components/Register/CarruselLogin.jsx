@@ -20,7 +20,7 @@ const CarruselLogin = () => {
     }, []);
 
     return (
-        <div className="relative w-full max-w-[450px] aspect-[3/4] rounded-lg overflow-hidden">
+        <div className="relative w-full max-w-[380px] aspect-[3/4] rounded-xl overflow-hidden shadow-xl mx-auto">
             <div className="carousel w-full h-full">
                 <div className="carousel-item w-full h-full">
                     <img

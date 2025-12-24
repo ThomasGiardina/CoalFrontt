@@ -10,14 +10,14 @@ const InputsRegister = ({ formData, setFormData }) => {
     };
 
     return (
-        <div className="flex flex-col items-start gap-3 sm:gap-4 w-full"> 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-[520px]">
-                <label className="input input-bordered flex items-center gap-2 w-full sm:w-1/2 h-10 sm:h-12">
+        <div className="flex flex-col gap-3 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                <label className="input input-bordered flex items-center gap-2 flex-1 min-w-0 h-11">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
                         fill="currentColor"
-                        className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                        className="h-4 w-4 opacity-70 flex-shrink-0"
                     >
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                     </svg>
@@ -26,18 +26,18 @@ const InputsRegister = ({ formData, setFormData }) => {
                         name="firstname"
                         value={formData.firstname}
                         onChange={handleChange}
-                        className="grow text-sm sm:text-base"
+                        className="grow text-sm min-w-0"
                         placeholder="Nombre"
                         required
                     />
                 </label>
 
-                <label className="input input-bordered flex items-center gap-2 w-full sm:w-1/2 h-10 sm:h-12">
+                <label className="input input-bordered flex items-center gap-2 flex-1 min-w-0 h-11">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 16 16"
                         fill="currentColor"
-                        className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                        className="h-4 w-4 opacity-70 flex-shrink-0"
                     >
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                     </svg>
@@ -46,19 +46,19 @@ const InputsRegister = ({ formData, setFormData }) => {
                         name="lastname"
                         value={formData.lastname}
                         onChange={handleChange}
-                        className="grow text-sm sm:text-base"
+                        className="grow text-sm min-w-0"
                         placeholder="Apellido"
                         required
                     />
                 </label>
             </div>
 
-            <label className="input input-bordered flex items-center gap-2 w-full max-w-[520px] h-10 sm:h-12">
+            <label className="input input-bordered flex items-center gap-2 w-full h-11">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
                     fill="currentColor"
-                    className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                    className="h-4 w-4 opacity-70"
                 >
                     <path
                         d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"
@@ -69,18 +69,18 @@ const InputsRegister = ({ formData, setFormData }) => {
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
-                    className="grow text-sm sm:text-base"
+                    className="grow text-sm"
                     placeholder="Nombre Usuario"
                     required
                 />
             </label>
 
-            <label className="input input-bordered flex items-center gap-2 w-full max-w-[520px] h-10 sm:h-12">
+            <label className="input input-bordered flex items-center gap-2 w-full h-11">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
                     fill="currentColor"
-                    className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                    className="h-4 w-4 opacity-70"
                 >
                     <path
                         d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
@@ -94,18 +94,18 @@ const InputsRegister = ({ formData, setFormData }) => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="grow text-sm sm:text-base"
+                    className="grow text-sm"
                     placeholder="Email"
                     required
                 />
             </label>
 
-            <label className="input input-bordered flex items-center gap-2 w-full max-w-[520px] h-10 sm:h-12">
+            <label className="input input-bordered flex items-center gap-2 w-full h-11">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
                     fill="currentColor"
-                    className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                    className="h-4 w-4 opacity-70"
                 >
                     <path
                         fillRule="evenodd"
@@ -118,7 +118,7 @@ const InputsRegister = ({ formData, setFormData }) => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="grow text-sm sm:text-base"
+                    className="grow text-sm"
                     placeholder="Contraseña"
                     required
                 />

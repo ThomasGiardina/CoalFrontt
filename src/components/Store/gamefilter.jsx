@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
-import SearchBar from '../SearchBar/SearchBar';
+import SearchBar from '../Searchbar/searchbar';
 
 const CATEGORIES = [
-    { label: 'Accion', value: 'ACCION' },
+    { label: 'Acción', value: 'ACCION' },
     { label: 'Aventura', value: 'AVENTURA' },
-    { label: 'Rpg', value: 'RPG' },
-    { label: 'Simulacion', value: 'SIMULACION' },
+    { label: 'RPG', value: 'RPG' },
+    { label: 'Simulación', value: 'SIMULACION' },
     { label: 'Deportes', value: 'DEPORTES' },
     { label: 'Estrategia', value: 'ESTRATEGIA' },
     { label: 'Puzzle', value: 'PUZZLE' },
     { label: 'Terror', value: 'TERROR' },
-    { label: 'Vr', value: 'VR' },
+    { label: 'VR', value: 'VR' },
     { label: 'Educativo', value: 'EDUCATIVO' }
 ];
 
 const PLATFORMS = [
     { label: 'XBOX', value: 'XBOX' },
     { label: 'PC', value: 'PC' },
-    { label: 'NINTENDO SWITCH', value: 'NINTENDO_SWITCH' },
-    { label: 'PLAY STATION', value: 'PLAY_STATION' }
+    { label: 'Nintendo Switch', value: 'NINTENDO_SWITCH' },
+    { label: 'PlayStation', value: 'PLAY_STATION' }
 ];
 
 const normalize = (str) => (str || '')
@@ -35,13 +35,12 @@ const isGiftCard = (g) => {
 };
 
 const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedPlatform, setSelectedPlatform] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedPlatforms, setSelectedPlatforms] = useState([]);
     const [maxPrice, setMaxPrice] = useState(11000);
     const [priceRange, setPriceRange] = useState(11000);
 
     useEffect(() => {
-        // Calcular precio máximo dinámico en base a los juegos no giftcard
         const nonGift = games.filter((g) => !isGiftCard(g));
         const computedMax = Math.max(0, ...nonGift.map((g) => Number(g.precio) || 0));
         const finalMax = computedMax > 0 ? computedMax : 11000;
@@ -52,57 +51,68 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
     useEffect(() => {
         let filteredGames = games.filter((g) => !isGiftCard(g));
 
-        if (selectedCategory) {
-            const selCat = normalize(selectedCategory);
-            filteredGames = filteredGames.filter((game) =>
-                normalize(game.categoria) === selCat
-            );
+        if (selectedCategories.length > 0) {
+            filteredGames = filteredGames.filter((game) => {
+                const cats = game.categorias || [];
+                return selectedCategories.some(selCat =>
+                    cats.some(cat => normalize(cat) === normalize(selCat))
+                );
+            });
         }
-        if (selectedPlatform) {
-            const selPlat = normalize(selectedPlatform);
-            filteredGames = filteredGames.filter((game) =>
-                normalize(game.plataforma) === selPlat
-            );
+
+        if (selectedPlatforms.length > 0) {
+            filteredGames = filteredGames.filter((game) => {
+                const plat = normalize(game.plataforma);
+                return selectedPlatforms.some(selPlat => plat === normalize(selPlat));
+            });
         }
 
         filteredGames = filteredGames.filter((game) => (Number(game.precio) || 0) <= priceRange);
         setFilter(filteredGames);
-    }, [selectedCategory, selectedPlatform, priceRange, games, setFilter]);
+    }, [selectedCategories, selectedPlatforms, priceRange, games, setFilter]);
 
     const handleSearchChange = (value) => {
         setSearchTerm(value);
     };
 
     const handleCategoryClick = (category) => {
-        setSelectedCategory(selectedCategory === category ? '' : category);
+        setSelectedCategories(prev =>
+            prev.includes(category)
+                ? prev.filter(c => c !== category)
+                : [...prev, category]
+        );
     };
 
     const handlePlatformClick = (platform) => {
-        setSelectedPlatform(selectedPlatform === platform ? '' : platform);
+        setSelectedPlatforms(prev =>
+            prev.includes(platform)
+                ? prev.filter(p => p !== platform)
+                : [...prev, platform]
+        );
     };
 
     const handleResetFilters = () => {
-        setSelectedCategory('');
-        setSelectedPlatform('');
+        setSelectedCategories([]);
+        setSelectedPlatforms([]);
         setPriceRange(maxPrice);
         setSearchTerm('');
     };
 
     return (
-        <div className="card bg-neutral shadow-lg">
-            <div className="card-body p-5 gap-6">
+        <div className="bg-neutral rounded-lg shadow-lg">
+            <div className="p-5 space-y-5">
                 <SearchBar placeholder="Buscar juegos..." onSearch={handleSearchChange} />
 
                 <div>
-                    <h2 className="text-white font-bold mb-3 text-base">Categorías</h2>
-                    <div className="grid grid-cols-1 gap-2">
+                    <h2 className="text-white font-bold mb-3 text-sm">Categorías</h2>
+                    <div className="space-y-1.5">
                         {CATEGORIES.map((category) => (
                             <button
                                 key={category.value}
                                 onClick={() => handleCategoryClick(category.value)}
-                                className={`btn btn-sm justify-start gap-2 ${selectedCategory === category.value ? 'btn-primary text-white' : 'btn-ghost'}`}
+                                className={`btn btn-sm w-full justify-start gap-2 ${selectedCategories.includes(category.value) ? 'btn-primary text-white' : 'btn-ghost'}`}
                             >
-                                <span className={`w-2.5 h-2.5 rounded-full ${selectedCategory === category.value ? 'bg-white' : 'bg-primary'}`}></span>
+                                <span className={`w-2.5 h-2.5 rounded-full ${selectedCategories.includes(category.value) ? 'bg-white' : 'bg-primary'}`}></span>
                                 {category.label}
                             </button>
                         ))}
@@ -110,15 +120,15 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
                 </div>
 
                 <div>
-                    <h2 className="text-white font-bold mb-3 text-base">Plataformas</h2>
-                    <div className="grid grid-cols-1 gap-2">
+                    <h2 className="text-white font-bold mb-3 text-sm">Plataformas</h2>
+                    <div className="space-y-1.5">
                         {PLATFORMS.map((platform) => (
                             <button
                                 key={platform.value}
                                 onClick={() => handlePlatformClick(platform.value)}
-                                className={`btn btn-sm justify-start gap-2 ${selectedPlatform === platform.value ? 'btn-primary text-white' : 'btn-ghost'}`}
+                                className={`btn btn-sm w-full justify-start gap-2 ${selectedPlatforms.includes(platform.value) ? 'btn-primary text-white' : 'btn-ghost'}`}
                             >
-                                <span className={`w-2.5 h-2.5 rounded-full ${selectedPlatform === platform.value ? 'bg-white' : 'bg-primary'}`}></span>
+                                <span className={`w-2.5 h-2.5 rounded-full ${selectedPlatforms.includes(platform.value) ? 'bg-white' : 'bg-primary'}`}></span>
                                 {platform.label}
                             </button>
                         ))}
@@ -126,7 +136,7 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
                 </div>
 
                 <div>
-                    <h2 className="text-white font-bold mb-3 text-base">Precio máximo</h2>
+                    <h2 className="text-white font-bold mb-3 text-sm">Precio máximo</h2>
                     <input
                         type="range"
                         min={0}
@@ -142,7 +152,7 @@ const Gamefilter = ({ games, setFilter, setSearchTerm }) => {
                     </div>
                 </div>
 
-                <button onClick={handleResetFilters} className="btn btn-outline btn-primary w-full mt-2">
+                <button onClick={handleResetFilters} className="btn btn-outline btn-primary w-full">
                     Resetear Filtros
                 </button>
             </div>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
-import { FaTrash } from "react-icons/fa";
+import { FaXbox, FaPlaystation, FaTrash, FaShoppingCart } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -10,78 +10,72 @@ const GameCardFavorites = ({ game, removeGame }) => {
     const getPlatformIcon = (platform) => {
         switch (platform) {
             case 'XBOX':
-                return <i className="fab fa-xbox text-green-500 text-2xl"></i>;
+                return <FaXbox className="text-green-500 text-sm" />;
             case 'PLAY_STATION':
-                return <i className="fab fa-playstation text-blue-500 text-2xl"></i>;
+                return <FaPlaystation className="text-blue-500 text-sm" />;
             case 'NINTENDO_SWITCH':
-                return <div className="text-red-700 text-2xl p-1"><BsNintendoSwitch /></div>;
+                return <BsNintendoSwitch className="text-red-500 text-sm" />;
             case 'PC':
-                return <div className="text-gray-500 text-2xl p-1"><BsPcDisplay /></div>;
+                return <BsPcDisplay className="text-gray-400 text-sm" />;
             default:
                 return null;
         }
     };
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         MySwal.fire({
-            title: `¿Estás seguro?`,
-            text: `¿Deseas eliminar "${game.titulo}" de tus favoritos?`,
+            title: `¿Eliminar de favoritos?`,
+            text: `"${game.titulo}" será removido de tu lista`,
             icon: 'warning',
             background: '#1D1F23',
             color: '#fff',
             showCancelButton: true,
-            confirmButtonColor: '#FF6828',
-            cancelButtonColor: '#B3741F',
+            confirmButtonColor: '#FF6B00',
+            cancelButtonColor: '#374151',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
                 removeGame(game.id);
-                MySwal.fire({
-                    title: 'Eliminado',
-                    text: `"${game.titulo}" ha sido eliminado de tus favoritos.`,
-                    icon: 'success',
-                    background: '#1D1F23',
-                    color: '#fff',
-                    confirmButtonColor: '#FF6828',
-                });
             }
         });
     };
 
     return (
-        <div className="bg-neutral text-white rounded-lg overflow-hidden flex p-4 shadow-lg w-full max-w-none">
-            <div className="w-40 h-40 flex-shrink-0">
+        <Link to={`/Details/${game.id}`} className="card bg-neutral border border-base-200 hover:border-primary/40 transition-all duration-300 group overflow-hidden">
+            <figure className="relative aspect-[4/5] overflow-hidden">
                 <img
-                    className="w-full h-full object-cover rounded-md"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     src={game.foto ? `data:image/jpeg;base64,${game.foto}` : '/images/placeholder.jpg'}
                     alt={game.titulo || 'Sin título'}
                 />
-            </div>
-            <div className="flex-grow ml-4 flex flex-col justify-between">
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h2 className="text-2xl font-semibold">{game.titulo}</h2>
-                        <p className="text-lg font-bold text-orange-400">${game.precio}</p>
-                    </div>
-                    <div>{getPlatformIcon(game.plataforma)}</div>
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral via-transparent to-transparent"></div>
+                <button
+                    onClick={handleDelete}
+                    className="absolute top-3 right-3 btn btn-circle btn-sm btn-error"
+                >
+                    <FaTrash className="text-white text-xs" />
+                </button>
+                <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-sm rounded-full p-1.5">
+                    {getPlatformIcon(game.plataforma)}
                 </div>
-                <div className="flex flex-col items-end mt-4">
+            </figure>
+            <div className="p-3">
+                <h3 className="font-medium text-white text-sm line-clamp-1 mb-1">{game.titulo}</h3>
+                <div className="flex items-center justify-between">
+                    <span className="text-primary font-bold">${game.precio}</span>
                     <button
-                        onClick={handleDelete}
-                        className="p-2 hover:bg-gray-700 rounded-md transition mb-2"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                        className="btn btn-primary btn-xs gap-1"
                     >
-                        <FaTrash className="text-red-500 text-2xl" />
+                        <FaShoppingCart className="text-xs" />
+                        Agregar
                     </button>
-                    <Link
-                        to={`/Details/${game.id}`}
-                        className="btn btn-primary text-lg"
-                    >
-                        Ver detalles
-                    </Link>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

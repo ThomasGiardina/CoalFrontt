@@ -8,7 +8,7 @@ import { FaXbox, FaPlaystation } from "react-icons/fa";
 
 const GameCard = ({ title, imageUrl, price, platform, id }) => {
     const dispatch = useDispatch();
-    const { isAuthenticated } = useSelector((state) => state.auth);
+    const { isAuthenticated, token, userId } = useSelector((state) => state.auth);
     const favorites = useSelector((state) => state.favorites.items);
     const isFavorite = favorites.some(fav => fav.id === id);
 
@@ -22,29 +22,41 @@ const GameCard = ({ title, imageUrl, price, platform, id }) => {
         }
     };
 
-    const handleAddFavorite = (e) => {
+    const handleToggleFavorite = (e) => {
         e.preventDefault();
+        e.stopPropagation();
+
         if (!isAuthenticated) {
-            Swal.fire({ title: 'Inicia sesión', text: 'Debes iniciar sesión para agregar favoritos', icon: 'info', background: '#1D1F23', color: '#fff', confirmButtonColor: '#FF6B00' });
+            Swal.fire({
+                title: 'Inicia sesión',
+                text: 'Debes iniciar sesión para agregar favoritos',
+                icon: 'info',
+                background: '#1D1F23',
+                color: '#fff',
+                confirmButtonColor: '#FF6B00'
+            });
             return;
         }
-        dispatch(addFavorite(id));
-    };
 
-    const handleRemoveFavorite = (e) => {
-        e.preventDefault();
-        dispatch(removeFavorite(id));
+        if (isFavorite) {
+            dispatch(removeFavorite({ usuarioId: userId, videojuegoId: id, token }));
+        } else {
+            dispatch(addFavorite({ usuarioId: userId, videojuegoId: id, token }));
+        }
     };
 
     return (
         <Link to={`/Details/${id}`} className="card bg-neutral border border-base-200 hover:border-primary/40 transition-all duration-300 group overflow-hidden hover:shadow-xl hover:shadow-primary/5">
-            <figure className="relative aspect-square overflow-hidden">
+            <figure className="relative aspect-[4/5] overflow-hidden">
                 <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src={`data:image/jpeg;base64,${imageUrl}`} alt={title} />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral via-transparent to-transparent"></div>
-                <button onClick={isFavorite ? handleRemoveFavorite : handleAddFavorite} className={`absolute top-1.5 right-1.5 btn btn-circle btn-xs ${isFavorite ? 'btn-error' : 'btn-ghost bg-black/40 backdrop-blur-sm hover:btn-error'}`}>
-                    <FaHeart className={`text-xs ${isFavorite ? 'text-white' : 'text-gray-300'}`} />
+                <button
+                    onClick={handleToggleFavorite}
+                    className={`absolute top-3 right-3 btn btn-circle btn-sm ${isFavorite ? 'btn-error' : 'btn-ghost bg-black/50 backdrop-blur-sm hover:btn-error'}`}
+                >
+                    <FaHeart className={`text-base ${isFavorite ? 'text-white' : 'text-gray-300'}`} />
                 </button>
-                <div className="absolute top-1.5 left-1.5 bg-black/40 backdrop-blur-sm rounded-full p-1">
+                <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-sm rounded-full p-1.5">
                     {getPlatformIcon(platform)}
                 </div>
             </figure>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
-import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs"; 
+import { BsNintendoSwitch, BsPcDisplay } from "react-icons/bs";
 
 const getPlatformIcon = (platform) => {
     switch (platform?.toUpperCase()) {
@@ -59,15 +59,15 @@ const TopProducts = () => {
     }
 
     return (
-        <div className="rounded-lg shadow-lg p-6 max-w-md bg-neutral">
+        <div className="card bg-neutral border border-base-200 p-6">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Top Products</h2>
+                <h2 className="text-xl font-bold text-white">Top Products</h2>
             </div>
-            <ul>
+            <ul className="space-y-3">
                 {Array.isArray(products) && products.map((product, index) => (
                     <li
                         key={index}
-                        className="flex items-center justify-between p-4 bg-accent rounded-lg mb-3"
+                        className="flex items-center justify-between p-3 bg-base-200 rounded-lg border border-base-100"
                     >
                         <div className="flex items-center min-w-0 flex-1">
                             <div className="flex-shrink-0">
@@ -78,12 +78,12 @@ const TopProducts = () => {
                                 />
                             </div>
                             <div className="ml-4 min-w-0 flex-1">
-                                <p className="font-semibold truncate">{product.titulo}</p>
-                                <p className="text-sm text-white">{product.ventas} Ventas</p>
+                                <p className="font-semibold text-white truncate">{product.titulo}</p>
+                                <p className="text-sm text-primary">{product.ventas} Ventas</p>
                             </div>
                         </div>
                         <div className="text-right flex-shrink-0 ml-4">
-                            {getPlatformIcon(product.plataforma)} 
+                            {getPlatformIcon(product.plataforma)}
                         </div>
                     </li>
                 ))}

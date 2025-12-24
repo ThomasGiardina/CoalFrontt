@@ -6,25 +6,25 @@ import { useSelector } from "react-redux";
 import 'react-datepicker/dist/react-datepicker.css';
 
 const UserOrderTable = () => {
-    const [orders, setOrders] = useState([]); 
-    const [loading, setLoading] = useState(true); 
-    const [error, setError] = useState(null); 
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const token = useSelector((state) => state.auth.token);
-    const userId = useSelector((state) => state.auth.userId); 
+    const userId = useSelector((state) => state.auth.userId);
     const [currentPage, setCurrentPage] = useState(1);
     const [dateRange, setDateRange] = useState([null, null]);
-    const [startDate, endDate] = dateRange; 
+    const [startDate, endDate] = dateRange;
 
     const ordersPerPage = 12;
 
     useEffect(() => {
-        if (isAuthenticated && userId && token) { 
+        if (isAuthenticated && userId && token) {
             fetchOrders();
         }
     }, [isAuthenticated, userId, token]);
-    
+
 
     const fetchOrders = async () => {
         setLoading(true);
@@ -53,7 +53,6 @@ const UserOrderTable = () => {
                 setLoading(false);
                 return;
             } catch (err) {
-                // intentar siguiente endpoint
                 if (url === endpoints[endpoints.length - 1]) {
                     setError(err.message || 'Error desconocido');
                     setLoading(false);
@@ -62,40 +61,42 @@ const UserOrderTable = () => {
         }
     };
 
-    const filteredOrders = orders
-    .filter(order => {
-        const search = searchTerm.toLowerCase();
-        const matchesId = order.id.toString().toLowerCase().includes(search);
-        const matchesPayment = order.tipoPago?.toLowerCase().includes(search);
-        const matchesDelivery = order.tipoEntrega?.toLowerCase().includes(search);
-        const matchesStatus = order.estadoPedido?.toLowerCase().includes(search);
+    const allFilteredOrders = orders
+        .filter(order => {
+            const search = searchTerm.toLowerCase();
+            const matchesId = order.id.toString().toLowerCase().includes(search);
+            const matchesPayment = order.tipoPago?.toLowerCase().includes(search);
+            const matchesDelivery = order.tipoEntrega?.toLowerCase().includes(search);
+            const matchesStatus = order.estadoPedido?.toLowerCase().includes(search);
 
-        return matchesId || matchesPayment || matchesDelivery || matchesStatus;
-    })
-    .filter(order => {
-        const orderDate = new Date(order.fecha);
-        if (startDate && endDate) {
-            const adjustedEndDate = new Date(endDate);
-            adjustedEndDate.setHours(23, 59, 59, 999); 
-            return orderDate >= startDate && orderDate <= adjustedEndDate;
-        } else if (startDate) {
-            return (
-                orderDate.getFullYear() === startDate.getFullYear() &&
-                orderDate.getMonth() === startDate.getMonth() &&
-                orderDate.getDate() === startDate.getDate()
-            );
-        }
-        return true;
-    })
-    .slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
+            return matchesId || matchesPayment || matchesDelivery || matchesStatus;
+        })
+        .filter(order => {
+            const orderDate = new Date(order.fecha);
+            if (startDate && endDate) {
+                const adjustedEndDate = new Date(endDate);
+                adjustedEndDate.setHours(23, 59, 59, 999);
+                return orderDate >= startDate && orderDate <= adjustedEndDate;
+            } else if (startDate) {
+                return (
+                    orderDate.getFullYear() === startDate.getFullYear() &&
+                    orderDate.getMonth() === startDate.getMonth() &&
+                    orderDate.getDate() === startDate.getDate()
+                );
+            }
+            return true;
+        });
+
+    const totalPages = Math.ceil(allFilteredOrders.length / ordersPerPage);
+    const filteredOrders = allFilteredOrders.slice((currentPage - 1) * ordersPerPage, currentPage * ordersPerPage);
 
 
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
     };
-
-    const totalPages = Math.ceil(orders.length / ordersPerPage);
 
     return (
         <div className="px-4 sm:px-6 lg:px-0">
@@ -104,28 +105,28 @@ const UserOrderTable = () => {
                     {orders.length} Productos
                 </p>
                 <div className="flex flex-wrap space-x-2 sm:space-x-4 items-center w-full lg:w-auto">
-                <div className="relative">
-                    <DatePicker
-                        selected={startDate}
-                        onChange={(update) => {
-                            if (!Array.isArray(update)) {
-                                setDateRange([update, update]);
-                            } else {
-                                setDateRange(update);
+                    <div className="relative">
+                        <DatePicker
+                            selected={startDate}
+                            onChange={(update) => {
+                                if (!Array.isArray(update)) {
+                                    setDateRange([update, update]);
+                                } else {
+                                    setDateRange(update);
+                                }
+                            }}
+                            startDate={startDate}
+                            endDate={endDate}
+                            selectsRange
+                            isClearable
+                            customInput={
+                                <button className="btn btn-circle btn-outline btn-primary btn-sm sm:btn-md">
+                                    <i className="fas fa-calendar-alt text-sm sm:text-lg"></i>
+                                </button>
                             }
-                        }}
-                        startDate={startDate}
-                        endDate={endDate}
-                        selectsRange
-                        isClearable
-                        customInput={
-                            <button className="btn btn-circle btn-outline btn-primary btn-sm sm:btn-md">
-                                <i className="fas fa-calendar-alt text-sm sm:text-lg"></i>
-                            </button>
-                        }
-                        calendarClassName="bg-neutral text-white"
-                    />
-                </div>
+                            calendarClassName="bg-neutral text-white"
+                        />
+                    </div>
                     <input
                         type="text"
                         placeholder="Buscar pedidos..."
@@ -165,7 +166,9 @@ const UserOrderTable = () => {
                     </tbody>
                 </table>
             </div>
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            <div className="mb-12">
+                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            </div>
         </div>
     );
 };

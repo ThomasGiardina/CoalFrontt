@@ -12,6 +12,7 @@ import ScrollToTop from '../components/AppManagement/ScrollToTop';
 import Settings from './Settings';
 import Statistics from './Statistics';
 import GamesAdmin from './GamesAdmin';
+import GiftCardsAdmin from './GiftCardsAdmin';
 import About from './About';
 import Support from './Support';
 import AdminOrderHistory from './AdminOrderHistory';
@@ -42,6 +43,7 @@ function App() {
                 <Route path="/UserOrderHistory" element={<UserRoute><UserOrderHistory /></UserRoute>} />
                 <Route path="/Favorites" element={<UserRoute><Favorites /></UserRoute>} />
                 <Route path="/GamesAdmin" element={<AdminRoute><GamesAdmin /></AdminRoute>} />
+                <Route path="/GiftCardsAdmin" element={<AdminRoute><GiftCardsAdmin /></AdminRoute>} />
                 <Route path="/Statistics" element={<AdminRoute><Statistics /></AdminRoute>} />
                 <Route path="/AdminOrderHistory" element={<AdminRoute><AdminOrderHistory /></AdminRoute>} />
             </Routes>

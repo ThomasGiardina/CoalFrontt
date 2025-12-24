@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFavorites, removeFavorite } from '../../redux/slices/favoritesSlice';
 import GameCardFavorites from './GameCardFavorites';
+import { FaHeart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const FavoritesContainer = () => {
     const dispatch = useDispatch();
@@ -10,7 +12,6 @@ const FavoritesContainer = () => {
 
     useEffect(() => {
         if (!token || !usuarioId) {
-            console.error('Token o usuarioId no definidos');
             return;
         }
         dispatch(fetchFavorites(token));
@@ -21,20 +22,44 @@ const FavoritesContainer = () => {
     };
 
     if (loading) {
-        return <p className="text-center text-primary">Cargando favoritos...</p>;
+        return (
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div className="flex items-center justify-center min-h-[400px]">
+                    <span className="loading loading-spinner loading-lg text-primary"></span>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
-        return <p className="text-center text-red-500">Error: {error}</p>;
+        return (
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div className="alert alert-error">
+                    <span>Error: {error}</span>
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen p-4 sm:p-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-4 sm:mb-6">Mis Juegos Favoritos</h1>
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16">
+            <div className="flex items-center gap-3 mb-8">
+                <FaHeart className="text-primary text-2xl sm:text-3xl" />
+                <h1 className="text-2xl sm:text-3xl font-bold text-white">Mis Favoritos</h1>
+                <span className="badge badge-primary badge-lg">{favoriteGames.length}</span>
+            </div>
+
             {favoriteGames.length === 0 ? (
-                <p className="text-gray-500 text-center text-sm sm:text-base">No tienes juegos en favoritos.</p>
+                <div className="card bg-neutral border border-base-200 p-10 text-center">
+                    <FaHeart className="text-gray-600 text-5xl mx-auto mb-4" />
+                    <h2 className="text-xl font-bold text-white mb-2">No tienes favoritos aún</h2>
+                    <p className="text-gray-400 mb-6">Explora nuestra tienda y agrega juegos a tu lista de favoritos</p>
+                    <Link to="/Store" className="btn btn-primary mx-auto">
+                        Ir a la tienda
+                    </Link>
+                </div>
             ) : (
-                <div className="space-y-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {favoriteGames.map((game) => (
                         <GameCardFavorites
                             key={game.id}

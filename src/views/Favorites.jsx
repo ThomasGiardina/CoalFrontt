@@ -2,7 +2,7 @@ import FavoritesContainer from "../components/Favorites/FavoritesContainer";
 
 const Favorites = () => {
     return (
-        <div className="bg-neutral min-h-screen">
+        <div className="min-h-screen bg-base-300">
             <FavoritesContainer />
         </div>
     );
