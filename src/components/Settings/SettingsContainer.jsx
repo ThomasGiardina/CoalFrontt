@@ -6,7 +6,6 @@ import SettingsImage from "./SettingsImage";
 const SettingContainer = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0F1012] via-[#141517] to-[#0F1012] pt-20 sm:pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-            {/* Header Section */}
             <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
                 <div className="text-center">
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3">
@@ -20,16 +19,13 @@ const SettingContainer = () => {
                 </div>
             </div>
 
-            {/* Main Content Grid */}
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                    {/* Left Column */}
                     <div className="flex flex-col gap-6 lg:gap-8">
                         <SettingsImage />
                         <PaymentSettings />
                     </div>
 
-                    {/* Right Column */}
                     <div className="flex flex-col gap-6 lg:gap-8">
                         <AccountSettings />
                         <ChangePassword />

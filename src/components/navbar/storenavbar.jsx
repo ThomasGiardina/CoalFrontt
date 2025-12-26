@@ -57,11 +57,11 @@ const StoreNavbar = () => {
                                     ) : (
                                         <>
                                             <li><Link to="/Store" onClick={closeMobileMenu}><i className="fa-solid fa-store text-primary text-sm"></i> Tienda</Link></li>
-                                            <li><Link to="/GiftCards" onClick={closeMobileMenu}><i className="fa-solid fa-gift text-primary text-sm"></i> Tarjetas</Link></li>
+                                            {isAuthenticated && <li><Link to="/Favorites" onClick={closeMobileMenu}><i className="fa-solid fa-heart text-primary text-sm"></i> Favoritos</Link></li>}
                                             {isAuthenticated && <li><Link to="/UserOrderHistory" onClick={closeMobileMenu}><i className="fa-solid fa-file-contract text-primary text-sm"></i> Pedidos</Link></li>}
+                                            <li><Link to="/GiftCards" onClick={closeMobileMenu}><i className="fa-solid fa-gift text-primary text-sm"></i> Tarjetas</Link></li>
                                             <li><Link to="/About" onClick={closeMobileMenu}><i className="fa-solid fa-info-circle text-primary text-sm"></i> Acerca de</Link></li>
                                             <li><Link to="/Support" onClick={closeMobileMenu}><i className="fa-solid fa-headset text-primary text-sm"></i> Soporte</Link></li>
-                                            {isAuthenticated && <li><Link to="/Favorites" onClick={closeMobileMenu}><i className="fa-solid fa-heart text-primary text-sm"></i> Favoritos</Link></li>}
                                         </>
                                     )}
                                 </ul>
@@ -82,11 +82,11 @@ const StoreNavbar = () => {
                             ) : (
                                 <>
                                     <li><Link to="/Store" className="text-sm"><i className="fa-solid fa-store text-primary text-xs"></i> Tienda</Link></li>
-                                    <li><Link to="/GiftCards" className="text-sm"><i className="fa-solid fa-gift text-primary text-xs"></i> Tarjetas</Link></li>
+                                    {isAuthenticated && <li><Link to="/Favorites" className="text-sm"><i className="fa-solid fa-heart text-primary text-xs"></i> Favoritos</Link></li>}
                                     {isAuthenticated && <li><Link to="/UserOrderHistory" className="text-sm"><i className="fa-solid fa-file-contract text-primary text-xs"></i> Pedidos</Link></li>}
+                                    <li><Link to="/GiftCards" className="text-sm"><i className="fa-solid fa-gift text-primary text-xs"></i> Tarjetas</Link></li>
                                     <li><Link to="/About" className="text-sm"><i className="fa-solid fa-info-circle text-primary text-xs"></i> Acerca de</Link></li>
                                     <li><Link to="/Support" className="text-sm"><i className="fa-solid fa-headset text-primary text-xs"></i> Soporte</Link></li>
-                                    {isAuthenticated && <li><Link to="/Favorites" className="text-sm"><i className="fa-solid fa-heart text-primary text-xs"></i> Favoritos</Link></li>}
                                 </>
                             )}
                         </ul>

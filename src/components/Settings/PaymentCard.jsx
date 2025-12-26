@@ -70,24 +70,21 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
     return (
         <div>
             <div className={`relative overflow-hidden rounded-xl p-5 bg-gradient-to-br ${getCardGradient()} border border-[#3a3d46]/50 hover:border-[#FF6828]/30 transition-all duration-300 group`}>
-                {/* Card Shine Effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
 
-                {/* Top Row */}
                 <div className="flex justify-between items-start mb-6">
                     <div className="flex items-center gap-3">
                         <i className={`fa-brands ${getCardIcon()} text-3xl text-white/80`}></i>
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${tipoPago === 'CREDITO'
-                                ? 'bg-blue-500/20 text-blue-400'
-                                : tipoPago === 'DEBITO'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-gray-500/20 text-gray-400'
+                            ? 'bg-blue-500/20 text-blue-400'
+                            : tipoPago === 'DEBITO'
+                                ? 'bg-green-500/20 text-green-400'
+                                : 'bg-gray-500/20 text-gray-400'
                             }`}>
                             {tipoPago}
                         </span>
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <button
                             className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#FF6828] flex items-center justify-center transition-all duration-300"
@@ -104,14 +101,12 @@ const PaymentCard = ({ metodo, onUpdateMetodoPago, onDeleteMetodoPago }) => {
                     </div>
                 </div>
 
-                {/* Card Number */}
                 <div className="mb-6">
                     <p className="text-xl sm:text-2xl font-mono tracking-widest text-white/90">
                         {tipoPago !== 'EFECTIVO' ? formatCardNumber(numeroTarjeta) : "Pago en Efectivo"}
                     </p>
                 </div>
 
-                {/* Bottom Row */}
                 <div className="flex justify-between items-end">
                     <div>
                         <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-1">Titular</p>

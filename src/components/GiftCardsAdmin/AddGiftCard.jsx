@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { createGameAsync } from '../../redux/slices/gamesSlice';
+import Swal from 'sweetalert2';
 
-const AddGiftCardButton = ({ addGiftCard }) => {
+const AddGiftCardButton = () => {
+    const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [stock, setStock] = useState('');
     const [mainImage, setMainImage] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const token = useSelector((state) => state.auth.token);
 
@@ -26,6 +30,7 @@ const AddGiftCardButton = ({ addGiftCard }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         const formData = new FormData();
 
@@ -48,33 +53,29 @@ const AddGiftCardButton = ({ addGiftCard }) => {
         }
 
         try {
-            const response = await fetch('http://localhost:4002/videojuegos', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: formData,
+            const result = await dispatch(createGameAsync({ formData, token })).unwrap();
+
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'La tarjeta de regalo fue creada correctamente.',
+                icon: 'success',
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
             });
 
-            const responseText = await response.text();
-
-            if (!response.ok) {
-                console.error('Detalles del error:', responseText);
-                throw new Error('Error al agregar la tarjeta');
-            }
-
-            let data;
-            try {
-                data = responseText ? JSON.parse(responseText) : giftCardData;
-            } catch {
-                data = giftCardData;
-            }
-
-            addGiftCard(data);
             handleCloseModal();
         } catch (error) {
-            console.error('Error:', error);
-            alert('Error al agregar la tarjeta');
+            Swal.fire({
+                title: 'Error',
+                text: error || 'Error al agregar la tarjeta',
+                icon: 'error',
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
+            });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

@@ -76,12 +76,10 @@ const PaymentSettings = () => {
     return (
         <>
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a1b1e] to-[#141517] border border-[#2a2b2e] shadow-xl">
-                {/* Background Decorative Elements */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[#FF6828]/5 to-transparent rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#E57028]/5 to-transparent rounded-full blur-3xl"></div>
 
                 <div className="relative p-6 sm:p-8">
-                    {/* Header */}
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF6828] to-[#E57028] flex items-center justify-center shadow-lg shadow-[#FF6828]/20">
@@ -94,7 +92,6 @@ const PaymentSettings = () => {
                         </div>
                     </div>
 
-                    {/* Payment Cards List */}
                     <div className="space-y-4 min-h-[200px] max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
                         {metodosPago.length > 0 ? (
                             metodosPago.map((metodo, index) => (
@@ -118,7 +115,6 @@ const PaymentSettings = () => {
                         )}
                     </div>
 
-                    {/* Add Button */}
                     <div className="mt-6 pt-6 border-t border-[#2a2b2e]">
                         <button
                             className="w-full py-3 border-2 border-dashed border-[#FF6828]/50 rounded-xl text-[#FF6828] font-semibold hover:bg-[#FF6828]/10 hover:border-[#FF6828] transition-all duration-300 flex items-center justify-center gap-2"

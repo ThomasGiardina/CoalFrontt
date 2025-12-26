@@ -100,7 +100,6 @@ export const toastInfo = (title) => {
     });
 };
 
-// Export the base config for custom usage
 export const getSwalConfig = () => ({ ...swalConfig });
 
 export default Swal;

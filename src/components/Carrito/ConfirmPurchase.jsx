@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import GamecardPurchase from "../Gamecard/GamecardPurchase";
 import { refreshToken } from "../../redux/slices/authSlice";
+import { clearCart } from "../../redux/slices/cartSlice";
 
 const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handleNextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
@@ -101,6 +102,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                 background: '#1D1F23',
                 color: '#fff',
             }).then(() => {
+                dispatch(clearCart());
                 handleNextStep();
             });
         } catch (error) {
@@ -116,72 +118,123 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     };
 
     return (
-        <div className="flex flex-col text-white min-h-screen w-full max-w-[1400px] p-4 sm:p-6 lg:p-8 rounded-lg mx-auto">
-            <div className="w-full h-auto flex flex-col lg:flex-row gap-6 lg:gap-8">
-                <div className="w-full lg:w-2/3 bg-neutral p-4 sm:p-6 rounded-lg">
-                    {cartItems.length > 0 ? (
-                        cartItems.map(item => (
-                            <GamecardPurchase key={item.id} game={item} />
-                        ))
-                    ) : (
-                        <p className="text-white">No hay items en el carrito.</p>
-                    )}
+        <div className="text-white min-h-screen w-full max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8">
+            <h1 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Confirmar Compra
+            </h1>
 
-                    <div className="mt-6">
-                        <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Subtotal:</span>
-                            <span className="text-white">{subtotal} ARS</span>
+            <div className="flex flex-col lg:flex-row gap-8">
+                <div className="flex-1">
+                    <div className="bg-neutral rounded-xl border border-base-200 overflow-hidden">
+                        <div className="p-4 sm:p-6 border-b border-base-200">
+                            <h2 className="text-lg font-semibold text-white">Productos en tu pedido</h2>
                         </div>
-                        <div className="flex justify-between mb-3">
-                            <span className="text-gray-400">Envío:</span>
-                            <span className="text-white">{shippingCost} ARS</span>
+
+                        <div className="p-4 sm:p-6">
+                            {cartItems.length > 0 ? (
+                                <div className="space-y-4">
+                                    {cartItems.map(item => (
+                                        <GamecardPurchase key={item.id} game={item} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-gray-400 text-center py-8">No hay items en el carrito.</p>
+                            )}
                         </div>
-                        {discountPercentage > 0 && (
-                            <div className="flex justify-between mb-3">
-                                <span className="text-gray-400">Descuento ({discountPercentage * 100}%):</span>
-                                <span className="text-white">-{(subtotal * discountPercentage).toFixed(2)} ARS</span>
+
+                        <div className="p-4 sm:p-6 bg-base-200/50 border-t border-base-200">
+                            <div className="space-y-3">
+                                <div className="flex justify-between text-gray-400">
+                                    <span>Subtotal</span>
+                                    <span className="text-white">${subtotal.toFixed(2)} ARS</span>
+                                </div>
+                                <div className="flex justify-between text-gray-400">
+                                    <span>Envío ({shipping === 'envio' ? 'Delivery' : 'Retiro en local'})</span>
+                                    <span className="text-white">{shippingCost > 0 ? `$${shippingCost} ARS` : 'Gratis'}</span>
+                                </div>
+                                {discountPercentage > 0 && (
+                                    <div className="flex justify-between">
+                                        <span className="text-green-400">Descuento ({discountPercentage * 100}%)</span>
+                                        <span className="text-green-400">-${(subtotal * discountPercentage).toFixed(2)} ARS</span>
+                                    </div>
+                                )}
+                                <hr className="border-base-200 my-2" />
+                                <div className="flex justify-between items-center pt-2">
+                                    <span className="text-xl font-bold text-white">Total</span>
+                                    <span className="text-3xl font-bold text-primary">${total.toFixed(2)}</span>
+                                </div>
                             </div>
-                        )}
-                        <hr className="border-gray-700 my-4" />
-                        <div className="flex justify-between font-semibold">
-                            <span className="text-gray-300">Total:</span>
-                            <span className="text-white">{total.toFixed(2)} ARS</span>
                         </div>
-
-                        <div className="flex justify-between font-semibold mt-4">
-                            <span className="text-gray-300">Método de Pago:</span>
-                            <span className="text-green-400 uppercase">{payment}</span>
-                        </div>
-
                     </div>
 
-                    <div className="mt-6">
-                        <label className="inline-flex items-center">
+                    <div className="mt-6 bg-neutral rounded-xl p-4 sm:p-6 border border-base-200">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p className="text-gray-400 text-sm">Método de Pago</p>
+                                <p className="text-white font-semibold uppercase">{payment}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-4">
+                        <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl bg-neutral border border-base-200 hover:border-primary/30 transition-colors">
                             <input
                                 type="checkbox"
-                                className="form-checkbox bg-gray-700 text-green-500"
+                                className="checkbox checkbox-primary"
                                 checked={termsAccepted}
                                 onChange={handleTermsChange}
                             />
-                            <span className="ml-2 text-gray-400">
-                                Acepto las condiciones del <a href="#" className="text-blue-400">Acuerdo de Suscriptor</a>
+                            <span className="text-gray-400 text-sm">
+                                Acepto las condiciones del <a href="#" className="text-primary hover:underline">Acuerdo de Suscriptor</a> y confirmo que he leído la política de privacidad.
                             </span>
                         </label>
                     </div>
                 </div>
 
-                <div className="w-full lg:w-1/3 h-auto lg:h-[200px] bg-neutral p-4 sm:p-6 rounded-lg shadow-md flex flex-col justify-between items-center">
-                    <h2 className="text-base sm:text-lg font-semibold text-white mb-2 text-center">CONFIRMAR COMPRA</h2>
-                    <p className="text-gray-400 text-center mb-4 text-sm sm:text-base">
-                        Una vez confirmada la compra, no podrás volver atrás.
-                    </p>
-                    <button
-                        className={`bg-primary text-white py-2 sm:py-3 px-4 sm:px-6 rounded-md transition duration-200 w-full text-sm sm:text-base ${!termsAccepted ? "opacity-50 cursor-not-allowed" : ""}`}
-                        disabled={!termsAccepted}
-                        onClick={handlePurchase}
-                    >
-                        Comprar
-                    </button>
+                <div className="w-full lg:w-[350px]">
+                    <div className="bg-neutral rounded-xl p-6 border border-base-200 shadow-xl lg:sticky lg:top-20">
+                        <div className="text-center mb-6">
+                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-xl font-bold text-white">Finalizar Compra</h2>
+                            <p className="text-gray-400 text-sm mt-2">
+                                Revisa tu pedido y confirma la compra
+                            </p>
+                        </div>
+
+                        <div className="bg-base-200/50 rounded-lg p-4 mb-6">
+                            <div className="flex justify-between items-center">
+                                <span className="text-gray-400">Total a pagar</span>
+                                <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
+                            </div>
+                        </div>
+
+                        <button
+                            className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 shadow-lg
+                            ${!termsAccepted
+                                    ? "bg-gray-600 opacity-50 cursor-not-allowed"
+                                    : "bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] hover:shadow-primary/30 hover:-translate-y-0.5"}`}
+                            disabled={!termsAccepted}
+                            onClick={handlePurchase}
+                        >
+                            Confirmar Compra
+                        </button>
+
+                        <p className="text-center text-gray-500 text-xs mt-4">
+                            Al confirmar, aceptas nuestros términos y condiciones
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -88,56 +88,63 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
     };
 
     const getPlatformIcon = (platform) => {
-        switch (platform?.toUpperCase()) {
-            case 'XBOX':
-                return <i className="fab fa-xbox text-green-500 text-xl"></i>;
-            case 'PLAYSTATION':
-                return <i className="fab fa-playstation text-blue-500 text-xl"></i>;
-            case 'NINTENDO_SWITCH':
-                return <BsNintendoSwitch className="text-red-700 text-xl" />;
-            case 'PC':
-                return <BsPcDisplay className="text-gray-500 text-xl" />;
-            default:
-                return <span>Plataforma desconocida</span>;
-        }
+        const p = platform?.toUpperCase().replace(/[\s_-]/g, '');
+        if (p === 'XBOX') return <i className="fab fa-xbox text-green-500 text-xl"></i>;
+        if (p === 'PLAYSTATION' || p === 'PLAYSTATION5' || p === 'PS5' || p === 'PS4') return <i className="fab fa-playstation text-blue-500 text-xl"></i>;
+        if (p === 'NINTENDOSWITCH' || p === 'SWITCH') return <BsNintendoSwitch className="text-red-500 text-xl" />;
+        if (p === 'PC' || p === 'STEAM') return <BsPcDisplay className="text-gray-400 text-xl" />;
+        return null;
     };
 
     return (
-        <div className="bg-neutral text-white rounded-lg flex items-start shadow-lg transition-transform transform hover:scale-105 w-full h-[200px] p-4 relative mb-6">
-            <div className="flex items-center space-x-4 h-full">
-                <img className="w-32 h-full rounded-lg object-cover" src={fotoUrl} alt={titulo || "Producto sin título"} />
-            </div>
-
-            <div className="flex-grow flex flex-col justify-between ml-4">
-                <div className="flex justify-between items-start w-full">
-                    <h2 className="text-lg font-semibold">{titulo || "Producto desconocido"}</h2>
-                    <button
-                        className="text-gray-400 hover:text-red-500 transition"
-                        onClick={eliminarProducto}
-                    >
-                        <FaTimes size={20} />
-                    </button>
+        <div className="bg-neutral text-white rounded-xl overflow-hidden border border-base-200 shadow-lg transition-all duration-300 hover:border-primary/30 hover:shadow-primary/10">
+            <div className="flex flex-col sm:flex-row sm:h-[140px]">
+                <div className="w-full sm:w-36 h-40 sm:h-full flex-shrink-0">
+                    <img
+                        className="w-full h-full object-cover"
+                        src={fotoUrl}
+                        alt={titulo || "Producto sin título"}
+                    />
                 </div>
 
-                <div className="flex items-start mt-12">
-                    <p className="text-xl font-bold text-green-400">${precio?.toFixed(2) || "0.00"}</p>
-                </div>
-            </div>
+                <div className="flex-1 p-4 flex flex-col justify-between">
+                    <div className="flex justify-between items-start gap-4">
+                        <div className="flex-1">
+                            <h2 className="text-lg font-semibold text-white line-clamp-1">{titulo || "Producto desconocido"}</h2>
+                            <div className="flex items-center gap-2 mt-1">
+                                {getPlatformIcon(plataforma)}
+                                <span className="text-gray-400 text-sm">{plataforma?.replace('_', ' ')}</span>
+                            </div>
+                        </div>
+                        <button
+                            className="p-2 rounded-lg hover:bg-red-500/20 text-gray-400 hover:text-red-500 transition-all"
+                            onClick={eliminarProducto}
+                            title="Eliminar del carrito"
+                        >
+                            <FaTimes size={16} />
+                        </button>
+                    </div>
 
-            <div className="absolute bottom-4 right-4 flex items-center space-x-2">
-                <button
-                    className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
-                    onClick={disminuirCantidad}
-                >
-                    -
-                </button>
-                <span className="text-md">{cantidad || 1}</span>
-                <button
-                    className="bg-gray-100 text-gray-700 w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 shadow hover:bg-gray-200 transition"
-                    onClick={aumentarCantidad}
-                >
-                    +
-                </button>
+                    <div className="flex items-end justify-between mt-4">
+                        <p className="text-2xl font-bold text-primary">${precio?.toFixed(2) || "0.00"}</p>
+
+                        <div className="flex items-center gap-1 bg-base-200 rounded-lg p-1">
+                            <button
+                                className="w-8 h-8 flex items-center justify-center rounded-md bg-base-300 hover:bg-primary hover:text-white text-gray-300 font-bold transition-all"
+                                onClick={disminuirCantidad}
+                            >
+                                −
+                            </button>
+                            <span className="w-10 text-center font-semibold text-white">{cantidad || 1}</span>
+                            <button
+                                className="w-8 h-8 flex items-center justify-center rounded-md bg-base-300 hover:bg-primary hover:text-white text-gray-300 font-bold transition-all"
+                                onClick={aumentarCantidad}
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

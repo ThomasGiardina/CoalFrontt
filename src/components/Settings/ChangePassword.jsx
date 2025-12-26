@@ -77,11 +77,9 @@ const ChangePassword = () => {
 
     return (
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a1b1e] to-[#141517] border border-[#2a2b2e] shadow-xl">
-            {/* Background Decorative Elements */}
             <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-[#FF6828]/5 to-transparent rounded-full blur-3xl"></div>
 
             <div className="relative p-6 sm:p-8">
-                {/* Header */}
                 <div className="flex items-center gap-4 mb-6">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF6828] to-[#E57028] flex items-center justify-center shadow-lg shadow-[#FF6828]/20">
                         <i className="fa-solid fa-lock text-white text-lg"></i>
@@ -92,9 +90,7 @@ const ChangePassword = () => {
                     </div>
                 </div>
 
-                {/* Form */}
                 <form className="space-y-5" onSubmit={handleSubmit}>
-                    {/* Current Password */}
                     <div className="space-y-2">
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-lock text-[#FF6828] text-xs"></i>
@@ -118,7 +114,6 @@ const ChangePassword = () => {
                         </div>
                     </div>
 
-                    {/* New Password */}
                     <div className="space-y-2">
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-key text-[#FF6828] text-xs"></i>
@@ -142,7 +137,6 @@ const ChangePassword = () => {
                         </div>
                     </div>
 
-                    {/* Confirm Password */}
                     <div className="space-y-2">
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-check-double text-[#FF6828] text-xs"></i>
@@ -172,7 +166,6 @@ const ChangePassword = () => {
                         )}
                     </div>
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full mt-6 py-3 bg-gradient-to-r from-[#FF6828] to-[#E57028] rounded-xl font-semibold text-white shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300"

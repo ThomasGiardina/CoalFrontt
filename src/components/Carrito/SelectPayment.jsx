@@ -229,71 +229,111 @@ const SelectPayment = ({ onBack, onConfirm }) => {
 
 
     return (
-        <div className="text-white p-4 sm:p-6 rounded-lg bg-gray-800 w-full">
-            <h2 className="text-xl sm:text-2xl font-semibold mb-4">Seleccionar Método de Pago</h2>
+        <div className="text-white w-full max-w-[1200px] mx-auto">
+            <div className="bg-neutral rounded-xl border border-base-200 p-6 sm:p-8">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-8 flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    Seleccionar Método de Pago
+                </h2>
 
-            <div className="mb-4 sm:mb-6">
-                <label className="block mb-2 text-sm sm:text-base">Método de Pago</label>
-                <select
-                    value={paymentMethod}
-                    onChange={(e) => handlePaymentMethodChange(e.target.value)}
-                    className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
-                >
-                    <option value="" disabled>Selecciona un método</option>
-                    <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
-                    <option value="Efectivo">Efectivo</option>
-                </select>
-            </div>
+                <div className="space-y-6">
+                    <div>
+                        <label className="text-gray-400 text-sm mb-2 block">Método de Pago</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button
+                                type="button"
+                                onClick={() => handlePaymentMethodChange("Tarjeta de Crédito/Débito")}
+                                className={`p-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3
+                                    ${paymentMethod === "Tarjeta de Crédito/Débito"
+                                        ? "border-primary bg-primary/10"
+                                        : "border-base-200 bg-base-200/50 hover:border-gray-500"}`}
+                            >
+                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${paymentMethod === "Tarjeta de Crédito/Débito" ? "bg-primary/20" : "bg-base-300"}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 ${paymentMethod === "Tarjeta de Crédito/Débito" ? "text-primary" : "text-gray-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <p className="font-semibold text-white">Tarjeta de Crédito/Débito</p>
+                                    <p className="text-gray-400 text-sm">Hasta 10% de descuento</p>
+                                </div>
+                            </button>
 
-            {paymentMethod === "Tarjeta de Crédito/Débito" && (
-                <div className="mb-4 sm:mb-6">
-                    <label className="block mb-2 text-sm sm:text-base">Selecciona tu tarjeta</label>
-                    <select
-                        value={selectedCard}
-                        onChange={handleCardSelection}
-                        className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
-                    >
-                        <option value="">Seleccione una tarjeta</option>
-                        {cards.map((card) => (
-                            <option key={card.id} value={card.id}>
-                                **** **** **** {card.numeroTarjeta.slice(-4)} - {card.tipoPago === "CREDITO" ? "Crédito" : "Débito"} - {card.nombrePropietario}
-                            </option>
-                        ))}
-                        <option value="new">Agregar nueva tarjeta</option>
-                    </select>
+                            <button
+                                type="button"
+                                onClick={() => handlePaymentMethodChange("Efectivo")}
+                                className={`p-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3
+                                    ${paymentMethod === "Efectivo"
+                                        ? "border-primary bg-primary/10"
+                                        : "border-base-200 bg-base-200/50 hover:border-gray-500"}`}
+                            >
+                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${paymentMethod === "Efectivo" ? "bg-primary/20" : "bg-base-300"}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 ${paymentMethod === "Efectivo" ? "text-primary" : "text-gray-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <p className="font-semibold text-white">Efectivo</p>
+                                    <p className="text-gray-400 text-sm">15% de descuento</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    {paymentMethod === "Tarjeta de Crédito/Débito" && (
+                        <div className="bg-base-200/30 rounded-xl p-4 sm:p-6 border border-base-200">
+                            <label className="text-gray-400 text-sm mb-3 block">Selecciona tu tarjeta</label>
+                            <select
+                                value={selectedCard}
+                                onChange={handleCardSelection}
+                                className="select select-bordered w-full bg-base-300 border-base-200 text-white"
+                            >
+                                <option value="">Seleccione una tarjeta</option>
+                                {cards.map((card) => (
+                                    <option key={card.id} value={card.id}>
+                                        **** **** **** {card.numeroTarjeta.slice(-4)} - {card.tipoPago === "CREDITO" ? "Crédito" : "Débito"} - {card.nombrePropietario}
+                                    </option>
+                                ))}
+                                <option value="new">+ Agregar nueva tarjeta</option>
+                            </select>
+                        </div>
+                    )}
+
+                    <ModalPayment
+                        isOpen={isModalOpen}
+                        onRequestClose={closeModal}
+                        onSave={handleSaveNewCard}
+                        initialFormData={{}}
+                    />
+
+                    <AddressForm
+                        formValues={formValues}
+                        handleInputChange={handleInputChange}
+                        shippingOption={shippingOption}
+                        handleShippingOptionChange={handleShippingOptionChange}
+                    />
                 </div>
-            )}
 
-            <ModalPayment
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                onSave={handleSaveNewCard}
-                initialFormData={{}}
-            />
-
-
-
-            <AddressForm
-                formValues={formValues}
-                handleInputChange={handleInputChange}
-                shippingOption={shippingOption}
-                handleShippingOptionChange={handleShippingOptionChange}
-            />
-
-            <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 mt-4 sm:mt-6">
-                <button
-                    className="btn text-white py-2 px-4 rounded-md text-sm sm:text-base w-full sm:w-auto"
-                    onClick={onBack}
-                >
-                    Atrás
-                </button>
-                <button
-                    className={`btn bg-secondary text-white py-2 px-4 rounded-md text-sm sm:text-base w-full sm:w-auto ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}
-                    onClick={handleConfirm}
-                    disabled={!isFormValid()}
-                >
-                    Confirmar Pedido
-                </button>
+                <div className="flex flex-col sm:flex-row justify-between gap-4 mt-8 pt-6 border-t border-base-200">
+                    <button
+                        className="btn btn-ghost border border-base-200 text-white py-3 px-6 rounded-xl text-base w-full sm:w-auto"
+                        onClick={onBack}
+                    >
+                        ← Atrás
+                    </button>
+                    <button
+                        className={`py-3 px-8 rounded-xl font-semibold text-white text-base w-full sm:w-auto transition-all duration-300
+                        ${!isFormValid()
+                                ? "bg-gray-600 opacity-50 cursor-not-allowed"
+                                : "bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] shadow-lg hover:shadow-primary/30"}`}
+                        onClick={handleConfirm}
+                        disabled={!isFormValid()}
+                    >
+                        Confirmar Pedido →
+                    </button>
+                </div>
             </div>
         </div>
     );

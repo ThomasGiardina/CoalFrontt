@@ -16,7 +16,7 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
     const [carruselImagen3, setCarruselImagen3] = useState(null);
     const [fechaLanzamiento, setFechaLanzamiento] = useState(game.fechaLanzamiento);
     const [desarrolladora, setDesarrolladora] = useState(game.desarrolladora);
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); //por ahora no se usa
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const role = useSelector((state) => state.auth.role);
 
     const allCategories = [

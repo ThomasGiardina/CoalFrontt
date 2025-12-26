@@ -128,11 +128,9 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
             style={customStyles}
         >
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a1b1e] to-[#141517] border border-[#2a2b2e] shadow-2xl">
-                {/* Background Decorative Elements */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[#FF6828]/10 to-transparent rounded-full blur-3xl"></div>
 
                 <div className="relative p-6 sm:p-8">
-                    {/* Header */}
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF6828] to-[#E57028] flex items-center justify-center shadow-lg shadow-[#FF6828]/20">
@@ -155,10 +153,8 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                         </button>
                     </div>
 
-                    {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                            {/* Owner Name */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-user text-[#FF6828] text-xs"></i>
@@ -177,7 +173,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                                 {nameError && <span className="text-red-400 text-xs flex items-center gap-1"><i className="fa-solid fa-circle-exclamation"></i>{nameError}</span>}
                             </div>
 
-                            {/* Card Number */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-credit-card text-[#FF6828] text-xs"></i>
@@ -197,7 +192,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                                 />
                             </div>
 
-                            {/* CVV */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-lock text-[#FF6828] text-xs"></i>
@@ -218,7 +212,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                                 {isEditing && <small className="text-gray-500 text-xs">El CVV no se puede modificar</small>}
                             </div>
 
-                            {/* Expiry Date */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-calendar text-[#FF6828] text-xs"></i>
@@ -235,7 +228,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                                 {dateError && <span className="text-red-400 text-xs flex items-center gap-1"><i className="fa-solid fa-circle-exclamation"></i>{dateError}</span>}
                             </div>
 
-                            {/* Address */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-location-dot text-[#FF6828] text-xs"></i>
@@ -254,7 +246,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                                 {addressError && <span className="text-red-400 text-xs flex items-center gap-1"><i className="fa-solid fa-circle-exclamation"></i>{addressError}</span>}
                             </div>
 
-                            {/* Card Type */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-tag text-[#FF6828] text-xs"></i>
@@ -279,7 +270,6 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4">
                             <button
                                 type="button"

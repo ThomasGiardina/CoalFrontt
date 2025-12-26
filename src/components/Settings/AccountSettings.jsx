@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
+import { clearFavorites } from "../../redux/slices/favoritesSlice";
+import { clearCart } from "../../redux/slices/cartSlice";
 
 const AccountSettings = () => {
     const dispatch = useDispatch();
@@ -139,6 +141,8 @@ const AccountSettings = () => {
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                     }).then(() => {
+                        dispatch(clearFavorites());
+                        dispatch(clearCart());
                         dispatch(logout());
                         window.location.href = "/login";
                     });

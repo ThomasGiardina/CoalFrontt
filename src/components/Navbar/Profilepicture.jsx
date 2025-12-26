@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
+import { clearFavorites } from "../../redux/slices/favoritesSlice";
+import { clearCart } from "../../redux/slices/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 
 const Profilepicture = () => {
@@ -9,6 +11,8 @@ const Profilepicture = () => {
     const token = useSelector((state) => state.auth.token);
 
     const handleLogout = () => {
+        dispatch(clearFavorites());
+        dispatch(clearCart());
         dispatch(logout());
         navigate("/");
     };
@@ -19,7 +23,7 @@ const Profilepicture = () => {
                 <div className="w-10 rounded-full">
                     <img
                         alt="profile"
-                        src={profileImage || "https://www.vecteezy.com/free-vector/default-user"} 
+                        src={profileImage || "https://www.vecteezy.com/free-vector/default-user"}
                     />
                 </div>
             </div>

@@ -57,7 +57,6 @@ const GameCarrousel = ({ gameId }) => {
             <div className="relative w-full mx-auto bg-neutral text-white rounded-lg shadow-lg p-8">
                 <h2 className="text-2xl font-bold text-white mb-6">Más Juegos Recomendados</h2>
 
-                {/* Left Arrow */}
                 <button
                     onClick={handlePrevPage}
                     disabled={!canGoPrev}
@@ -66,7 +65,6 @@ const GameCarrousel = ({ gameId }) => {
                     <FaChevronLeft />
                 </button>
 
-                {/* Games Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mx-8">
                     {selectedGames.map((game) => (
                         <GameCard
@@ -80,7 +78,6 @@ const GameCarrousel = ({ gameId }) => {
                     ))}
                 </div>
 
-                {/* Right Arrow */}
                 <button
                     onClick={handleNextPage}
                     disabled={!canGoNext}
@@ -89,7 +86,6 @@ const GameCarrousel = ({ gameId }) => {
                     <FaChevronRight />
                 </button>
 
-                {/* Page indicators */}
                 {totalPages > 1 && (
                     <div className="flex justify-center gap-2 mt-6">
                         {Array.from({ length: totalPages }).map((_, i) => (

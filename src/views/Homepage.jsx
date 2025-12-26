@@ -7,7 +7,6 @@ import WhyCoalSection from '../components/HomePage/WhyCoalSection';
 function Homepage() {
     return (
         <div className="relative flex flex-col bg-base-300">
-            {/* Hero Section - Full viewport height minus navbar */}
             <section className="min-h-[calc(100vh-64px)] w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-0 gap-6 lg:gap-10">
                 <div className="w-full lg:w-1/2 flex items-center justify-center order-2 lg:order-1">
                     <Homehero />
@@ -17,7 +16,6 @@ function Homepage() {
                 </div>
             </section>
 
-            {/* Platform and other sections */}
             <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
                 <ConsolesSection />
                 <WhyCoalSection />

@@ -77,7 +77,6 @@ const OrderStats = ({ orders }) => {
         <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-6">
             {statCards.map((card, index) => (
                 <div key={index} className="card bg-neutral border border-base-200 p-3 sm:p-5">
-                    {/* Mobile Layout */}
                     <div className="sm:hidden">
                         <div className="flex items-center gap-2 mb-2">
                             <div className={`p-2 rounded-lg ${card.bgColor}`}>
@@ -97,7 +96,6 @@ const OrderStats = ({ orders }) => {
                         )}
                     </div>
 
-                    {/* Desktop Layout */}
                     <div className="hidden sm:block">
                         <div className="flex items-center justify-between mb-3">
                             <div className={`p-3 rounded-lg ${card.bgColor}`}>
