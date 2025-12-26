@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
 
 const SearchBar = ({ placeholder, onSearch }) => {
+    const uniqueId = useId();
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (e) => {
         const term = e.target.value;
         setSearchTerm(term);
-        onSearch(term); 
+        onSearch(term);
     };
 
     return (
@@ -14,6 +15,9 @@ const SearchBar = ({ placeholder, onSearch }) => {
             <i className="fas fa-magnifying-glass text-primary mr-2"></i>
             <input
                 type="text"
+                id={`search-${uniqueId}`}
+                name={`search-${uniqueId}`}
+                autoComplete="off"
                 placeholder={placeholder || 'Buscar por título o plataforma...'}
                 value={searchTerm}
                 onChange={handleSearchChange}

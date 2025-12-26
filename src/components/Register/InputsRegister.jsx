@@ -23,7 +23,9 @@ const InputsRegister = ({ formData, setFormData }) => {
                     </svg>
                     <input
                         type="text"
+                        id="register-firstname"
                         name="firstname"
+                        autoComplete="given-name"
                         value={formData.firstname}
                         onChange={handleChange}
                         className="grow text-sm min-w-0"
@@ -43,7 +45,9 @@ const InputsRegister = ({ formData, setFormData }) => {
                     </svg>
                     <input
                         type="text"
+                        id="register-lastname"
                         name="lastname"
+                        autoComplete="family-name"
                         value={formData.lastname}
                         onChange={handleChange}
                         className="grow text-sm min-w-0"
@@ -66,7 +70,9 @@ const InputsRegister = ({ formData, setFormData }) => {
                 </svg>
                 <input
                     type="text"
+                    id="register-username"
                     name="username"
+                    autoComplete="username"
                     value={formData.username}
                     onChange={handleChange}
                     className="grow text-sm"
@@ -90,8 +96,10 @@ const InputsRegister = ({ formData, setFormData }) => {
                     />
                 </svg>
                 <input
-                    type="text"
+                    type="email"
+                    id="register-email"
                     name="email"
+                    autoComplete="email"
                     value={formData.email}
                     onChange={handleChange}
                     className="grow text-sm"
@@ -115,7 +123,9 @@ const InputsRegister = ({ formData, setFormData }) => {
                 </svg>
                 <input
                     type="password"
+                    id="register-password"
                     name="password"
+                    autoComplete="new-password"
                     value={formData.password}
                     onChange={handleChange}
                     className="grow text-sm"

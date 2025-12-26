@@ -156,13 +156,15 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <label htmlFor="payment-nombrePropietario" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-user text-[#FF6828] text-xs"></i>
                                     Nombre del Titular
                                 </label>
                                 <input
                                     type="text"
+                                    id="payment-nombrePropietario"
                                     name="nombrePropietario"
+                                    autoComplete="cc-name"
                                     value={formData.nombrePropietario}
                                     onChange={handleInputChange}
                                     required
@@ -174,13 +176,15 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <label htmlFor="payment-numeroTarjeta" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-credit-card text-[#FF6828] text-xs"></i>
                                     Número de Tarjeta
                                 </label>
                                 <input
                                     type="text"
+                                    id="payment-numeroTarjeta"
                                     name="numeroTarjeta"
+                                    autoComplete="cc-number"
                                     value={formData.numeroTarjeta}
                                     onChange={handleInputChange}
                                     required
@@ -193,13 +197,15 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <label htmlFor="payment-codigoSeguridad" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-lock text-[#FF6828] text-xs"></i>
                                     CVV
                                 </label>
                                 <input
                                     type="text"
+                                    id="payment-codigoSeguridad"
                                     name="codigoSeguridad"
+                                    autoComplete="cc-csc"
                                     value={formData.codigoSeguridad}
                                     onChange={handleInputChange}
                                     maxLength="3"
@@ -213,13 +219,15 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <label htmlFor="payment-fechaVencimiento" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-calendar text-[#FF6828] text-xs"></i>
                                     Fecha de Vencimiento
                                 </label>
                                 <input
                                     type="date"
+                                    id="payment-fechaVencimiento"
                                     name="fechaVencimiento"
+                                    autoComplete="cc-exp"
                                     value={formData.fechaVencimiento}
                                     onChange={handleInputChange}
                                     required
@@ -229,13 +237,15 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <label htmlFor="payment-direccion" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-location-dot text-[#FF6828] text-xs"></i>
                                     Dirección
                                 </label>
                                 <input
                                     type="text"
+                                    id="payment-direccion"
                                     name="direccion"
+                                    autoComplete="street-address"
                                     value={formData.direccion}
                                     onChange={handleInputChange}
                                     required
@@ -247,11 +257,12 @@ const ModalPayment = ({ isOpen, onRequestClose, onSave, initialFormData = defaul
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <label htmlFor="payment-tipoPago" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                     <i className="fa-solid fa-tag text-[#FF6828] text-xs"></i>
                                     Tipo de Tarjeta
                                 </label>
                                 <select
+                                    id="payment-tipoPago"
                                     name="tipoPago"
                                     value={formData.tipoPago}
                                     onChange={handleInputChange}

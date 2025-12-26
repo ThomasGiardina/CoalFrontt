@@ -1,8 +1,8 @@
 const Check = () => {
 
-    return(
+    return (
         <>
-            <input type="checkbox" defaultChecked className="checkbox" />
+            <input type="checkbox" id="remember-me" name="remember-me" defaultChecked className="checkbox" />
         </>
     )
 

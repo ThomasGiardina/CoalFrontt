@@ -188,6 +188,8 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                         <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl bg-neutral border border-base-200 hover:border-primary/30 transition-colors">
                             <input
                                 type="checkbox"
+                                id="terms-accepted"
+                                name="terms-accepted"
                                 className="checkbox checkbox-primary"
                                 checked={termsAccepted}
                                 onChange={handleTermsChange}

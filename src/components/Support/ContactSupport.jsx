@@ -89,7 +89,9 @@ const ContactSupport = () => {
                             </label>
                             <Field
                                 type="text"
+                                id="name"
                                 name="name"
+                                autoComplete="name"
                                 className="input input-bordered w-full"
                             />
                             <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
@@ -100,7 +102,9 @@ const ContactSupport = () => {
                             </label>
                             <Field
                                 type="email"
+                                id="email"
                                 name="email"
+                                autoComplete="email"
                                 className="input input-bordered w-full"
                                 placeholder="ejemplo@gmail.com"
                             />
@@ -112,7 +116,9 @@ const ContactSupport = () => {
                             </label>
                             <Field
                                 type="text"
+                                id="issue"
                                 name="issue"
+                                autoComplete="off"
                                 className="input input-bordered w-full"
                             />
                             <ErrorMessage name="issue" component="div" className="text-red-500 text-xs mt-1" />
@@ -123,6 +129,7 @@ const ContactSupport = () => {
                             </label>
                             <input
                                 type="file"
+                                id="photos"
                                 name="photos"
                                 multiple
                                 className="file-input file-input-bordered w-full"
@@ -137,7 +144,9 @@ const ContactSupport = () => {
                             </label>
                             <Field
                                 as="textarea"
+                                id="description"
                                 name="description"
+                                autoComplete="off"
                                 className="textarea textarea-bordered w-full"
                             />
                             <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />

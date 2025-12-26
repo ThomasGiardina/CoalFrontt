@@ -45,7 +45,11 @@ const BotonRegister = ({ formData }) => {
 
             const data = await response.json();
 
-            dispatch(login({ token: data.access_token, role: data.role }));
+            dispatch(login({
+                token: data.access_token,
+                role: data.role,
+                userId: data.user_id
+            }));
 
             Swal.fire({
                 icon: 'success',

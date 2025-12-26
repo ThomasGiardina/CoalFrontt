@@ -1,8 +1,16 @@
+import { lazy, Suspense } from 'react';
 import Homehero from "../components/HomePage/HomeHero";
 import Homeimg from "../components/HomePage/Homeimg";
-import ConsolesSection from "../components/HomePage/ConsolesSection";
-import FindUsSection from "../components/HomePage/FindUsSection";
-import WhyCoalSection from '../components/HomePage/WhyCoalSection';
+
+const ConsolesSection = lazy(() => import("../components/HomePage/ConsolesSection"));
+const FindUsSection = lazy(() => import("../components/HomePage/FindUsSection"));
+const WhyCoalSection = lazy(() => import('../components/HomePage/WhyCoalSection'));
+
+const SectionLoader = () => (
+    <div className="flex justify-center items-center py-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+);
 
 function Homepage() {
     return (
@@ -18,9 +26,15 @@ function Homepage() {
             </section>
 
             <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-                <ConsolesSection />
-                <WhyCoalSection />
-                <FindUsSection />
+                <Suspense fallback={<SectionLoader />}>
+                    <ConsolesSection />
+                </Suspense>
+                <Suspense fallback={<SectionLoader />}>
+                    <WhyCoalSection />
+                </Suspense>
+                <Suspense fallback={<SectionLoader />}>
+                    <FindUsSection />
+                </Suspense>
             </div>
         </div>
     );

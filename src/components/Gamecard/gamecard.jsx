@@ -10,7 +10,7 @@ const GameCard = ({ title, imageUrl, price, platform, id }) => {
     const dispatch = useDispatch();
     const { isAuthenticated, token, userId } = useSelector((state) => state.auth);
     const favorites = useSelector((state) => state.favorites.items);
-    const isFavorite = favorites.some(fav => fav.id === id);
+    const isFavorite = favorites.some(fav => fav.id === id || fav.videojuego?.id === id || fav.videojuegoId === id);
 
     const getPlatformIcon = (p) => {
         switch (p) {
@@ -31,6 +31,18 @@ const GameCard = ({ title, imageUrl, price, platform, id }) => {
                 title: 'Inicia sesión',
                 text: 'Debes iniciar sesión para agregar favoritos',
                 icon: 'info',
+                background: '#1D1F23',
+                color: '#fff',
+                confirmButtonColor: '#FF6828'
+            });
+            return;
+        }
+
+        if (!userId) {
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo obtener tu información de usuario. Intenta cerrar sesión e iniciar nuevamente.',
+                icon: 'error',
                 background: '#1D1F23',
                 color: '#fff',
                 confirmButtonColor: '#FF6828'

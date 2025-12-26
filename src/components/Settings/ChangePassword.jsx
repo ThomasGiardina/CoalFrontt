@@ -92,13 +92,16 @@ const ChangePassword = () => {
 
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                        <label htmlFor="current-password" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-lock text-[#FF6828] text-xs"></i>
                             Contraseña Actual
                         </label>
                         <div className="relative">
                             <input
                                 type={showCurrentPassword ? "text" : "password"}
+                                id="current-password"
+                                name="currentPassword"
+                                autoComplete="current-password"
                                 placeholder="Ingresa tu contraseña actual"
                                 value={currentPassword}
                                 onChange={(e) => setCurrentPassword(e.target.value)}
@@ -115,13 +118,16 @@ const ChangePassword = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                        <label htmlFor="new-password" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-key text-[#FF6828] text-xs"></i>
                             Nueva Contraseña
                         </label>
                         <div className="relative">
                             <input
                                 type={showNewPassword ? "text" : "password"}
+                                id="new-password"
+                                name="newPassword"
+                                autoComplete="new-password"
                                 placeholder="Ingresa tu nueva contraseña"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
@@ -138,13 +144,16 @@ const ChangePassword = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                        <label htmlFor="confirm-password" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-check-double text-[#FF6828] text-xs"></i>
                             Confirmar Nueva Contraseña
                         </label>
                         <div className="relative">
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
+                                id="confirm-password"
+                                name="confirmPassword"
+                                autoComplete="new-password"
                                 placeholder="Repite tu nueva contraseña"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}

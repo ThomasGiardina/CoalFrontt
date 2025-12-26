@@ -200,13 +200,15 @@ const AccountSettings = () => {
                 <form className="space-y-5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                            <label htmlFor="account-username" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                 <i className="fa-solid fa-at text-[#FF6828] text-xs"></i>
                                 Username <span className="text-[#FF6828]">*</span>
                             </label>
                             <input
                                 type="text"
+                                id="account-username"
                                 name="username"
+                                autoComplete="username"
                                 value={formData.username}
                                 onChange={handleInputChange}
                                 placeholder="@username"
@@ -215,13 +217,15 @@ const AccountSettings = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                            <label htmlFor="account-telefono" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                 <i className="fa-solid fa-phone text-[#FF6828] text-xs"></i>
                                 Teléfono
                             </label>
                             <input
-                                type="text"
+                                type="tel"
+                                id="account-telefono"
                                 name="telefono"
+                                autoComplete="tel"
                                 value={formData.telefono}
                                 onChange={handlePhoneInput}
                                 placeholder="1123456789"
@@ -231,13 +235,15 @@ const AccountSettings = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                            <label htmlFor="account-firstName" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                 <i className="fa-solid fa-signature text-[#FF6828] text-xs"></i>
                                 Nombre
                             </label>
                             <input
                                 type="text"
+                                id="account-firstName"
                                 name="firstName"
+                                autoComplete="given-name"
                                 value={formData.firstName}
                                 onChange={handleInputChange}
                                 placeholder="Tu nombre"
@@ -246,13 +252,15 @@ const AccountSettings = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                            <label htmlFor="account-lastName" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                                 <i className="fa-solid fa-signature text-[#FF6828] text-xs"></i>
                                 Apellido
                             </label>
                             <input
                                 type="text"
+                                id="account-lastName"
                                 name="lastName"
+                                autoComplete="family-name"
                                 value={formData.lastName}
                                 onChange={handleInputChange}
                                 placeholder="Tu apellido"
@@ -262,13 +270,15 @@ const AccountSettings = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                        <label htmlFor="account-email" className="flex items-center gap-2 text-sm font-medium text-gray-300">
                             <i className="fa-solid fa-envelope text-[#FF6828] text-xs"></i>
                             Correo Electrónico <span className="text-[#FF6828]">*</span>
                         </label>
                         <input
                             type="email"
+                            id="account-email"
                             name="email"
+                            autoComplete="email"
                             value={formData.email}
                             onChange={handleInputChange}
                             placeholder="email@ejemplo.com"
