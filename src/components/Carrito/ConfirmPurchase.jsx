@@ -102,8 +102,18 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                 background: '#1D1F23',
                 color: '#fff',
             }).then(() => {
-                dispatch(clearCart());
-                handleNextStep();
+                // Calcular descuento para la factura
+                const discount = subtotal * discountPercentage;
+
+                // Pasar datos a la factura incluyendo orderId del backend
+                handleNextStep({
+                    orderId: responseData?.id || responseData?.orderId || `ORD-${carritoId}`,
+                    subtotal: subtotal,
+                    discount: discount,
+                    shippingCost: shippingCost,
+                    total: total
+                });
+                dispatch(clearCart()); // Luego limpia el carrito
             });
         } catch (error) {
             Swal.fire({

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCarritoId, setCartItems } from "../../redux/slices/cartSlice";
 import SelectPayment from "./SelectPayment";
@@ -13,6 +13,14 @@ const NewContainerCart = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [paymentMethod, setPaymentMethod] = useState("");
     const [shippingMethod, setShippingMethod] = useState("");
+    const [purchasedItems, setPurchasedItems] = useState([]); // Guarda copia para la factura
+    const [invoiceData, setInvoiceData] = useState({
+        orderId: "",
+        subtotal: 0,
+        discount: 0,
+        shippingCost: 0,
+        total: 0
+    });
 
 
     const handleNextStep = () => {
@@ -26,6 +34,15 @@ const NewContainerCart = () => {
     const handleSelectPayment = (selectedMethod, selectedShipping) => {
         setPaymentMethod(selectedMethod);
         setShippingMethod(selectedShipping);
+        handleNextStep();
+    };
+
+    // Callback para guardar los items y datos antes de limpiar el carrito
+    const handlePurchaseComplete = (orderData) => {
+        setPurchasedItems([...cartItems]); // Guarda copia antes de clearCart
+        if (orderData) {
+            setInvoiceData(orderData);
+        }
         handleNextStep();
     };
 
@@ -57,14 +74,15 @@ const NewContainerCart = () => {
                     shippingMethod={shippingMethod}
                     carritoId={carritoId}
                     cartItems={cartItems}
-                    handleNextStep={handleNextStep}
+                    handleNextStep={handlePurchaseComplete}
                 />
             )}
             {currentStep === 4 && (
                 <Factura
-                    cartItems={cartItems}
+                    cartItems={purchasedItems}
                     paymentMethod={paymentMethod}
                     shippingMethod={shippingMethod}
+                    invoiceData={invoiceData}
                 />
             )}
         </div>

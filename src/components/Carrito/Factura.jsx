@@ -6,8 +6,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
 
-const Factura = ({ cartItems = [], shippingMethod }) => {
-    const [orderId, setOrderId] = useState("");
+const Factura = ({ cartItems = [], shippingMethod, paymentMethod, invoiceData = {} }) => {
     const [orderDate] = useState(new Date());
     const [showTraditionalInvoice, setShowTraditionalInvoice] = useState(false);
 
@@ -16,25 +15,25 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
     const parsedShippingAddress =
         typeof shippingAddress === "string" ? JSON.parse(shippingAddress) : shippingAddress;
 
-    const payment = useSelector((state) => state.cart.metodoDePago);
+    // Usar datos de invoiceData o calcular fallback
+    const orderId = invoiceData.orderId || `ORD-${Math.floor(Math.random() * 1000000)}`;
+    const subtotal = invoiceData.subtotal || cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+    const discount = invoiceData.discount || 0;
+    const shippingCost = invoiceData.shippingCost || (shippingMethod === "envio" ? 5000 : 0);
+    const total = invoiceData.total || (subtotal + shippingCost - discount);
 
-
-    const shippingCost = shippingMethod === "envio" ? 5000 : 0;
-    const discountPercentage = payment === "EFECTIVO" ? 0.15 : payment === "DEBITO" ? 0.10 : 0;
-    const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
-    const discount = subtotal * discountPercentage;
-    const total = subtotal + shippingCost - discount;
-
-
-
-    useEffect(() => {
-        const generateOrderId = () => {
-            const randomId = Math.floor(Math.random() * 1000000);
-            setOrderId(`ORD-${randomId}`);
+    // Formato legible del método de pago
+    const getPaymentMethodLabel = (method) => {
+        const labels = {
+            'CREDITO': 'Tarjeta de Crédito',
+            'DEBITO': 'Tarjeta de Débito',
+            'EFECTIVO': 'Efectivo',
+            'Credito': 'Tarjeta de Crédito',
+            'Debito': 'Tarjeta de Débito',
+            'Efectivo': 'Efectivo'
         };
-
-        generateOrderId();
-    }, []);
+        return labels[method] || method || 'No especificado';
+    };
 
     const formatPrice = (price) => {
         return price.toLocaleString("es-AR", {
@@ -98,7 +97,7 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
                         </div>
                         <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
                             <span className="text-gray-400 text-sm sm:text-base">Método de Pago:</span>
-                            <span className="text-green-400 text-sm sm:text-base">{payment}</span>
+                            <span className="text-green-400 text-sm sm:text-base">{getPaymentMethodLabel(paymentMethod)}</span>
                         </div>
                         {shippingMethod === "envio" && parsedShippingAddress && (
                             <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
