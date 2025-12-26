@@ -37,7 +37,7 @@ const Storegrid = ({ games }) => {
     useEffect(() => { setFilteredGames(filterNonGift(games)); }, [games]);
 
     return (
-        <div className="min-h-screen bg-base-300">
+        <div className="min-h-screen bg-background">
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <Carrousel />
                 <BestSellersCarousel />

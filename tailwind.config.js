@@ -1,3 +1,4 @@
+import daisyui from 'daisyui';
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -29,7 +30,13 @@ export default {
         sans: ['Roboto', 'sans-serif'],
         serif: ['Merriweather', 'serif'],
       },
+      backgroundColor: {
+        'background': '#0F1012',
+      },
+      colors: {
+        'background': '#0F1012',
+      },
     },
   },
-  plugins: [require('daisyui')],
+  plugins: [daisyui],
 }

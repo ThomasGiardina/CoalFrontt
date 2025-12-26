@@ -116,7 +116,7 @@ const BestSellersSection = () => {
                             <div className="p-3">
                                 <h3 className="text-white text-sm font-medium line-clamp-1">{game.titulo}</h3>
                                 <div className="flex items-center gap-1 mt-1">
-                                    <span className="text-gray-400 text-xs">Ventas: {(Number(game.ventas) || 0).toLocaleString('es-AR')}</span>
+                                    <span className="text-gray-400 text-xs">{game.ventas}+ vendidos</span>
                                 </div>
                             </div>
                         </div>

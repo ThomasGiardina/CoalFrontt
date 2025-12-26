@@ -30,7 +30,7 @@ const StoreNavbar = () => {
     const { totalItems, subtotal } = calculateCartSummary();
 
     return (
-        <div className="w-full bg-base-100 sticky top-0 z-50">
+        <div className="w-full bg-background sticky top-0 z-50">
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="navbar min-h-[64px]">
                     <div className="navbar-start gap-2">
