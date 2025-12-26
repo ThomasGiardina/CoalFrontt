@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import GamecardPurchase from "../Gamecard/GamecardPurchase";  
-import { refreshToken } from "../../redux/slices/authSlice";    
+import GamecardPurchase from "../Gamecard/GamecardPurchase";
+import { refreshToken } from "../../redux/slices/authSlice";
 
 const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handleNextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
@@ -13,7 +13,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
     const token = useSelector((state) => state.auth.token);
     const userId = useSelector((state) => state.auth.userId);
     const selectedPaymentMethodId = useSelector((state) => state.cart.metodoDePagoId);
-    const shippingAddress = useSelector((state) => state.cart.direccionEnvio); 
+    const shippingAddress = useSelector((state) => state.cart.direccionEnvio);
     const dispatch = useDispatch();
 
     const payment = useSelector((state) => state.cart.metodoDePago);
@@ -40,29 +40,43 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
 
     const handlePurchase = async () => {
         if (!termsAccepted) {
-            Swal.fire("Error", "Debes aceptar los términos para continuar.", "error");
+            Swal.fire({
+                title: "Error",
+                text: "Debes aceptar los términos para continuar.",
+                icon: "error",
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
+            });
             return;
         }
-    
+
         if (!carritoId || !paymentMethod || !shippingMethod) {
-            Swal.fire("Error", "Faltan datos esenciales para completar la compra.", "error");
+            Swal.fire({
+                title: "Error",
+                text: "Faltan datos esenciales para completar la compra.",
+                icon: "error",
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
+            });
             return;
         }
-    
+
         const requestData = {
             tipoEntrega: shippingMethod.toUpperCase(),
             tipoPago: paymentMethod.toUpperCase(),
             metodoPagoId: paymentMethod === "Efectivo" ? null : selectedPaymentMethodId,
             direccionEnvio: shippingMethod === "envio" ? JSON.stringify(shippingAddress) : null,
-            montoTotal: total, 
-            cantidadArticulos: cartItems.reduce((acc, item) => acc + item.cantidad, 0), 
+            montoTotal: total,
+            cantidadArticulos: cartItems.reduce((acc, item) => acc + item.cantidad, 0),
             items: cartItems.map(item => ({
                 videojuegoId: item.id,
                 cantidad: item.cantidad,
                 precio: item.precio
             }))
         };
-        
+
         try {
             const response = await fetch(`http://localhost:4002/carritos/confirmar/${carritoId}`, {
                 method: "POST",
@@ -72,22 +86,32 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                 },
                 body: JSON.stringify(requestData),
             });
-    
+
             if (!response.ok) {
                 throw new Error("Error al confirmar el carrito");
             }
-    
+
             const responseData = await response.json();
-    
+
             Swal.fire({
                 title: "Compra realizada!",
                 text: "Tu compra ha sido completada con éxito.",
                 icon: "success",
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
             }).then(() => {
                 handleNextStep();
             });
         } catch (error) {
-            Swal.fire("Error", "Hubo un problema al confirmar el carrito.", "error");
+            Swal.fire({
+                title: "Error",
+                text: "Hubo un problema al confirmar el carrito.",
+                icon: "error",
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
+            });
         }
     };
 
@@ -133,11 +157,11 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
 
                     <div className="mt-6">
                         <label className="inline-flex items-center">
-                            <input 
-                                type="checkbox" 
-                                className="form-checkbox bg-gray-700 text-green-500" 
-                                checked={termsAccepted} 
-                                onChange={handleTermsChange} 
+                            <input
+                                type="checkbox"
+                                className="form-checkbox bg-gray-700 text-green-500"
+                                checked={termsAccepted}
+                                onChange={handleTermsChange}
                             />
                             <span className="ml-2 text-gray-400">
                                 Acepto las condiciones del <a href="#" className="text-blue-400">Acuerdo de Suscriptor</a>
@@ -151,7 +175,7 @@ const ConfirmPurchase = ({ paymentMethod, shippingMethod, cartItems = [], handle
                     <p className="text-gray-400 text-center mb-4 text-sm sm:text-base">
                         Una vez confirmada la compra, no podrás volver atrás.
                     </p>
-                    <button 
+                    <button
                         className={`bg-primary text-white py-2 sm:py-3 px-4 sm:px-6 rounded-md transition duration-200 w-full text-sm sm:text-base ${!termsAccepted ? "opacity-50 cursor-not-allowed" : ""}`}
                         disabled={!termsAccepted}
                         onClick={handlePurchase}

@@ -22,8 +22,8 @@ const GiftCardsAdminContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(fetchGames());
-    }, [dispatch]);
+        if (allGames.length === 0) dispatch(fetchGames());
+    }, [dispatch, allGames.length]);
 
     useEffect(() => {
         const giftCards = allGames.filter(isGiftCard);

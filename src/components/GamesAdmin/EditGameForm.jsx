@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import { useSelector } from "react-redux";
 
 
@@ -20,7 +20,7 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
     const role = useSelector((state) => state.auth.role);
 
     const allCategories = [
-        "ACCION", "AVENTURA", "RPG", "SIMULACION", "DEPORTES", "ESTRATEGIA", 
+        "ACCION", "AVENTURA", "RPG", "SIMULACION", "DEPORTES", "ESTRATEGIA",
         "PUZZLE", "TERROR", "VR", "EDUCATIVO"
     ];
 
@@ -38,7 +38,7 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const updatedGame = {
             id: game.id,
             titulo: title,
@@ -50,22 +50,22 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
             fechaLanzamiento: fechaLanzamiento,
             desarrolladora: desarrolladora,
         };
-    
+
         const formData = new FormData();
         formData.append('videojuego', JSON.stringify(updatedGame));
-    
+
         if (mainImage) {
             formData.append('foto', mainImage);
         }
-    
+
         if (carruselImagen1) {
             formData.append('carruselImagen1', carruselImagen1);
         }
-    
+
         if (carruselImagen2) {
             formData.append('carruselImagen2', carruselImagen2);
         }
-    
+
         if (carruselImagen3) {
             formData.append('carruselImagen3', carruselImagen3);
         }
@@ -74,7 +74,7 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
             console.error("Token no disponible. El usuario no está autenticado.");
             return;
         }
-    
+
         try {
             const response = await fetch(`http://localhost:4002/videojuegos/${game.id}`, {
                 method: 'PUT',
@@ -83,15 +83,15 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
                 },
                 body: formData,
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Detalles del error:', errorData);
                 throw new Error('Error al actualizar el videojuego');
             }
-    
+
             const data = await response.json();
-    
+
             updateGame(data);
             closeModal();
         } catch (error) {
@@ -301,7 +301,7 @@ const EditGameButton = ({ game, updateGame, closeModal }) => {
                     </div>
 
                     <div className="modal-action mt-4">
-                        <button type="submit" className="btn btn-primary">Guardar cambios</button>
+                        <button type="submit" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25">Guardar cambios</button>
                         <button type="button" className="btn" onClick={closeModal}>Cancelar</button>
                     </div>
                 </form>

@@ -15,6 +15,7 @@ const ForgotPassword = () => {
                 text: 'Las contraseñas no coinciden.',
                 background: '#1D1F23',
                 color: '#fff',
+                confirmButtonColor: '#FF6828',
                 confirmButtonText: 'Aceptar'
             });
             return;
@@ -38,6 +39,7 @@ const ForgotPassword = () => {
                         text: 'La contraseña ha sido cambiada exitosamente.',
                         background: '#1D1F23',
                         color: '#fff',
+                        confirmButtonColor: '#FF6828',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
                         setResetInputs(true);
@@ -57,6 +59,7 @@ const ForgotPassword = () => {
                     text: `Hubo un problema al cambiar la contraseña: ${error.message}`,
                     background: '#1D1F23',
                     color: '#fff',
+                    confirmButtonColor: '#FF6828',
                     confirmButtonText: 'Aceptar'
                 });
             });

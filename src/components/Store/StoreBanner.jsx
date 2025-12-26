@@ -43,7 +43,11 @@ const StoreBanner = () => {
     return (
         <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[400px] rounded-2xl overflow-hidden mb-8">
             <div className="absolute inset-0 transition-opacity duration-700">
-                <img src={`data:image/jpeg;base64,${currentGame.foto}`} alt={currentGame.titulo} className="w-full h-full object-cover" />
+                <img
+                    src={`data:image/jpeg;base64,${currentGame.carruselImagen1 || currentGame.foto}`}
+                    alt={currentGame.titulo}
+                    className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
             </div>
             <div className="absolute inset-0 flex items-center">
@@ -56,7 +60,7 @@ const StoreBanner = () => {
                     <p className="text-gray-300 text-sm sm:text-base mb-4 line-clamp-2">{currentGame.descripcion || 'Descubrí este increíble juego en nuestra tienda'}</p>
                     <div className="flex items-center gap-4">
                         <span className="text-2xl sm:text-3xl font-bold text-primary">${currentGame.precio}</span>
-                        <Link to={`/Details/${currentGame.id}`} className="btn btn-primary text-white">Ver Juego</Link>
+                        <Link to={`/Details/${currentGame.id}`} className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300">Ver Juego</Link>
                     </div>
                 </div>
             </div>

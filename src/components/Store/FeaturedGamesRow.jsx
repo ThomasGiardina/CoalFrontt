@@ -27,7 +27,6 @@ const FeaturedGamesRow = () => {
         }
     }, [games]);
 
-    // Calculate max scroll when content loads
     useEffect(() => {
         const calculateMaxScroll = () => {
             if (containerRef.current && contentRef.current) {
@@ -66,7 +65,6 @@ const FeaturedGamesRow = () => {
 
     return (
         <div className="mb-8">
-            {/* Header with arrows on top */}
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-white">Te puede interesar</h2>
                 <div className="flex gap-2">

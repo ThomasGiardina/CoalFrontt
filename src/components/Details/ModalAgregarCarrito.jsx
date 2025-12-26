@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useNavigate } from "react-router-dom";
-import { addItemToCarrito, updateCartItemAsync } from '../../redux/slices/cartSlice';
+import { addItemToCarrito, updateCartItemAsync, fetchCarrito } from '../../redux/slices/cartSlice';
 import "../../index.css";
 
 const ModalAgregarCarrito = ({ gameDetails }) => {
@@ -44,6 +44,7 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                 title: 'Cantidad máxima alcanzada',
                 text: `Solo hay ${gameDetails.stock} unidades disponibles.`,
                 confirmButtonText: 'OK',
+                confirmButtonColor: '#FF6828',
                 background: '#1D1F23',
                 color: '#fff',
                 customClass: {
@@ -59,11 +60,14 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                     id: existingItem.id,
                     cantidad: totalQuantity
                 }));
+                await dispatch(fetchCarrito());
                 MySwal.fire({
                     title: 'Cantidad Actualizada!',
                     text: `La cantidad del producto ha sido actualizada a ${totalQuantity}.`,
                     icon: 'success',
                     showCancelButton: true,
+                    confirmButtonColor: '#FF6828',
+                    cancelButtonColor: '#374151',
                     confirmButtonText: 'Seguir Comprando',
                     cancelButtonText: 'Ir al Carrito',
                     background: '#1D1F23',
@@ -84,12 +88,15 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                         cantidad: 1,
                     })
                 );
+                await dispatch(fetchCarrito());
 
                 MySwal.fire({
                     title: 'Producto Agregado al Carrito!',
                     text: 'El producto ha sido agregado al carrito con éxito.',
                     icon: 'success',
                     showCancelButton: true,
+                    confirmButtonColor: '#FF6828',
+                    cancelButtonColor: '#374151',
                     confirmButtonText: 'Seguir Comprando',
                     cancelButtonText: 'Ir al Carrito',
                     background: '#1D1F23',
@@ -110,6 +117,7 @@ const ModalAgregarCarrito = ({ gameDetails }) => {
                 title: 'Error al agregar el producto',
                 text: error.message,
                 confirmButtonText: 'OK',
+                confirmButtonColor: '#FF6828',
                 background: '#1D1F23',
                 color: '#fff',
                 customClass: {

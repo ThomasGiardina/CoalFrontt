@@ -16,7 +16,10 @@ const StoreNavbar = () => {
     const calculateCartSummary = () => {
         if (!cartItems || cartItems.length === 0) return { totalItems: 0, subtotal: 0 };
         const totalItems = cartItems.reduce((total, item) => total + (item?.cantidad || 0), 0);
-        const subtotal = cartItems.reduce((total, item) => total + ((item?.videojuego?.precio || 0) * (item?.cantidad || 0)), 0);
+        const subtotal = cartItems.reduce((total, item) => {
+            const precio = item?.videojuego?.precio || item?.precio || 0;
+            return total + (precio * (item?.cantidad || 0));
+        }, 0);
         return { totalItems, subtotal };
     };
 
@@ -107,7 +110,7 @@ const StoreNavbar = () => {
                                                 <span className="font-bold">{totalItems} Items</span>
                                                 <span className="text-sm text-base-content/70">Subtotal: ${subtotal.toFixed(2)}</span>
                                                 <div className="card-actions">
-                                                    <Link to="/Cart" className="btn btn-primary btn-sm btn-block text-white">Ver carrito</Link>
+                                                    <Link to="/Cart" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none btn-sm btn-block">Ver carrito</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,7 +122,7 @@ const StoreNavbar = () => {
                         ) : (
                             <>
                                 <Link to="/Login" className="btn btn-ghost btn-sm text-sm">Iniciar Sesión</Link>
-                                <Link to="/Register" className="btn btn-primary btn-sm text-sm text-white">Registrarse</Link>
+                                <Link to="/Register" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none btn-sm text-sm">Registrarse</Link>
                             </>
                         )}
                     </div>

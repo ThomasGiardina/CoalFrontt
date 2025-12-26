@@ -4,15 +4,15 @@ import PaymentCard from "./PaymentCard";
 import ModalPayment from "./ModalPayment";
 
 const PaymentSettings = () => {
-    const [metodosPago, setMetodosPago] = useState([]);  
-    const [modalOpen, setModalOpen] = useState(false);   
+    const [metodosPago, setMetodosPago] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
     const token = useSelector((state) => state.auth.token);
 
     const fetchMetodosPago = async () => {
         try {
             const response = await fetch('http://localhost:4002/metodosPago/usuario', {
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
@@ -32,14 +32,14 @@ const PaymentSettings = () => {
             const response = await fetch('http://localhost:4002/metodosPago', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(nuevoMetodo),
             });
 
             if (response.ok) {
-                fetchMetodosPago(); 
+                fetchMetodosPago();
             } else {
                 const errorData = await response.json();
                 console.error('Error al guardar el método de pago:', errorData);
@@ -54,13 +54,13 @@ const PaymentSettings = () => {
             const response = await fetch(`http://localhost:4002/metodosPago/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
 
             if (response.ok) {
-                setMetodosPago(metodosPago.filter((metodo) => metodo.id !== id)); 
+                setMetodosPago(metodosPago.filter((metodo) => metodo.id !== id));
             } else {
                 console.error('Error al eliminar el método de pago');
             }
@@ -71,36 +71,63 @@ const PaymentSettings = () => {
 
     useEffect(() => {
         fetchMetodosPago();
-    }, [token]); 
+    }, [token]);
 
     return (
         <>
-            <div className="min-h-[800px] h-auto w-full max-w-[650px] rounded-xl flex flex-col bg-neutral p-4 sm:p-6">
-                <h1 className="flex items-start text-2xl sm:text-3xl text-white mb-3 sm:mb-5">Métodos de Pago</h1>
-                <p className="flex items-start text-sm sm:text-base text-white mb-4 sm:mb-5">Aquí puedes agregar y cambiar tus métodos de pago</p>
-                
-                <div className="flex flex-col justify-start mt-4 overflow-y-auto min-h-[400px] max-h-[555px] pt-5">
-                    {metodosPago.length > 0 ? (
-                        metodosPago.map((metodo, index) => (
-                            <PaymentCard 
-                                key={index}
-                                metodo={metodo}
-                                onUpdateMetodoPago={handleSaveMetodoPago}
-                                onDeleteMetodoPago={handleDeleteMetodoPago}  
-                            />
-                        ))
-                    ) : (
-                        <p className="text-white text-center">No tienes métodos de pago guardados.</p>
-                    )}
-                </div>
-                
-                <div className="flex justify-end mt-4 sm:mt-5">
-                    <button 
-                        className="btn btn-primary w-full sm:w-[200px] text-white rounded-md p-2 text-sm sm:text-base"
-                        onClick={() => setModalOpen(true)}
-                    >
-                        Agregar Método
-                    </button>
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a1b1e] to-[#141517] border border-[#2a2b2e] shadow-xl">
+                {/* Background Decorative Elements */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[#FF6828]/5 to-transparent rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#E57028]/5 to-transparent rounded-full blur-3xl"></div>
+
+                <div className="relative p-6 sm:p-8">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF6828] to-[#E57028] flex items-center justify-center shadow-lg shadow-[#FF6828]/20">
+                                <i className="fa-solid fa-credit-card text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h2 className="text-xl sm:text-2xl font-bold text-white">Métodos de Pago</h2>
+                                <p className="text-gray-400 text-sm">Administra tus tarjetas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Payment Cards List */}
+                    <div className="space-y-4 min-h-[200px] max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
+                        {metodosPago.length > 0 ? (
+                            metodosPago.map((metodo, index) => (
+                                <PaymentCard
+                                    key={index}
+                                    metodo={metodo}
+                                    onUpdateMetodoPago={handleSaveMetodoPago}
+                                    onDeleteMetodoPago={handleDeleteMetodoPago}
+                                />
+                            ))
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                <div className="w-20 h-20 rounded-full bg-[#2a2b2e]/50 flex items-center justify-center mb-4">
+                                    <i className="fa-solid fa-credit-card text-gray-500 text-3xl"></i>
+                                </div>
+                                <h3 className="text-white font-semibold mb-2">Sin métodos de pago</h3>
+                                <p className="text-gray-400 text-sm max-w-xs">
+                                    Agrega un método de pago para realizar compras de forma más rápida
+                                </p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Add Button */}
+                    <div className="mt-6 pt-6 border-t border-[#2a2b2e]">
+                        <button
+                            className="w-full py-3 border-2 border-dashed border-[#FF6828]/50 rounded-xl text-[#FF6828] font-semibold hover:bg-[#FF6828]/10 hover:border-[#FF6828] transition-all duration-300 flex items-center justify-center gap-2"
+                            onClick={() => setModalOpen(true)}
+                        >
+                            <i className="fa-solid fa-plus"></i>
+                            Agregar Nuevo Método
+                        </button>
+                    </div>
                 </div>
             </div>
 

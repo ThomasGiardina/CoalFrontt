@@ -15,23 +15,23 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
     const getGiftCardImage = () => {
         const title = titulo?.toLowerCase() || '';
         const isGift = isGiftCard || item.giftCard || item.gift_card || title.includes('tarjeta') || title.includes('coal');
-        
+
         if (!isGift) return null;
-        
+
         const priceNum = Number(precio);
         if (Math.abs(priceNum - 20) < 0.01) return tarjeta20;
         if (Math.abs(priceNum - 50) < 0.01) return tarjeta50;
         if (Math.abs(priceNum - 100) < 0.01) return tarjeta100;
-        
+
         return null;
     };
 
     const giftCardImage = getGiftCardImage();
-    const fotoUrl = giftCardImage 
+    const fotoUrl = giftCardImage
         ? giftCardImage
         : foto
-        ? `data:image/jpeg;base64,${foto}`
-        : '/ruta/a/imagen_por_defecto.png';
+            ? `data:image/jpeg;base64,${foto}`
+            : '/ruta/a/imagen_por_defecto.png';
 
     const aumentarCantidad = () => {
         const nuevaCantidad = cantidad + 1;
@@ -45,10 +45,10 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
                     text: `Solo hay ${stock} unidades disponibles.`,
                     background: '#1D1F23',
                     color: '#fff',
+                    confirmButtonColor: '#FF6828',
                 });
             }
         } else {
-            // Gift cards solo existen localmente; actualizar en el store local
             dispatch(updateCartItem({ id, cantidad: nuevaCantidad }));
         }
     };
@@ -71,7 +71,7 @@ const GamecardCart = ({ item, onUpdateQuantity }) => {
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#FF6828',
-            cancelButtonColor: '#d33',
+            cancelButtonColor: '#374151',
             background: '#1D1F23',
             color: '#fff',
             confirmButtonText: 'Sí, eliminarlo',

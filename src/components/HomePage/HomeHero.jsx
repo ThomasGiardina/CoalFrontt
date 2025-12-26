@@ -26,7 +26,7 @@ const Homehero = () => {
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-                <Link to="/Store" className="btn btn-primary text-white gap-2">
+                <Link to="/Store" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 gap-2">
                     Explorar Tienda <FaArrowRight />
                 </Link>
                 <Link to="/About" className="btn btn-ghost">Conocer más</Link>

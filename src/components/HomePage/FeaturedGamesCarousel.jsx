@@ -82,7 +82,7 @@ const FeaturedGamesCarousel = () => {
             </div>
 
             <div className="flex justify-center mt-6">
-                <Link to="/Store" className="btn btn-primary text-white">
+                <Link to="/Store" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300">
                     Ver todos los juegos
                 </Link>
             </div>

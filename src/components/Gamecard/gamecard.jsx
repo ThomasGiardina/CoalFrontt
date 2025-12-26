@@ -33,7 +33,7 @@ const GameCard = ({ title, imageUrl, price, platform, id }) => {
                 icon: 'info',
                 background: '#1D1F23',
                 color: '#fff',
-                confirmButtonColor: '#FF6B00'
+                confirmButtonColor: '#FF6828'
             });
             return;
         }

@@ -43,15 +43,15 @@ const ContactSupport = () => {
                 text: 'Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto pronto.',
                 showConfirmButton: true,
                 confirmButtonText: 'OK',
+                confirmButtonColor: '#FF6828',
                 background: '#1D1F23',
+                color: '#fff',
                 customClass: {
                     popup: 'custom-toast',
-                    title: 'text-primary',
-                    confirmButton: 'btn-primary',
                 },
             }).then(() => {
-                resetForm(); 
-                navigate('/store'); 
+                resetForm();
+                navigate('/store');
             });
         }
     };
@@ -60,7 +60,7 @@ const ContactSupport = () => {
         <div id="contact-section" className="relative w-full flex flex-col items-center bg-background p-4 sm:p-6 lg:p-12 rounded-lg mt-2 space-y-6 sm:space-y-8 lg:space-y-12">
             <div className="absolute top-0 left-0 w-1/4 h-48 bg-accent rounded-br-full opacity-30 z-0"></div>
             <div className="absolute top-0 right-0 w-1/4 h-32 bg-primary rounded-bl-full opacity-40 z-0"></div>
-            <motion.h1 
+            <motion.h1
                 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-2 relative z-10 text-center px-4"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -145,7 +145,7 @@ const ContactSupport = () => {
                         <div className="flex items-center justify-between">
                             <button
                                 type="submit"
-                                className="btn btn-primary text-lg px-6 py-3"
+                                className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 text-lg px-6 py-3"
                                 disabled={isSubmitting}
                             >
                                 Enviar

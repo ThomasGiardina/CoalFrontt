@@ -45,7 +45,11 @@ const FavoritesContainer = () => {
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16">
             <div className="flex items-center gap-3 mb-8">
                 <FaHeart className="text-primary text-2xl sm:text-3xl" />
-                <h1 className="text-2xl sm:text-3xl font-bold text-white">Mis Favoritos</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold">
+                    <span className="bg-gradient-to-r from-[#FF6828] to-[#E57028] bg-clip-text text-transparent">
+                        Mis Favoritos
+                    </span>
+                </h1>
                 <span className="badge badge-primary badge-lg">{favoriteGames.length}</span>
             </div>
 
@@ -54,7 +58,7 @@ const FavoritesContainer = () => {
                     <FaHeart className="text-gray-600 text-5xl mx-auto mb-4" />
                     <h2 className="text-xl font-bold text-white mb-2">No tienes favoritos aún</h2>
                     <p className="text-gray-400 mb-6">Explora nuestra tienda y agrega juegos a tu lista de favoritos</p>
-                    <Link to="/Store" className="btn btn-primary mx-auto">
+                    <Link to="/Store" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 mx-auto">
                         Ir a la tienda
                     </Link>
                 </div>

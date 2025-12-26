@@ -76,21 +76,44 @@ const OrderStats = ({ orders }) => {
     return (
         <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-6">
             {statCards.map((card, index) => (
-                <div key={index} className="card bg-neutral border border-base-200 p-3 sm:p-5 aspect-square sm:aspect-auto flex flex-col justify-between">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className={`p-3 rounded-lg ${card.bgColor}`}>
-                            <span className={card.color}>{card.icon}</span>
+                <div key={index} className="card bg-neutral border border-base-200 p-3 sm:p-5">
+                    {/* Mobile Layout */}
+                    <div className="sm:hidden">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className={`p-2 rounded-lg ${card.bgColor}`}>
+                                <span className={`${card.color} text-lg`}>{card.icon}</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-gray-400 text-xs truncate">{card.title}</p>
+                                <p className="text-white text-xl font-bold">{card.value}</p>
+                            </div>
                         </div>
                         {card.isPercent ? (
-                            <span className={`text-sm font-medium ${card.isNegative ? 'text-yellow-500' : 'text-green-500'}`}>
+                            <span className={`text-xs font-medium ${card.isNegative ? 'text-yellow-500' : 'text-green-500'}`}>
                                 {card.change} del total
                             </span>
                         ) : (
-                            <span className="text-sm text-gray-400">{card.change}</span>
+                            <span className="text-xs text-gray-400">{card.change}</span>
                         )}
                     </div>
-                    <p className="text-gray-400 text-sm mb-1">{card.title}</p>
-                    <p className="text-white text-2xl font-bold">{card.value}</p>
+
+                    {/* Desktop Layout */}
+                    <div className="hidden sm:block">
+                        <div className="flex items-center justify-between mb-3">
+                            <div className={`p-3 rounded-lg ${card.bgColor}`}>
+                                <span className={card.color}>{card.icon}</span>
+                            </div>
+                            {card.isPercent ? (
+                                <span className={`text-sm font-medium ${card.isNegative ? 'text-yellow-500' : 'text-green-500'}`}>
+                                    {card.change} del total
+                                </span>
+                            ) : (
+                                <span className="text-sm text-gray-400">{card.change}</span>
+                            )}
+                        </div>
+                        <p className="text-gray-400 text-sm mb-1">{card.title}</p>
+                        <p className="text-white text-2xl font-bold">{card.value}</p>
+                    </div>
                 </div>
             ))}
         </div>

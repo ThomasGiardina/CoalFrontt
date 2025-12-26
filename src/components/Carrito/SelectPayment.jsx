@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateShippingAddress, setMetodoDePago, setDireccionEnvio, setRetiroEnLocal } from "../../redux/slices/cartSlice";
-import { fetchUserCards } from "../../redux/slices/authSlice"; 
+import { fetchUserCards } from "../../redux/slices/authSlice";
 import AddressForm from './AddressForm';
 import ModalPayment from "../Settings/ModalPayment";
 import Swal from "sweetalert2";
@@ -11,15 +11,15 @@ import { setMetodoDePagoId } from "../../redux/slices/cartSlice";
 
 const SelectPayment = ({ onBack, onConfirm }) => {
     const dispatch = useDispatch();
-    const token = useSelector((state) => state.auth.token); 
-    const cards = useSelector((state) => state.auth.userCards); 
+    const token = useSelector((state) => state.auth.token);
+    const cards = useSelector((state) => state.auth.userCards);
 
     const [paymentMethod, setPaymentMethod] = useState("");
     const [selectedCard, setSelectedCard] = useState("");
     const [shippingOption, setShippingOption] = useState("");
     const [isNewCard, setIsNewCard] = useState(false);
     const [cardType, setCardType] = useState("");
-    const [paymentType, setPaymentType] = useState(""); 
+    const [paymentType, setPaymentType] = useState("");
     const [formValues, setFormValues] = useState({
         name: "",
         cardNumber: "",
@@ -33,7 +33,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [errors, setErrors] = useState({}); 
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if (paymentMethod === "Tarjeta de Crédito/Débito") {
@@ -45,42 +45,42 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     }, [paymentMethod, dispatch, token]);
 
     const handlePaymentMethodChange = (method) => {
-        setPaymentMethod(method); 
-    
+        setPaymentMethod(method);
+
         if (method === 'Efectivo') {
-            dispatch(setMetodoDePago(method)); 
+            dispatch(setMetodoDePago(method));
         }
-    
+
         if (method === 'Tarjeta de Crédito/Débito') {
-            handleCardSelection();  
+            handleCardSelection();
         }
     };
-    
+
     const handleCardSelection = (e) => {
         const selectedCardId = e?.target?.value;
-    
+
         if (selectedCardId === "") {
-            setSelectedCard(""); 
+            setSelectedCard("");
             return;
         }
-    
+
         if (selectedCardId === "new") {
-            setIsModalOpen(true); 
+            setIsModalOpen(true);
         } else {
             setIsNewCard(false);
             setSelectedCard(selectedCardId);
-    
-            dispatch(setMetodoDePagoId(selectedCardId)); 
-    
+
+            dispatch(setMetodoDePagoId(selectedCardId));
+
             const selectedCardDetails = cards.find(card => card.id === parseInt(selectedCardId));
-    
+
             if (selectedCardDetails) {
-                setPaymentType(selectedCardDetails.tipoPago);  
+                setPaymentType(selectedCardDetails.tipoPago);
                 dispatch(setMetodoDePago(selectedCardDetails.tipoPago));
             }
         }
     };
-    
+
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -90,20 +90,23 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             const response = await fetch('http://localhost:4002/metodosPago', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(nuevoMetodo),
             });
-    
+
             if (response.ok) {
                 Swal.fire({
                     title: "¡Éxito!",
                     text: "La tarjeta fue creada con éxito.",
                     icon: "success",
                     confirmButtonText: "Aceptar",
+                    confirmButtonColor: '#FF6828',
+                    background: '#1D1F23',
+                    color: '#fff',
                 });
-                dispatch(fetchUserCards()); 
+                dispatch(fetchUserCards());
             } else {
                 const errorData = await response.json();
                 console.error('Error al guardar el método de pago:', errorData);
@@ -112,6 +115,9 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                     text: "No se pudo crear la tarjeta. Intenta de nuevo.",
                     icon: "error",
                     confirmButtonText: "Aceptar",
+                    confirmButtonColor: '#FF6828',
+                    background: '#1D1F23',
+                    color: '#fff',
                 });
             }
         } catch (error) {
@@ -121,16 +127,19 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                 text: "Ocurrió un error al guardar la tarjeta. Verifica tu conexión.",
                 icon: "error",
                 confirmButtonText: "Aceptar",
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
             });
         }
     };
-    
+
 
     const handleSaveNewCard = async (newCardData) => {
-        await handleSaveMetodoPago(newCardData); 
-        setIsModalOpen(false); 
+        await handleSaveMetodoPago(newCardData);
+        setIsModalOpen(false);
     };
-    
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -145,13 +154,13 @@ const SelectPayment = ({ onBack, onConfirm }) => {
     };
 
     const handleShippingOptionChange = (e) => {
-        const option = e.target.value; 
-        setShippingOption(option); 
-    
+        const option = e.target.value;
+        setShippingOption(option);
+
         if (option === "retiro") {
-            dispatch(setRetiroEnLocal()); 
+            dispatch(setRetiroEnLocal());
         } else {
-            dispatch(setDireccionEnvio({})); 
+            dispatch(setDireccionEnvio({}));
         }
     };
 
@@ -176,7 +185,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
         }
 
         setErrors(formErrors);
-        return Object.keys(formErrors).length === 0; 
+        return Object.keys(formErrors).length === 0;
     };
 
     const isFormValid = () => {
@@ -187,10 +196,17 @@ const SelectPayment = ({ onBack, onConfirm }) => {
 
     const handleConfirm = () => {
         if (!isFormValid()) {
-            Swal.fire("Error", "Por favor completa todos los campos requeridos para continuar.", "error");
+            Swal.fire({
+                title: "Error",
+                text: "Por favor completa todos los campos requeridos para continuar.",
+                icon: "error",
+                confirmButtonColor: '#FF6828',
+                background: '#1D1F23',
+                color: '#fff',
+            });
             return;
         }
-    
+
         const addressData = shippingOption === "envio"
             ? {
                 direccion: formValues.address,
@@ -199,18 +215,18 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                 telefono: formValues.phone,
             }
             : null;
-    
+
         if (shippingOption === "envio") {
-            dispatch(setDireccionEnvio(addressData)); 
+            dispatch(setDireccionEnvio(addressData));
         } else {
-            dispatch(setDireccionEnvio(null)); 
+            dispatch(setDireccionEnvio(null));
         }
-    
+
         onConfirm(paymentMethod, shippingOption, selectedCard, addressData);
     };
-    
-    
-    
+
+
+
 
     return (
         <div className="text-white p-4 sm:p-6 rounded-lg bg-gray-800 w-full">
@@ -219,7 +235,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
             <div className="mb-4 sm:mb-6">
                 <label className="block mb-2 text-sm sm:text-base">Método de Pago</label>
                 <select
-                    value={paymentMethod} 
+                    value={paymentMethod}
                     onChange={(e) => handlePaymentMethodChange(e.target.value)}
                     className="bg-gray-700 p-2 sm:p-3 w-full rounded-md text-sm sm:text-base"
                 >
@@ -252,7 +268,7 @@ const SelectPayment = ({ onBack, onConfirm }) => {
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 onSave={handleSaveNewCard}
-                initialFormData={{}} 
+                initialFormData={{}}
             />
 
 

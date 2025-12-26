@@ -10,7 +10,6 @@ const BotonLogin = ({ email, password }) => {
     const MySwal = withReactContent(Swal);
 
     const handleLogin = async () => {
-        // Validación de campos vacíos
         if (!email || !password) {
             MySwal.fire({
                 toast: true,
@@ -126,7 +125,7 @@ const BotonLogin = ({ email, password }) => {
     };
 
     return (
-        <button onClick={handleLogin} className="btn btn-active btn-primary mt-5 w-full">
+        <button onClick={handleLogin} className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 mt-5 w-full">
             Iniciar Sesión
         </button>
     );

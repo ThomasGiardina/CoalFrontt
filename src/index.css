@@ -35,3 +35,22 @@
 }
 
 /* Additional custom styles */
+
+/* Custom Scrollbar for Settings */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #1a1b1e;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #FF6828, #E57028);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #E57028, #FF6828);
+}

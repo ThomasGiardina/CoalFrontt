@@ -86,11 +86,11 @@ const OrderTable = () => {
             text: `Tu mensaje ha sido enviado al cliente del pedido #${selectedOrder.id}.`,
             showConfirmButton: true,
             confirmButtonText: 'OK',
+            confirmButtonColor: '#FF6828',
             background: '#1D1F23',
+            color: '#fff',
             customClass: {
                 popup: 'custom-toast',
-                title: 'text-primary',
-                confirmButton: 'btn-primary',
             },
         });
         handleCloseModal();
@@ -120,7 +120,7 @@ const OrderTable = () => {
         setCurrentPage(1);
     };
 
-    const filteredOrders = () => {
+    const getAllFilteredOrders = () => {
         let filtered = [...orders];
 
         if (activeTab === 'Completos') {
@@ -160,17 +160,22 @@ const OrderTable = () => {
             return true;
         });
 
+        return filtered;
+    };
+
+    const filteredOrders = () => {
+        const allFiltered = getAllFilteredOrders();
         const startIndex = (currentPage - 1) * ordersPerPage;
         const endIndex = startIndex + ordersPerPage;
-
-        return filtered.slice(startIndex, endIndex);
+        return allFiltered.slice(startIndex, endIndex);
     };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
-    const totalPages = Math.ceil(filteredOrders().length / ordersPerPage);
+    const totalFilteredOrders = getAllFilteredOrders().length;
+    const totalPages = Math.ceil(totalFilteredOrders / ordersPerPage);
 
     const handleSelectRow = (id) => {
         setSelectedRows((prevSelectedRows) => {
@@ -295,15 +300,15 @@ const OrderTable = () => {
                     </button>
                 </div>
             </div>
-            <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-lg">
-                <table className="table w-full bg-neutral text-text table-auto min-w-[800px]">
+            <div className="rounded-xl border border-[#2a2b2e] overflow-x-auto">
+                <table className="table w-full bg-neutral text-text min-w-[600px]">
                     <thead>
-                        <tr className="text-primary">
+                        <tr className="text-primary border-b border-[#2a2b2e]">
                             {isSelecting && (
-                                <th className="text-center text-xs sm:text-sm">
+                                <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] w-12">
                                     <input
                                         type="checkbox"
-                                        className="checkbox checkbox-primary checkbox-sm sm:checkbox-md"
+                                        className="checkbox checkbox-primary checkbox-sm"
                                         onChange={handleSelectAll}
                                         checked={
                                             selectedRows.length === filteredOrders().length && selectedRows.length > 0
@@ -311,36 +316,44 @@ const OrderTable = () => {
                                     />
                                 </th>
                             )}
-                            <th className="text-center text-xs sm:text-sm">Pedido</th>
-                            <th className="text-center text-xs sm:text-sm">Fecha</th>
-                            <th className="text-center text-xs sm:text-sm">Cliente</th>
-                            <th className="text-center text-xs sm:text-sm">Pago</th>
-                            <th className="text-center text-xs sm:text-sm">Total</th>
-                            <th className="text-center text-xs sm:text-sm">Artículos</th>
-                            <th className="text-center text-xs sm:text-sm">Entrega</th>
-                            <th className="text-center text-xs sm:text-sm">Estado</th>
-                            <th className="text-center text-xs sm:text-sm">Acciones</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">#</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">Fecha</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">Cliente</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">Pago</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">Total</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap hidden md:table-cell">Artículos</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap hidden lg:table-cell">Entrega</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">Estado</th>
+                            <th className="text-center text-xs sm:text-sm bg-[#1a1b1e] whitespace-nowrap">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredOrders().map((order, index) => (
-                            <AdminOrderRow
-                                key={index}
-                                order={order}
-                                isSelecting={isSelecting}
-                                isRowSelected={isRowSelected}
-                                handleSelectRow={handleSelectRow}
-                                menuOpenId={menuOpen}
-                                setMenuOpenId={setMenuOpen}
-                                onSendMessage={handleOpenModal}
-                                onCancel={handleCancelOrder}
-                                onConfirm={handleConfirmOrder}
-                            />
-                        ))}
+                        {filteredOrders().length === 0 ? (
+                            <tr>
+                                <td colSpan={isSelecting ? 10 : 9} className="text-center py-8 text-gray-400">
+                                    No se encontraron pedidos
+                                </td>
+                            </tr>
+                        ) : (
+                            filteredOrders().map((order, index) => (
+                                <AdminOrderRow
+                                    key={order.id}
+                                    order={order}
+                                    isSelecting={isSelecting}
+                                    isRowSelected={isRowSelected}
+                                    handleSelectRow={handleSelectRow}
+                                    menuOpenId={menuOpen}
+                                    setMenuOpenId={setMenuOpen}
+                                    onSendMessage={handleOpenModal}
+                                    onCancel={handleCancelOrder}
+                                    onConfirm={handleConfirmOrder}
+                                />
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>
-            {orders.length > ordersPerPage && (
+            {totalPages > 1 && (
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             )}
             {isModalOpen && (
@@ -357,7 +370,7 @@ const OrderTable = () => {
                         ></textarea>
                         <div className="modal-action">
                             <button
-                                className="btn btn-primary"
+                                className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25"
                                 onClick={handleSendMessage}
                             >
                                 Enviar Mensaje

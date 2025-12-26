@@ -47,7 +47,7 @@ function FindUsSection() {
                                 </div>
                             </div>
                         </div>
-                        <a href="https://maps.google.com/?q=Lima+757+CABA+Argentina" target="_blank" rel="noopener noreferrer" className="btn btn-primary text-white mt-6 w-fit gap-2">
+                        <a href="https://maps.google.com/?q=Lima+757+CABA+Argentina" target="_blank" rel="noopener noreferrer" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 mt-6 w-fit gap-2">
                             <FaExternalLinkAlt className="text-sm" /> Abrir en Maps
                         </a>
                     </div>

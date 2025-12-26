@@ -5,9 +5,9 @@ const initialState = {
     cartItems: [],
     direccionEnvio: null,
     metodoDePago: null,
-    tipoEntrega: null, 
+    tipoEntrega: null,
     cantidadItems: 0,
-    metodoDePagoId: null, 
+    metodoDePagoId: null,
     loading: false,
     error: null,
 };
@@ -39,8 +39,6 @@ export const fetchCarrito = createAsyncThunk(
     }
 );
 
-
-// Agregar un ítem al carrito
 export const addItemToCarrito = createAsyncThunk(
     'cart/addItemToCarrito',
     async ({ carritoId, videojuegoId, cantidad }, { getState, rejectWithValue }) => {
@@ -162,10 +160,10 @@ const cartSlice = createSlice({
         setDireccionEnvio: (state, action) => {
             state.direccionEnvio = action.payload;
             state.tipoEntrega = 'DELIVERY';
-            state.metodoDePagoId = state.metodoDePagoId === null ? null : state.metodoDePagoId; 
+            state.metodoDePagoId = state.metodoDePagoId === null ? null : state.metodoDePagoId;
         },
         setRetiroEnLocal: (state) => {
-            state.tipoEntrega = 'RETIRO_LOCAL'; 
+            state.tipoEntrega = 'RETIRO_LOCAL';
             state.direccionEnvio = null;
         },
         setMetodoDePago: (state, action) => {
@@ -197,7 +195,7 @@ const cartSlice = createSlice({
             })
             .addCase(fetchCarrito.fulfilled, (state, action) => {
                 const giftCards = state.cartItems.filter(item => item.isGiftCard === true);
-                
+
                 const newCartItems = Array.isArray(action.payload.items)
                     ? action.payload.items.map(item => ({
                         id: item.id,
@@ -222,7 +220,6 @@ const cartSlice = createSlice({
                 state.error = null;
             })
             .addCase(addItemToCarrito.fulfilled, (state, action) => {
-                // El backend devuelve solo un mensaje; refrescamos luego con fetchCarrito
                 state.loading = false;
             })
             .addCase(addItemToCarrito.rejected, (state, action) => {
@@ -240,10 +237,10 @@ const cartSlice = createSlice({
                 state.error = action.payload || 'Error al actualizar la cantidad.';
             })
             .addCase(deleteItemFromCarrito.fulfilled, (state, action) => {
-                const itemId = action.payload; 
-    
+                const itemId = action.payload;
+
                 state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
-    
+
                 state.cantidadItems = state.cartItems.length;
             })
             .addCase(deleteItemFromCarrito.rejected, (state, action) => {

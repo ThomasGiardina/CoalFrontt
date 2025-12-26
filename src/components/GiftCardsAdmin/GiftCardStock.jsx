@@ -1,6 +1,5 @@
 import { FaGift } from "react-icons/fa";
 
-// Map gift card prices to their corresponding images
 const getGiftCardImage = (precio) => {
     const price = parseFloat(precio);
     if (price >= 100) return '/src/assets/Giftcard100.png';

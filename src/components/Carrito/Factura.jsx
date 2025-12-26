@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux"; 
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import FacturaTradicional from "./FacturaTradicional";
 import jsPDF from "jspdf";
@@ -19,13 +19,13 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
     const payment = useSelector((state) => state.cart.metodoDePago);
 
 
-    const shippingCost = shippingMethod === "envio" ? 5000 : 0; 
-    const discountPercentage = payment === "EFECTIVO" ? 0.15 : payment === "DEBITO" ? 0.10 : 0; 
+    const shippingCost = shippingMethod === "envio" ? 5000 : 0;
+    const discountPercentage = payment === "EFECTIVO" ? 0.15 : payment === "DEBITO" ? 0.10 : 0;
     const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
-    const discount = subtotal * discountPercentage; 
-    const total = subtotal + shippingCost - discount; 
+    const discount = subtotal * discountPercentage;
+    const total = subtotal + shippingCost - discount;
 
-    
+
 
     useEffect(() => {
         const generateOrderId = () => {
@@ -69,7 +69,14 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
             })
             .catch((error) => {
                 console.error("Error al generar el PDF:", error);
-                Swal.fire("Error", "No se pudo descargar la factura", "error");
+                Swal.fire({
+                    title: "Error",
+                    text: "No se pudo descargar la factura",
+                    icon: "error",
+                    confirmButtonColor: '#FF6828',
+                    background: '#1D1F23',
+                    color: '#fff',
+                });
             });
     };
 
@@ -91,7 +98,7 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
                         </div>
                         <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
                             <span className="text-gray-400 text-sm sm:text-base">Método de Pago:</span>
-                            <span className="text-green-400 text-sm sm:text-base">{payment}</span> 
+                            <span className="text-green-400 text-sm sm:text-base">{payment}</span>
                         </div>
                         {shippingMethod === "envio" && parsedShippingAddress && (
                             <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-3 gap-1 sm:gap-0">
@@ -147,8 +154,8 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
                         orderDate={orderDate}
                         cartItems={cartItems}
                         total={total}
-                        shippingAddress={shippingAddress} 
-                        shippingCost={shippingCost} 
+                        shippingAddress={shippingAddress}
+                        shippingCost={shippingCost}
                         discount={discount}
                         shippingMethod={shippingMethod}
                     />
@@ -156,16 +163,16 @@ const Factura = ({ cartItems = [], shippingMethod }) => {
             )}
 
             <div className="mt-6 sm:mt-8 text-center flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                <button 
+                <button
                     className="btn bg-primary text-white py-2 px-4 rounded-md text-sm sm:text-base"
                     onClick={() => setShowTraditionalInvoice(!showTraditionalInvoice)}
                 >
                     {showTraditionalInvoice ? "Volver a Resumen" : "Ver Factura"}
                 </button>
                 {showTraditionalInvoice && (
-                    <button 
+                    <button
                         className="btn bg-neutral text-white py-2 px-4 rounded-md text-sm sm:text-base"
-                        onClick={downloadInvoiceAsPDF} 
+                        onClick={downloadInvoiceAsPDF}
                     >
                         Descargar Factura
                     </button>

@@ -36,9 +36,9 @@ const BotonRegister = ({ formData }) => {
                     icon: 'error',
                     title: 'Oops...',
                     text: errorMessage,
-                    background: '#2B2738',
+                    background: '#1D1F23',
                     color: '#fff',
-                    confirmButtonColor: '#FF5722',
+                    confirmButtonColor: '#FF6828',
                 });
                 return;
             }
@@ -51,9 +51,9 @@ const BotonRegister = ({ formData }) => {
                 icon: 'success',
                 title: '¡Cuenta creada!',
                 text: 'Tu cuenta ha sido creada exitosamente. Serás redirigido a la página principal.',
-                background: '#2B2738',
+                background: '#1D1F23',
                 color: '#fff',
-                confirmButtonColor: '#FF5722',
+                confirmButtonColor: '#FF6828',
             }).then(() => {
                 navigate(data.role === 'ADMIN' ? '/GamesAdmin' : '/Store');
             });
@@ -63,15 +63,15 @@ const BotonRegister = ({ formData }) => {
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Error al crear la cuenta. Por favor, intenta nuevamente.',
-                background: '#2B2738',
+                background: '#1D1F23',
                 color: '#fff',
-                confirmButtonColor: '#FF5722',
+                confirmButtonColor: '#FF6828',
             });
         }
     };
 
     return (
-        <button onClick={handleRegister} className="btn btn-active btn-primary mt-5 w-full">
+        <button onClick={handleRegister} className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 mt-5 w-full">
             Crear Cuenta
         </button>
     );

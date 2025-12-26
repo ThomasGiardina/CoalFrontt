@@ -55,12 +55,10 @@ const EditGiftCardForm = ({ giftCard, updateGiftCard, closeModal }) => {
                 throw new Error('Error al actualizar la tarjeta');
             }
 
-            // Try to parse JSON, otherwise use the updated data we sent
             let data;
             try {
                 data = responseText ? JSON.parse(responseText) : { ...updatedGiftCard, foto: giftCard.foto };
             } catch {
-                // If parsing fails, use our local data with existing photo
                 data = { ...updatedGiftCard, foto: giftCard.foto };
             }
 
@@ -152,7 +150,7 @@ const EditGiftCardForm = ({ giftCard, updateGiftCard, closeModal }) => {
                     </div>
 
                     <div className="modal-action mt-4">
-                        <button type="submit" className="btn btn-primary">Guardar cambios</button>
+                        <button type="submit" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25">Guardar cambios</button>
                         <button type="button" className="btn" onClick={closeModal}>Cancelar</button>
                     </div>
                 </form>

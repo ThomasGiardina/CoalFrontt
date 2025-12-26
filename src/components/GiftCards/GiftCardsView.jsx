@@ -82,7 +82,7 @@ const GiftCardRow = ({ card, isReversed, onAddToCart }) => {
                     </div>
                     <div className="flex items-center justify-between mt-4">
                         <span className="text-3xl font-bold text-primary">${card.price}</span>
-                        <button onClick={() => onAddToCart(card)} className="btn btn-primary text-white gap-2">
+                        <button onClick={() => onAddToCart(card)} className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300 gap-2">
                             <FaShoppingCart /> Agregar al carrito
                         </button>
                     </div>
@@ -116,7 +116,6 @@ const GiftCardsView = () => {
                 return list;
             }
         } catch (e) {
-            // silencioso
         }
         return [];
     }, [token]);
@@ -160,12 +159,11 @@ const GiftCardsView = () => {
                 icon: 'info',
                 background: '#1D1F23',
                 color: '#fff',
-                confirmButtonColor: '#FF6B00',
+                confirmButtonColor: '#FF6828',
             });
             return;
         }
 
-        // Asegurar tener carritoId
         let cid = carritoId;
         if (!cid) {
             const res = await dispatch(fetchCarrito());
@@ -173,7 +171,6 @@ const GiftCardsView = () => {
             cid = payload?.id || cid;
         }
 
-        // Resolver videojuegoId de la gift card (por precio aproximado o título). Si no hay lista, la refrescamos y reintentamos.
         const findGiftCard = (list) => {
             const target = Number(card.price);
             return list.find(p => Math.abs(Number(p.precio) - target) < 0.001)
@@ -200,7 +197,6 @@ const GiftCardsView = () => {
         }
 
         await dispatch(addItemToCarrito({ carritoId: cid, videojuegoId: videojuego.id, cantidad: 1 }));
-        // Refrescar el carrito desde el backend
         await dispatch(fetchCarrito());
 
         Swal.fire({
@@ -222,7 +218,11 @@ const GiftCardsView = () => {
                 <div className="text-center mb-10">
                     <div className="flex items-center justify-center gap-3 mb-3">
                         <FaGift className="text-primary text-3xl" />
-                        <h1 className="text-3xl sm:text-4xl font-bold text-white">Tarjetas de Regalo</h1>
+                        <h1 className="text-3xl sm:text-4xl font-bold">
+                            <span className="bg-gradient-to-r from-[#FF6828] to-[#E57028] bg-clip-text text-transparent">
+                                Tarjetas de Regalo
+                            </span>
+                        </h1>
                     </div>
                     <p className="text-gray-400 max-w-2xl mx-auto">
                         El regalo perfecto para gamers. Nuestras tarjetas Coal no vencen y pueden usarse en cualquier juego de nuestra tienda.

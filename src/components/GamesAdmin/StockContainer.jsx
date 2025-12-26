@@ -24,8 +24,8 @@ const StockContainer = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        dispatch(fetchGames());
-    }, [dispatch]);
+        if (allGames.length === 0) dispatch(fetchGames());
+    }, [dispatch, allGames.length]);
 
     useEffect(() => {
         const gamesOnly = allGames.filter(game => !isGiftCard(game));

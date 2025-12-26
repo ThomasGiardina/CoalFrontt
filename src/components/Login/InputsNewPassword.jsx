@@ -52,7 +52,7 @@ const InputsNewPassword = ({ onPasswordChange, resetInputs }) => {
                     className="grow text-sm"
                 />
             </label>
-            <button type="submit" className="btn btn-primary w-full mt-2">
+            <button type="submit" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 w-full mt-2">
                 Cambiar Contraseña
             </button>
         </form>

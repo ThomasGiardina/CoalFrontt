@@ -32,7 +32,7 @@ const GameCardFavorites = ({ game, removeGame }) => {
             background: '#1D1F23',
             color: '#fff',
             showCancelButton: true,
-            confirmButtonColor: '#FF6B00',
+            confirmButtonColor: '#FF6828',
             cancelButtonColor: '#374151',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
@@ -64,16 +64,7 @@ const GameCardFavorites = ({ game, removeGame }) => {
             </figure>
             <div className="p-3">
                 <h3 className="font-medium text-white text-sm line-clamp-1 mb-1">{game.titulo}</h3>
-                <div className="flex items-center justify-between">
-                    <span className="text-primary font-bold">${game.precio}</span>
-                    <button
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                        className="btn btn-primary btn-xs gap-1"
-                    >
-                        <FaShoppingCart className="text-xs" />
-                        Agregar
-                    </button>
-                </div>
+                <span className="text-primary font-bold">${game.precio}</span>
             </div>
         </Link>
     );

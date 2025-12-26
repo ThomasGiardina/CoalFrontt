@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchBestSellers = createAsyncThunk('statistics/fetchBestSellers', async (_, { rejectWithValue }) => {
     try {
-        const response = await fetch('http://localhost:4002/estadisticas/productos-mas-vendidos');
+        const response = await fetch('http://localhost:4002/api/estadisticas/productos-mas-vendidos');
         if (!response.ok) throw new Error('Error al obtener productos más vendidos');
         return await response.json();
     } catch (error) {

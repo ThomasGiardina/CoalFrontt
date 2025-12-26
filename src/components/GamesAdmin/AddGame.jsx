@@ -20,7 +20,7 @@ const AddGameButton = ({ addGame }) => {
     const role = useSelector((state) => state.auth.role);
 
     const allCategories = [
-        "ACCION", "AVENTURA", "RPG", "SIMULACION", "DEPORTES", "ESTRATEGIA", 
+        "ACCION", "AVENTURA", "RPG", "SIMULACION", "DEPORTES", "ESTRATEGIA",
         "PUZZLE", "TERROR", "VR", "EDUCATIVO"
     ];
 
@@ -55,9 +55,9 @@ const AddGameButton = ({ addGame }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const formData = new FormData();
-    
+
         const videojuego = {
             titulo: title,
             descripcion: description,
@@ -68,26 +68,25 @@ const AddGameButton = ({ addGame }) => {
             fechaLanzamiento: fechaLanzamiento,
             desarrolladora: desarrolladora,
         };
-        
+
         formData.append('videojuego', JSON.stringify(videojuego));
-    
-        // Agregar las imágenes del carrusel al formData
+
         if (mainImage) {
             formData.append('foto', mainImage);
         }
-    
+
         if (carruselImagen1) {
             formData.append('carruselImagen1', carruselImagen1);
         }
-    
+
         if (carruselImagen2) {
             formData.append('carruselImagen2', carruselImagen2);
         }
-    
+
         if (carruselImagen3) {
             formData.append('carruselImagen3', carruselImagen3);
         }
-    
+
         try {
             const response = await fetch('http://localhost:4002/videojuegos', {
                 method: 'POST',
@@ -96,15 +95,15 @@ const AddGameButton = ({ addGame }) => {
                 },
                 body: formData,
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Detalles del error:', errorData);
                 throw new Error('Error al agregar el videojuego');
             }
-    
+
             const data = await response.json();
-    
+
             addGame(data);
             handleCloseModal();
         } catch (error) {
@@ -114,7 +113,7 @@ const AddGameButton = ({ addGame }) => {
 
     return (
         <>
-            <button onClick={handleOpenModal} className="btn btn-primary">Agregar un Nuevo Juego</button>
+            <button onClick={handleOpenModal} className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300">Agregar un Nuevo Juego</button>
 
             {showModal && (
                 <div className="modal modal-open">
@@ -224,7 +223,7 @@ const AddGameButton = ({ addGame }) => {
                                                     {allCategories.map((category) => (
                                                         <li
                                                             key={category}
-                                                            onClick={() => handleCategorySelect(category)}  
+                                                            onClick={() => handleCategorySelect(category)}
                                                             className={`cursor-pointer hover:bg-primary hover:text-white p-2 rounded-lg 
                                                                 ${selectedCategories.includes(category) ? 'bg-primary text-white' : ''}`}
                                                         >
@@ -317,7 +316,7 @@ const AddGameButton = ({ addGame }) => {
                             </div>
 
                             <div className="modal-action mt-4">
-                                <button type="submit" className="btn btn-primary">Guardar</button>
+                                <button type="submit" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25">Guardar</button>
                                 <button type="button" className="btn" onClick={handleCloseModal}>Cancelar</button>
                             </div>
                         </form>

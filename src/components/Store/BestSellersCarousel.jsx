@@ -14,40 +14,62 @@ const BestSellersSection = () => {
     const [displayGames, setDisplayGames] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchBestSellers());
+        if (bestSellers.length === 0) dispatch(fetchBestSellers());
         if (allGames.length === 0) dispatch(fetchGames());
-    }, [dispatch, allGames.length]);
+    }, [dispatch, bestSellers.length, allGames.length]);
 
     const filterNonGift = (list) => list.filter(g => !(g?.giftCard || g?.gift_card || (g?.plataforma || '').toLowerCase() === 'coal' || (g?.titulo || '').toLowerCase().includes('tarjeta')));
 
     useEffect(() => {
-        if (bestSellers.length > 0) {
-            const limited = filterNonGift(bestSellers).slice(0, 6);
-            setDisplayGames(limited.map((g, index) => ({
-                // Normalizamos posibles nombres de campos que puede traer la API
-                id: g.id ?? g.producto_id ?? g.videojuego_id ?? g.game_id,
-                titulo: g.titulo ?? g.nombre ?? g.name,
-                plataforma: g.plataforma ?? g.platform,
-                ventas: g.ventas ?? g.totalVentas ?? g.cant_ventas ?? g.cantidad ?? g.total_sold ?? 0,
-                // Imagen: ya puede venir como URL o base64
-                foto: typeof g.foto === 'string'
-                    ? (g.foto.startsWith('http') || g.foto.startsWith('data:') ? g.foto : `data:image/jpeg;base64,${g.foto}`)
-                    : (g.fotoUrl ?? g.imagenUrl ?? undefined),
-                isFromApi: true,
-                rank: index + 1,
-            })));
-        } else if (allGames.length > 0) {
+        const findGameIdByTitle = (titulo) => {
+            const found = allGames.find(g => g.titulo?.toLowerCase() === titulo?.toLowerCase());
+            return found?.id || null;
+        };
+
+        if (allGames.length > 0) {
             const pool = filterNonGift(allGames);
-            const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 6);
-            setDisplayGames(shuffled.map((game, index) => ({
-                titulo: game.titulo,
-                foto: `data:image/jpeg;base64,${game.foto}`,
-                plataforma: game.plataforma,
-                ventas: game.ventas,
-                id: game.id,
-                isFromApi: false,
-                rank: index + 1
-            })));
+            let result = [];
+
+            if (bestSellers && bestSellers.length > 0) {
+                const bestSellersFiltered = filterNonGift(bestSellers).slice(0, 6);
+                result = bestSellersFiltered.map((g, index) => {
+                    const titulo = g.titulo ?? g.nombre ?? g.name;
+                    const gameId = g.id ?? findGameIdByTitle(titulo);
+
+                    return {
+                        id: gameId,
+                        titulo: titulo,
+                        plataforma: g.plataforma ?? g.platform,
+                        ventas: g.ventas ?? g.totalVentas ?? g.cant_ventas ?? g.cantidad ?? g.total_sold ?? 0,
+                        foto: g.fotoUrl ?? (typeof g.foto === 'string'
+                            ? (g.foto.startsWith('http') || g.foto.startsWith('data:') ? g.foto : `data:image/jpeg;base64,${g.foto}`)
+                            : undefined),
+                        isFromApi: true,
+                        rank: index + 1,
+                    };
+                });
+            }
+
+            if (result.length < 6) {
+                const usedIds = result.map(g => g.id);
+                const remaining = pool.filter(g => !usedIds.includes(g.id));
+                const shuffled = [...remaining].sort(() => Math.random() - 0.5);
+                const needed = 6 - result.length;
+
+                const fillers = shuffled.slice(0, needed).map((game, index) => ({
+                    titulo: game.titulo,
+                    foto: game.foto ? `data:image/jpeg;base64,${game.foto}` : undefined,
+                    plataforma: game.plataforma,
+                    ventas: 0,
+                    id: game.id,
+                    isFromApi: false,
+                    rank: result.length + index + 1
+                }));
+
+                result = [...result, ...fillers];
+            }
+
+            setDisplayGames(result);
         }
     }, [bestSellers, allGames]);
 

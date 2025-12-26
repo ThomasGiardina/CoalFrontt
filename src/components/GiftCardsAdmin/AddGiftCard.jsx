@@ -63,7 +63,6 @@ const AddGiftCardButton = ({ addGiftCard }) => {
                 throw new Error('Error al agregar la tarjeta');
             }
 
-            // Try to parse JSON, otherwise use placeholder data
             let data;
             try {
                 data = responseText ? JSON.parse(responseText) : giftCardData;
@@ -81,7 +80,7 @@ const AddGiftCardButton = ({ addGiftCard }) => {
 
     return (
         <>
-            <button onClick={handleOpenModal} className="btn btn-primary">Agregar Nueva Tarjeta</button>
+            <button onClick={handleOpenModal} className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25 hover:shadow-[#FF6828]/40 transform hover:-translate-y-0.5 transition-all duration-300">Agregar Nueva Tarjeta</button>
 
             {showModal && (
                 <div className="modal modal-open">
@@ -164,7 +163,7 @@ const AddGiftCardButton = ({ addGiftCard }) => {
                             </div>
 
                             <div className="modal-action mt-4">
-                                <button type="submit" className="btn btn-primary">Guardar</button>
+                                <button type="submit" className="btn bg-gradient-to-r from-[#FF6828] to-[#E57028] hover:from-[#E57028] hover:to-[#FF6828] text-white border-none shadow-lg shadow-[#FF6828]/25">Guardar</button>
                                 <button type="button" className="btn" onClick={handleCloseModal}>Cancelar</button>
                             </div>
                         </form>
