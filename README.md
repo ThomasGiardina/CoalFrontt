@@ -237,7 +237,7 @@ npm run dev
 
 El backend del proyecto se encuentra en un repositorio separado:
 
-📦 **Repositorio:** [coalback](https://github.com/ThomasGiardina/coalback)
+📦 **Repositorio:** [Coal Backend](https://github.com/ThomasGiardina/Coal)
 
 ### Características del Backend
 
